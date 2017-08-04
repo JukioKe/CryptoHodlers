@@ -1,10 +1,12 @@
 package xyz.taika.cryptohodler;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,9 +30,8 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnHit;
+    Button getDataButton;
     TextView txtJson;
-    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,43 +40,52 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        /* Not sure yet if FloatingActionButton is needed here
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.plusicon));
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "This feature is coming.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
 
-        btnHit = (Button) findViewById(R.id.btnHit);
+        getDataButton = (Button) findViewById(R.id.btnHit);
         txtJson = (TextView) findViewById(R.id.tvJsonItem);
 
-        btnHit.setOnClickListener(new View.OnClickListener() {
+        getDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/bitcoin");
+
+               /* Start AssetListActivity where's all the assets in a list
+                Intent seeAssetListIntent = new Intent(MainActivity.this, AssetListActivity.class);
+                startActivity(seeAssetListIntent);
+                */
+
             }
         });
-
 
 
     }
 
     private class JsonTask extends AsyncTask<String, String, String> {
 
-        //Tests
         JSONArray jsonArray = null;
         JSONObject jsonObject = null;
+        ProgressDialog progressDialog = null;
 
         protected void onPreExecute() {
             super.onPreExecute();
 
-            pd = new ProgressDialog(MainActivity.this);
-            pd.setMessage("Please wait");
-            pd.setCancelable(false);
-            pd.show();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Please wait");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
         }
 
         protected String doInBackground(String... params) {
@@ -91,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
                 InputStream stream = connection.getInputStream();
                 reader = new BufferedReader(new InputStreamReader(stream));
                 StringBuffer buffer = new StringBuffer();
-                String line = "";
+                String line;
 
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
+                    buffer.append(line + "\n");
                     Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
 
                 }
@@ -139,14 +149,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if (pd.isShowing()){
-                pd.dismiss();
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
             }
             try {
                 txtJson.setText("Bitcoinin arvo tällä hetkellä: $" + jsonObject.getString("price_usd"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -165,11 +176,8 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //no inspection SimplifiableIfStatement
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
 
-        return super.onOptionsItemSelected(item);
     }
 }
