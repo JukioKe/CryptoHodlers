@@ -1,12 +1,8 @@
 package xyz.taika.cryptohodler;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
 
-        getDataButton = (Button) findViewById(R.id.btnHit);
+        getDataButton = (Button) findViewById(R.id.getStatusButton);
         txtJson = (TextView) findViewById(R.id.tvJsonItem);
 
         getDataButton.setOnClickListener(new View.OnClickListener() {
