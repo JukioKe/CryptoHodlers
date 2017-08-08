@@ -1,6 +1,7 @@
 package xyz.taika.cryptohodler;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +27,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button getDataButton;
+    Button statusButton;
     TextView txtJson;
 
     @Override
@@ -50,18 +51,20 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
 
-        getDataButton = (Button) findViewById(R.id.getStatusButton);
+        statusButton = (Button) findViewById(R.id.getStatusButton);
         txtJson = (TextView) findViewById(R.id.tvJsonItem);
 
-        getDataButton.setOnClickListener(new View.OnClickListener() {
+        statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/bitcoin");
 
-               /* Start AssetListActivity where's all the assets in a list
+                //TEST: This creates new JsonTask object. It tries to get bitcoin data from Coinmarketcap API as a Json object
+                //new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/bitcoin");
+
+                //Start AssetListActivity where's all the assets in a list
                 Intent seeAssetListIntent = new Intent(MainActivity.this, AssetListActivity.class);
                 startActivity(seeAssetListIntent);
-                */
+
 
             }
         });
