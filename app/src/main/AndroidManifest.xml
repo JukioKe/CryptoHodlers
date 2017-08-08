@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/crypto_hodlers_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/crypto_hodlers_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -24,8 +24,7 @@
         <activity
             android:name=".AssetListActivity"
             android:label="@string/title_activity_asset_list"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="xyz.taika.cryptohodler.MainActivity" />
