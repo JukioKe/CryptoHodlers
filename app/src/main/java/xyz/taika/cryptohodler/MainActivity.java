@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    /* TEST Json object handling
     private class JsonTask extends AsyncTask<String, String, String> {
 
         JSONArray jsonArray = null;
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                 InputStream stream = connection.getInputStream();
                 reader = new BufferedReader(new InputStreamReader(stream));
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 String line;
 
                 while ((line = reader.readLine()) != null) {
@@ -159,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    */
 
 
     @Override
