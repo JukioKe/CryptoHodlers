@@ -25,14 +25,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Math.round;
 
 public class AssetListActivity extends AppCompatActivity {
 
     //TEST Json
-    TextView txtJson;
-
+    //TextView txtJson;
+    //Create a list for Asset objects
+    ArrayList<Asset> assetList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,6 @@ public class AssetListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_asset_list);
 
         /* Not sure if toolbar of FAB is needed here
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -52,17 +55,10 @@ public class AssetListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        */
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); */
 
         //TEST Json
-        new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=10");
-
-
-        //Create a list for Asset objects
-        final ArrayList<Asset> assetList = new ArrayList<>();
+        new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=20");
 
         //Create all Asset objects
         assetList.add(new Asset("Bitcoin", 5.0, 3454.08, R.mipmap.bitcoin));
@@ -80,6 +76,11 @@ public class AssetListActivity extends AppCompatActivity {
         assetList.add(new Asset("NEM", 29000.70, 0.29, R.mipmap.bitcoin));
         assetList.add(new Asset("Zcash", 5.90, 214.67, R.mipmap.bitcoin));
         assetList.add(new Asset("Stellar", 5400.12, 0.022, R.mipmap.bitcoin));
+        assetList.add(new Asset("KEK", 10000.0, 0.09, R.mipmap.bitcoin));
+        assetList.add(new Asset("Monero", 0.1, 0.07, R.mipmap.bitcoin));
+        assetList.add(new Asset("LiteShares", 50000.0, 0.02, R.mipmap.bitcoin));
+        assetList.add(new Asset("Lisk", 580.0, 12.23, R.mipmap.bitcoin));
+        assetList.add(new Asset("Factom", 20.67, 20.98, R.mipmap.bitcoin));
 
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
@@ -95,10 +96,10 @@ public class AssetListActivity extends AppCompatActivity {
     }
 
 
+
     private class JsonTask extends AsyncTask<String, String, String> {
 
         JSONArray jsonArray = null;
-        JSONObject jsonObject = null; //For TESTS
         ProgressDialog progressDialog = null;
 
         protected void onPreExecute() {
@@ -131,7 +132,7 @@ public class AssetListActivity extends AppCompatActivity {
 
                 }
 
-                //try to create JsonArray and JsonObject, so its easy to get spesific value from the API call
+                //try to create JsonArray, so its easy to get spesific JsonObject and values from it.
                 try {
                     jsonArray = new JSONArray(buffer.toString());
                     Log.i("MOIKKA!!", "" + jsonArray.length());
@@ -139,18 +140,9 @@ public class AssetListActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                /* TEST Json
-                try {
-                    jsonObject = jsonArray.getJSONObject(0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } */
-
 
                 return buffer.toString();
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -175,12 +167,24 @@ public class AssetListActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
 
-            /*TEST Json
-            try {
-                txtJson.setText("Bitcoinin arvo tällä hetkellä: $" + jsonObject.getString("price_usd"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } */
+
+
+            for (int i=0; i<jsonArray.length(); i++) {
+                try {
+                    JSONObject jsonObjectI = jsonArray.getJSONObject(i);
+                    Asset asset = assetList.get(i);
+                    String jsonObjectName = jsonObjectI.getString("name");
+                    Double assetValue = Double.parseDouble(jsonObjectI.getString("price_usd"));
+
+                    asset.setAssetName(jsonObjectName);
+                    asset.setAssetValue(assetValue);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
 
         }
     }
