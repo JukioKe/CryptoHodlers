@@ -1,6 +1,7 @@
 package xyz.taika.cryptohodler;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,9 +20,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,13 +36,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.round;
+import static java.security.AccessController.getContext;
 
 public class AssetListActivity extends AppCompatActivity {
 
-    //TEST Json
-    //TextView txtJson;
-    //Create a list for Asset objects
-    ArrayList<Asset> assetList = new ArrayList<>();
+    private ArrayList<Asset> assetList;
+    private ListView listView;
+    private AssetAdapter assetAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +64,11 @@ public class AssetListActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); */
 
-        //TEST Json
+        //TEST Execute JsonTask
         new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=20");
 
-        //Create all Asset objects
+        //Create new AssetList and all default Asset objects
+        assetList = new ArrayList<>();
         assetList.add(new Asset("Bitcoin", 5.0, 3454.08, R.mipmap.bitcoin));
         assetList.add(new Asset("Ethereum", 3.0, 230.30, R.mipmap.bitcoin));
         assetList.add(new Asset("Komodo", 500.0, 1.09, R.mipmap.bitcoin));
@@ -83,19 +91,30 @@ public class AssetListActivity extends AppCompatActivity {
         assetList.add(new Asset("Factom", 20.67, 20.98, R.mipmap.bitcoin));
 
 
+        //TEST test for the file input and output
+        /*
+        FileInputStream fis;
+        try {
+            fis = openFileInput("assetList");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            ArrayList<Asset> returnList = (ArrayList<Asset>) ois.readObject();
+            Log.i("AssetListActivity", "Tulostetaan returnlist: " + returnList);
+            ois.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } */
+
         //Create a AssetAdapter and give this (AssetListActivity) as a context
-        AssetAdapter assetAdapter = new AssetAdapter(this, assetList);
+        assetAdapter = new AssetAdapter(this, assetList);
 
         //Create a ListView object and allocate correct XML-layout to it
-        ListView listView = (ListView) findViewById(R.id.asset_list);
+        listView = (ListView) findViewById(R.id.asset_list);
 
         if (listView != null) {
             listView.setAdapter(assetAdapter);
         }
 
     }
-
-
 
     private class JsonTask extends AsyncTask<String, String, String> {
 
@@ -105,6 +124,7 @@ public class AssetListActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
+            //Set dialog that show Please wait sign to user while getting fresh data via API
             progressDialog = new ProgressDialog(AssetListActivity.this);
             progressDialog.setMessage("Please wait");
             progressDialog.setCancelable(false);
@@ -127,15 +147,15 @@ public class AssetListActivity extends AppCompatActivity {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+                    buffer.append(line).append("\n");
+                    Log.d("Response: ", "> " + line);   //Log whole response line by line
 
                 }
 
-                //try to create JsonArray, so its easy to get spesific JsonObject and values from it.
+                //try to create JsonArray, so its easy to get specific JsonObject and values from it.
                 try {
                     jsonArray = new JSONArray(buffer.toString());
-                    Log.i("MOIKKA!!", "" + jsonArray.length());
+                    Log.i("AssetListActivity!", "JSONarray created, length: " + jsonArray.length());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -169,14 +189,18 @@ public class AssetListActivity extends AppCompatActivity {
 
             for (int i=0; i<jsonArray.length(); i++) {
                 try {
+                    //Get JSON object from JSON array at position[i]
                     JSONObject jsonObjectI = jsonArray.getJSONObject(i);
+
+                    //Move fresh data from JSON object to correct Asset in AssetList at position[i]
                     Asset asset = assetList.get(i);
                     String jsonObjectName = jsonObjectI.getString("name");
                     Double assetValue = Double.parseDouble(jsonObjectI.getString("price_usd"));
-
                     asset.setAssetName(jsonObjectName);
                     asset.setAssetValue(assetValue);
 
+                    //Notify adapter that data has changed and refresh ListView
+                    assetAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();

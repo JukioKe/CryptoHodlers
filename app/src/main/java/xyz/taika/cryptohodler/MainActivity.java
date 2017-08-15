@@ -64,106 +64,10 @@ public class MainActivity extends AppCompatActivity {
                 //Start AssetListActivity where's all the assets in a list
                 Intent seeAssetListIntent = new Intent(MainActivity.this, AssetListActivity.class);
                 startActivity(seeAssetListIntent);
-
-
             }
         });
 
-
     }
-
-    //TEST
-
-    /* TEST Json object handling
-    private class JsonTask extends AsyncTask<String, String, String> {
-
-        JSONArray jsonArray = null;
-        JSONObject jsonObject = null;
-        ProgressDialog progressDialog = null;
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setMessage("Please wait");
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        protected String doInBackground(String... params) {
-
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-
-            try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                InputStream stream = connection.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(stream));
-                StringBuilder buffer = new StringBuilder();
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
-                }
-
-                //try to create JsonArray and JsonObject, so its easy to get spesific value from the API call
-                try {
-                    jsonArray = new JSONArray(buffer.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    jsonObject = jsonArray.getJSONObject(0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                //Log result of the Json object
-                Log.i("MainActivity", "Katotaan milt Json näyttää: " + buffer.toString());
-
-
-                return buffer.toString();
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-            try {
-                txtJson.setText("Bitcoinin arvo tällä hetkellä: $" + jsonObject.getString("price_usd"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    */
 
 
     @Override
