@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //TEST
 
     /* TEST Json object handling
     private class JsonTask extends AsyncTask<String, String, String> {
