@@ -167,8 +167,6 @@ public class AssetListActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
 
-
-
             for (int i=0; i<jsonArray.length(); i++) {
                 try {
                     JSONObject jsonObjectI = jsonArray.getJSONObject(i);
