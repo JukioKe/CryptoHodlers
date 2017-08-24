@@ -34,6 +34,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import android.support.design.widget.FloatingActionButton;
 
 import static java.lang.Math.round;
 import static java.security.AccessController.getContext;
@@ -52,7 +53,7 @@ public class AssetListActivity extends AppCompatActivity {
 
         /* Not sure if toolbar of FAB is needed here
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar); */
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +63,10 @@ public class AssetListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); */
+
+
+        // TEST
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //TEST Execute JsonTask
         new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=20");
