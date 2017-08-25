@@ -2,15 +2,19 @@ package xyz.taika.cryptohodler;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +38,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
 import android.support.design.widget.FloatingActionButton;
 
 import static java.lang.Math.round;
@@ -41,6 +46,7 @@ import static java.security.AccessController.getContext;
 
 public class AssetListActivity extends AppCompatActivity {
 
+    private AssetList assetList2;
     private ArrayList<Asset> assetList;
     private ListView listView;
     private AssetAdapter assetAdapter;
@@ -51,7 +57,12 @@ public class AssetListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_list);
 
-        /* Not sure if toolbar of FAB is needed here
+        //TEST ing with custom AssetList Class
+        assetList2 = new AssetList();
+        Double doubleLuku = 0.09877;
+        assetList2.addNewAssetToList("TestiCoini", doubleLuku);
+
+        /* Not sure if toolbar is needed here
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar); */
 
@@ -59,8 +70,74 @@ public class AssetListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Add new asset", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                // Creating alert Dialog with one Button
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(AssetListActivity.this);
+
+                //AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+
+                // Setting Dialog Title
+                alertDialog.setTitle("ADD NEW ASSET");
+
+                // Setting Dialog Message
+                alertDialog.setMessage("Give asset name and quantity");
+
+
+                // Add LinearLayout to show in custom AlertDialog
+                LinearLayout layout = new LinearLayout(AssetListActivity.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+                // Create EditText View and add it to LinearLayout
+                final EditText assetNameField = new EditText(AssetListActivity.this);
+                assetNameField.setHint("Asset name");
+                layout.addView(assetNameField);
+
+                // Create another EditText View and add it to LinearLayout
+                final EditText assetQuantityField = new EditText(AssetListActivity.this);
+                assetQuantityField.setHint("Quantity");
+                layout.addView(assetQuantityField);
+
+                // Set LinearLayout to AlertDialog
+                alertDialog.setView(layout);
+
+
+                // TEST Possibility to set Icon to Dialog
+                //alertDialog.setIcon(R.drawable.XXX);
+
+                // Setting Positive "Done" Button
+                alertDialog.setPositiveButton("DONE",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog
+                                Toast.makeText(getApplicationContext(), "Asset created", Toast.LENGTH_SHORT).show();
+
+                                String assetName = assetNameField.getText().toString();
+                                String assetQuantity = assetQuantityField.getText().toString();
+                                Double quantity = Double.valueOf(assetQuantity);
+
+                                Log.i("AssetListActivity", assetName);
+                                Log.i("AssetListActivity", String.valueOf(quantity));
+
+                                // TEST Possibility to start different activity
+                                //Intent myIntent1 = new Intent(view.getContext(), Show.class);
+                                //startActivityForResult(myIntent1, 0);
+                            }
+                        });
+
+                // Setting Negative "Cancel" Button
+                alertDialog.setNegativeButton("CANCEL",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Write your code here to execute after dialog
+                                dialog.cancel();
+                            }
+                        });
+
+                // Showing Alert Message
+                alertDialog.show();
+
             }
         });
 
@@ -68,7 +145,7 @@ public class AssetListActivity extends AppCompatActivity {
         // TEST
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //TEST Execute JsonTask
+        //TEST Execute JsonTask to get fresh API data
         new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=20");
 
         //Create new AssetList and all default Asset objects
@@ -120,6 +197,10 @@ public class AssetListActivity extends AppCompatActivity {
 
     }
 
+    public void showCustomDialog() {
+
+    }
+
     private class JsonTask extends AsyncTask<String, String, String> {
 
         JSONArray jsonArray = null;
@@ -159,7 +240,7 @@ public class AssetListActivity extends AppCompatActivity {
                 //try to create JsonArray, so its easy to get specific JsonObject and values from it.
                 try {
                     jsonArray = new JSONArray(buffer.toString());
-                    Log.i("AssetListActivity!", "JSONarray created, length: " + jsonArray.length());
+                    Log.i("AssetListActivity!", "JSON array created, length: " + jsonArray.length());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -191,7 +272,7 @@ public class AssetListActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
 
-            for (int i=0; i<jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 try {
                     //Get JSON object from JSON array at position[i]
                     JSONObject jsonObjectI = jsonArray.getJSONObject(i);
