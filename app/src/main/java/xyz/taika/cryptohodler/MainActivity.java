@@ -22,20 +22,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        /* Not sure yet if FloatingActionButton is needed here
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.plusicon));
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "This feature is coming.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-
         statusButton = (Button) findViewById(R.id.statusButton);
         txtJson = (TextView) findViewById(R.id.tvJsonItem);
 
