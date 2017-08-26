@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by jukka1 on 8.8.2017.
+ * Created by jukka13 on 8.8.2017.
  */
 
 public class AssetAdapter extends ArrayAdapter<Asset> {
@@ -57,7 +57,7 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         TextView quantityTextView = (TextView) listItemView.findViewById(R.id.asset_quantity);
         // Get the asset quantity from the current object and set this as a text on the value TextView
         if (currentAssetObject != null) {
-            quantityTextView.setText("" + currentAssetObject.getAssetQuantity());
+            quantityTextView.setText("" + String.format("%.3f", currentAssetObject.getAssetQuantity()));
         }
 
         // Find the TextView in the list_item.xml layout with the ID version_number
