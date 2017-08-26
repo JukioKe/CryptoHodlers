@@ -7,8 +7,10 @@ package xyz.taika.cryptohodler;
 public class Asset {
 
     private String assetName;
+    private String assetID;
     private Double assetValue;
     private Double assetQuantity;
+    private Double totalValue;
     private int imageResourceId;
 
     public Asset(String assetName) {
@@ -18,18 +20,21 @@ public class Asset {
     public Asset(String assetName, Double assetQuantity) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
+        this.assetID = assetName.toLowerCase();
     }
 
     public Asset(String assetName, Double assetQuantity, int imageResourceId) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
         this.imageResourceId = imageResourceId;
+        this.assetID = assetName.toLowerCase();
     }
 
     public Asset(String assetName, Double assetValue, Double assetQuantity) {
         this.assetName = assetName;
         this.assetValue = assetValue;
         this.assetQuantity = assetQuantity;
+        this.assetID = assetName.toLowerCase();
     }
 
     public Asset(String assetName, Double assetQuantity, Double assetValue, int imageResourceId) {
@@ -37,6 +42,7 @@ public class Asset {
         this.assetValue = assetValue;
         this.assetQuantity = assetQuantity;
         this.imageResourceId = imageResourceId;
+        this.assetID = assetName.toLowerCase();
     }
 
     public String getAssetName() {
@@ -65,5 +71,17 @@ public class Asset {
 
     public int getImageResourceId() {
         return imageResourceId;
+    }
+
+    public String getAssetID() {
+        return assetID;
+    }
+
+    public void setTotalValue(Double price) {
+        this.totalValue = this.assetQuantity * price;
+    }
+
+    public Double getTotalValue() {
+        return totalValue;
     }
 }

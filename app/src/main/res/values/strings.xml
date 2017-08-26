@@ -4,4 +4,5 @@
     <string name="status_button">Check status</string>
     <string name="info_text_view">Get the fresh data and check status or edit your assets.</string>
     <string name="title_activity_asset_list">Asset list</string>
+    <string name="edit_assets">Edit Assets</string>
 </resources>
