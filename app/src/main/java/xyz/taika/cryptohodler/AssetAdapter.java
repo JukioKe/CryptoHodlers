@@ -60,6 +60,13 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
             quantityTextView.setText("" + currentAssetObject.getAssetQuantity());
         }
 
+        // Find the TextView in the list_item.xml layout with the ID version_number
+        TextView totalValueTextView = (TextView) listItemView.findViewById(R.id.total_value);
+        // Get the asset quantity from the current object and set this as a text on the value TextView
+        if (currentAssetObject != null) {
+            totalValueTextView.setText("" + String.format("%.2f", currentAssetObject.getTotalValue()));
+        }
+
         // Find the ImageView in the list_item.xml layout with the ID image
         ImageView iconView = (ImageView) listItemView.findViewById(R.id.image);
         // Get the image resource ID from the current Word object and set the image to iconView

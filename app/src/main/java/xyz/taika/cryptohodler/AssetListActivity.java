@@ -70,73 +70,12 @@ public class AssetListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                /* TEST SnackbarTest
                 Snackbar.make(view, "Add new asset", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                        .setAction("Action", null).show(); */
 
-                // Creating alert Dialog with one Button
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(AssetListActivity.this);
-
-                //AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-
-                // Setting Dialog Title
-                alertDialog.setTitle("ADD NEW ASSET");
-
-                // Setting Dialog Message
-                alertDialog.setMessage("Give asset name and quantity");
-
-
-                // Add LinearLayout to show in custom AlertDialog
-                LinearLayout layout = new LinearLayout(AssetListActivity.this);
-                layout.setOrientation(LinearLayout.VERTICAL);
-
-                // Create EditText View and add it to LinearLayout
-                final EditText assetNameField = new EditText(AssetListActivity.this);
-                assetNameField.setHint("Asset name");
-                layout.addView(assetNameField);
-
-                // Create another EditText View and add it to LinearLayout
-                final EditText assetQuantityField = new EditText(AssetListActivity.this);
-                assetQuantityField.setHint("Quantity");
-                layout.addView(assetQuantityField);
-
-                // Set LinearLayout to AlertDialog
-                alertDialog.setView(layout);
-
-
-                // TEST Possibility to set Icon to Dialog
-                //alertDialog.setIcon(R.drawable.XXX);
-
-                // Setting Positive "Done" Button
-                alertDialog.setPositiveButton("DONE",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog
-                                Toast.makeText(getApplicationContext(), "Asset created", Toast.LENGTH_SHORT).show();
-
-                                String assetName = assetNameField.getText().toString();
-                                String assetQuantity = assetQuantityField.getText().toString();
-                                Double quantity = Double.valueOf(assetQuantity);
-
-                                Log.i("AssetListActivity", assetName);
-                                Log.i("AssetListActivity", String.valueOf(quantity));
-
-                                // TEST Possibility to start different activity
-                                //Intent myIntent1 = new Intent(view.getContext(), Show.class);
-                                //startActivityForResult(myIntent1, 0);
-                            }
-                        });
-
-                // Setting Negative "Cancel" Button
-                alertDialog.setNegativeButton("CANCEL",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Write your code here to execute after dialog
-                                dialog.cancel();
-                            }
-                        });
-
-                // Showing Alert Message
-                alertDialog.show();
+                showCustomDialog();
 
             }
         });
@@ -198,6 +137,72 @@ public class AssetListActivity extends AppCompatActivity {
     }
 
     public void showCustomDialog() {
+
+        // Creating alert Dialog with one Button
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AssetListActivity.this);
+
+        //AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle("ADD NEW ASSET");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Give asset name and quantity");
+
+
+        // Add LinearLayout to show in custom AlertDialog
+        LinearLayout layout = new LinearLayout(AssetListActivity.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        // Create EditText View and add it to LinearLayout
+        final EditText assetNameField = new EditText(AssetListActivity.this);
+        assetNameField.setHint("Asset name");
+        layout.addView(assetNameField);
+
+        // Create another EditText View and add it to LinearLayout
+        final EditText assetQuantityField = new EditText(AssetListActivity.this);
+        assetQuantityField.setHint("Quantity");
+        layout.addView(assetQuantityField);
+
+        // Set LinearLayout to AlertDialog
+        alertDialog.setView(layout);
+
+
+        // TEST Possibility to set Icon to Dialog
+        //alertDialog.setIcon(R.drawable.XXX);
+
+        // Setting Positive "Done" Button
+        alertDialog.setPositiveButton("DONE",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        Toast.makeText(getApplicationContext(), "Asset created", Toast.LENGTH_SHORT).show();
+
+                        String assetName = assetNameField.getText().toString();
+                        String assetQuantity = assetQuantityField.getText().toString();
+                        Double quantity = Double.valueOf(assetQuantity);
+
+                        Log.i("AssetListActivity", assetName);
+                        Log.i("AssetListActivity", String.valueOf(quantity));
+
+                        // TEST Possibility to start different activity
+                        //Intent myIntent1 = new Intent(view.getContext(), Show.class);
+                        //startActivityForResult(myIntent1, 0);
+                    }
+                });
+
+        // Setting Negative "Cancel" Button
+        alertDialog.setNegativeButton("CANCEL",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        dialog.cancel();
+                    }
+                });
+
+        // Showing Alert Message
+        alertDialog.show();
+
 
     }
 
@@ -283,15 +288,18 @@ public class AssetListActivity extends AppCompatActivity {
                     Double assetValue = Double.parseDouble(jsonObjectI.getString("price_usd"));
                     asset.setAssetName(jsonObjectName);
                     asset.setAssetValue(assetValue);
+                    asset.setTotalValue(assetValue);
 
                     //Notify adapter that data has changed and refresh ListView
-                    assetAdapter.notifyDataSetChanged();
+                    //assetAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
             }
+            //Notify adapter that data has changed and refresh ListView
+            assetAdapter.notifyDataSetChanged();
 
         }
     }

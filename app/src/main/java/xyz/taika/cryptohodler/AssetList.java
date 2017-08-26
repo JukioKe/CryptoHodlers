@@ -27,4 +27,6 @@ public class AssetList {
 
         Log.i("AssetListClass", String.valueOf(formatter.format(quantity)));
     }
+
+
 }
