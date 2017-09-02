@@ -15,6 +15,7 @@ public class AssetList {
     private ArrayList<Asset> assetList;
 
     public AssetList() {
+        this.assetList = new ArrayList<>();
     }
 
     public ArrayList<Asset> getAssetList() {
@@ -23,10 +24,16 @@ public class AssetList {
 
     public void addNewAssetToList(String assetName, Double assetQuantity) {
         Double quantity = assetQuantity;
-        NumberFormat formatter = new DecimalFormat("#0.0000");
+        assetList.add(new Asset(assetName, assetQuantity));
 
-        Log.i("AssetListClass", String.valueOf(formatter.format(quantity)));
     }
 
+    public void deleteAssetFromList(String assetID) {
+        for (Asset asset: assetList) {
+            if (asset.getAssetID().equals(assetID)) {
+                assetList.remove(asset);
+            }
+        }
+    }
 
 }

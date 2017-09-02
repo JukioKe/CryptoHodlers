@@ -28,7 +28,7 @@
         android:src="@drawable/cryptohodlerlogo"/>
 
     <TextView
-        android:id="@+id/tvJsonItem"
+        android:id="@+id/infoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -41,7 +41,7 @@
         android:id="@+id/buttonLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvJsonItem"
+        android:layout_below="@+id/infoTextView"
         android:layout_centerHorizontal="true">
 
     <Button
