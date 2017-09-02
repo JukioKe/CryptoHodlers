@@ -46,8 +46,8 @@ import static java.security.AccessController.getContext;
 
 public class AssetListActivity extends AppCompatActivity {
 
-    private AssetList assetList2;
     private ArrayList<Asset> assetList;
+    private AssetList assetListTest; //Startin to test using custom AssetList class
     private ListView listView;
     private AssetAdapter assetAdapter;
 
@@ -57,10 +57,8 @@ public class AssetListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_list);
 
-        //TEST ing with custom AssetList Class
-        assetList2 = new AssetList();
-        Double doubleLuku = 0.09877;
-        assetList2.addNewAssetToList("TestiCoini", doubleLuku);
+        //Get AssetList object from MainActivity an initialize it to this.assetList
+        // TEST   assetListTest = (ArrayList<Asset>) getIntent().getSerializableExtra("assetList");
 
         /* Not sure if toolbar is needed here
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,26 +87,26 @@ public class AssetListActivity extends AppCompatActivity {
 
         //Create new AssetList and all default Asset objects
         assetList = new ArrayList<>();
-        assetList.add(new Asset("Bitcoin", 5.045, 3454.08, R.mipmap.bitcoin));
-        assetList.add(new Asset("Ethereum", 3.670, 230.30, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Komodo", 506.50, 1.09, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Byteball", 15.7860, 480.67, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("DeepONION", 5.40, 1.238, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Litecoin", 43.12, 4.08, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("NEO", 1500.001, 18.54, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("GAS", 202.54, 8.65, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("BTX", 5.847, 2.67, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("BHC", 5.847, 330.83, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("HEAT", 8045.30, 0.34, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("FIMK", 3124.50, 0.012, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("NEM", 29000.70, 0.29, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Zcash", 5.90, 214.67, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Stellar", 5400.12, 0.022, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("KEK", 10000.0, 0.09, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Monero", 0.1555, 0.07, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("LiteShares", 50000.0, 0.02, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Lisk", 580.0, 12.23, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Factom", 20.67, 20.98, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Bitcoin", 5.045, R.mipmap.bitcoin));
+        assetList.add(new Asset("Ethereum", 3.670));
+        assetList.add(new Asset("Komodo", 506.50, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Byteball", 15.7860, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("DeepONION", 5.40, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Litecoin", 43.12, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("NEO", 1500.001, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("GAS", 202.54, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("BTX", 5.847, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("BHC", 5.847, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("HEAT", 8045.30, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("FIMK", 3124.50, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("NEM", 29000.70, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Zcash", 5.90, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Stellar", 5400.12, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("KEK", 10000.0, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Monero", 0.1555, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("LiteShares", 50000.0, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Lisk", 580.0, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Factom", 20.67, R.mipmap.crypto_hodlers_icon));
 
 
         //TEST test for the file input and output

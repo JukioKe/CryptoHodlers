@@ -50,7 +50,7 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         TextView valueTextView = (TextView) listItemView.findViewById(R.id.asset_value);
         // Get the asset value from the current object and set this as a text on the value TextView
         if (currentAssetObject != null) {
-            valueTextView.setText("" + currentAssetObject.getAssetValue());
+            valueTextView.setText("" + String.format("%.2f", currentAssetObject.getAssetValue()));
         }
 
         // Find the TextView in the list_item.xml layout with the ID version_number
@@ -75,7 +75,6 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
 
 
         /*
-
         // Set the theme color for the list item
 
         View textContainer = listItemView.findViewById(R.id.text_container);
@@ -84,15 +83,9 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         // Set the background color of the text container View
         textContainer.setBackgroundColor(color);
 
+        */
 
         // Return the whole list item layout (containing 2 TextViews and an ImageView) so that it can be shown in the ListView
-
-
-
-*/
-
-
-
         return listItemView;
     }
 }
