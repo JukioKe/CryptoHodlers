@@ -58,7 +58,9 @@ public class AssetListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_asset_list);
 
         //Get AssetList object from MainActivity an initialize it to this.assetList
-        // TEST   assetListTest = (ArrayList<Asset>) getIntent().getSerializableExtra("assetList");
+        ArrayList<Asset> assetList2 = (ArrayList<Asset>) getIntent().getSerializableExtra("assetList");
+        Log.i("AssetListActivity", assetList2.toString());
+        this.assetListTest = new AssetList(assetList);
 
         /* Not sure if toolbar is needed here
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,11 +91,11 @@ public class AssetListActivity extends AppCompatActivity {
         assetList = new ArrayList<>();
         assetList.add(new Asset("Bitcoin", 5.045, R.mipmap.bitcoin));
         assetList.add(new Asset("Ethereum", 3.670));
-        assetList.add(new Asset("Komodo", 506.50, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Komodo", 6.50, R.mipmap.crypto_hodlers_icon));
         assetList.add(new Asset("Byteball", 15.7860, R.mipmap.crypto_hodlers_icon));
         assetList.add(new Asset("DeepONION", 5.40, R.mipmap.crypto_hodlers_icon));
         assetList.add(new Asset("Litecoin", 43.12, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("NEO", 1500.001, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("NEO", 150.001, R.mipmap.crypto_hodlers_icon));
         assetList.add(new Asset("GAS", 202.54, R.mipmap.crypto_hodlers_icon));
         assetList.add(new Asset("BTX", 5.847, R.mipmap.crypto_hodlers_icon));
         assetList.add(new Asset("BHC", 5.847, R.mipmap.crypto_hodlers_icon));
