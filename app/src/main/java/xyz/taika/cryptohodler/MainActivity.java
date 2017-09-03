@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent checkStatusIntent = new Intent(MainActivity.this, AssetListActivity.class);
 
                 // TEST
-                //checkStatusIntent.putExtra("assetList", (Serializable) assetList);
+                ArrayList<Asset> sendArrayList = assetList.getAssetList();
+                checkStatusIntent.putExtra("assetList", sendArrayList);
 
                 startActivity(checkStatusIntent);
             }

@@ -6,8 +6,8 @@
     <string name="title_activity_asset_list">Asset list</string>
     <string name="edit_assets">Edit Assets</string>
     <string name="logo_image">Logo image</string>
-    <string name="price">Price: $</string>
-    <string name="quantity">Quantity: </string>
+    <string name="price">Price | $</string>
     <string name="total_value">Total value</string>
     <string name="dollarsign">$</string>
+    <string name="quantity">Quantity |&#160;</string>
 </resources>

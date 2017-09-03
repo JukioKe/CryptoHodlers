@@ -119,6 +119,7 @@
                     android:gravity="top"
                     android:textAppearance="?android:textAppearanceListItem"
                     android:textColor="@android:color/tertiary_text_dark"
+                    android:textStyle="bold"
                     android:text="@string/dollarsign"/>
 
                 <TextView
@@ -128,6 +129,7 @@
                     android:gravity="top"
                     android:textAppearance="?android:textAppearanceListItem"
                     android:textColor="@android:color/tertiary_text_dark"
+                    android:textStyle="bold"
                     tools:text="32000" />
             </LinearLayout>
 
