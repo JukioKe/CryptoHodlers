@@ -39,6 +39,10 @@ public class AssetList {
 
     }
 
+    public void addNewAssetToList(String assetName, Double assetQuantity, int imageResourceID) {
+        assetList.add(new Asset(assetName, assetQuantity, imageResourceID));
+    }
+
     public void deleteAssetFromList(String assetID) {
         for (Asset asset: assetList) {
             if (asset.getAssetID().equals(assetID)) {

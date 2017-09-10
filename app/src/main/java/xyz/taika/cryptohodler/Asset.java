@@ -15,6 +15,8 @@ public class Asset {
 
     public Asset(String assetName) {
         this.assetName = assetName;
+        this.assetQuantity = 0.0;
+        this.imageResourceId = R.mipmap.crypto_hodlers_icon;
     }
 
     public Asset(String assetName, Double assetQuantity) {
@@ -31,21 +33,6 @@ public class Asset {
         this.assetID = assetName.toLowerCase();
     }
 
-    /* TESTS
-    public Asset(String assetName, Double assetValue, Double assetQuantity) {
-        this.assetName = assetName;
-        this.assetValue = assetValue;
-        this.assetQuantity = assetQuantity;
-        this.assetID = assetName.toLowerCase();
-    }
-
-    public Asset(String assetName, Double assetQuantity, Double assetValue, int imageResourceId) {
-        this.assetName = assetName;
-        this.assetValue = assetValue;
-        this.assetQuantity = assetQuantity;
-        this.imageResourceId = imageResourceId;
-        this.assetID = assetName.toLowerCase();
-    } */
 
     public String getAssetName() {
         return assetName;

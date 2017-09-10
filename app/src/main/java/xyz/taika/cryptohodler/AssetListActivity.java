@@ -80,35 +80,31 @@ public class AssetListActivity extends AppCompatActivity {
             }
         });
 
-
         // TEST
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //TEST Execute JsonTask to get fresh API data
-        new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=20");
+        new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=100");
 
         //Create new AssetList and all default Asset objects
         assetList = new ArrayList<>();
-        assetList.add(new Asset("Bitcoin", 5.045, R.mipmap.bitcoin));
-        assetList.add(new Asset("Ethereum", 3.670));
-        assetList.add(new Asset("Komodo", 6.50, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Byteball", 15.7860, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("DeepONION", 5.40, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Litecoin", 43.12, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("NEO", 150.001, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("GAS", 202.54, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("BTX", 5.847, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("BHC", 5.847, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("HEAT", 8045.30, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("FIMK", 3124.50, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("NEM", 29000.70, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Zcash", 5.90, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Stellar", 5400.12, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("KEK", 10000.0, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Monero", 0.1555, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("LiteShares", 50000.0, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Lisk", 580.0, R.mipmap.crypto_hodlers_icon));
-        assetList.add(new Asset("Factom", 20.67, R.mipmap.crypto_hodlers_icon));
+        assetList.add(new Asset("Bitcoin", 6.045, R.mipmap.bitcoin));
+        assetList.add(new Asset("Ethereum", 2.070));
+        assetList.add(new Asset("Komodo", 15006.50));
+        assetList.add(new Asset("Byteball", 20.7860));
+        assetList.add(new Asset("DeepONION", 4005.40));
+        assetList.add(new Asset("NEO", 1000.001));
+        assetList.add(new Asset("GAS", 162.54));
+        assetList.add(new Asset("Bitcore", 5.6));
+        assetList.add(new Asset("Bitcoin Cash", 5.847));
+        assetList.add(new Asset("HEAT", 8045.30));
+        assetList.add(new Asset("NEM", 23000.70));
+        assetList.add(new Asset("Zcash", 5.90));
+        assetList.add(new Asset("Stellar", 5400.12));
+        assetList.add(new Asset("KEK", 10000.0));
+        assetList.add(new Asset("Lisk", 580.0));
+        assetList.add(new Asset("Monero"));
+        assetList.add(new Asset("Factom", 20.67));
 
 
         //TEST test for the file input and output
@@ -123,6 +119,7 @@ public class AssetListActivity extends AppCompatActivity {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } */
+
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
         assetAdapter = new AssetAdapter(this, assetList);
@@ -281,14 +278,25 @@ public class AssetListActivity extends AppCompatActivity {
                 try {
                     //Get JSON object from JSON array at position[i]
                     JSONObject jsonObjectI = jsonArray.getJSONObject(i);
+                    String jsonObjectID = jsonObjectI.getString("id");
+                    String jsonObjectName = jsonObjectI.getString("name");
+
+                    for (Asset asset : assetList) {
+                        if (jsonObjectID.equals(asset.getAssetID()) || jsonObjectName.equals(asset.getAssetName())) {
+                            Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
+                            asset.setAssetValue(assetPrice);
+                            asset.setTotalValue(assetPrice);
+                        }
+                    }
+
 
                     //Move fresh data from JSON object to correct Asset in AssetList at position[i]
-                    Asset asset = assetList.get(i);
+                    /*Asset asset = assetList.get(i);
                     String jsonObjectName = jsonObjectI.getString("name");
-                    Double assetValue = Double.parseDouble(jsonObjectI.getString("price_usd"));
+                    Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
                     asset.setAssetName(jsonObjectName);
-                    asset.setAssetValue(assetValue);
-                    asset.setTotalValue(assetValue);
+                    asset.setAssetValue(assetPrice);
+                    asset.setTotalValue(assetPrice);*/
 
                     //Notify adapter that data has changed and refresh ListView
                     //assetAdapter.notifyDataSetChanged();
