@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
 
     Button statusButton;
     TextView infoTextView;
-    AssetList assetList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Initialize AssetList object
-        assetList = new AssetList();
 
         statusButton = (Button) findViewById(R.id.statusButton);
         infoTextView = (TextView) findViewById(R.id.infoTextView);
@@ -38,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
                 //Start AssetListActivity where's all the assets in a list
                 Intent checkStatusIntent = new Intent(MainActivity.this, AssetListActivity.class);
-
-                // TEST
-                ArrayList<Asset> sendArrayList = assetList.getAssetList();
-                checkStatusIntent.putExtra("assetList", sendArrayList);
 
                 startActivity(checkStatusIntent);
             }

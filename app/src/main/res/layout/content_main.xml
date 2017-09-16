@@ -54,10 +54,10 @@
         android:padding="20dp"/>
 
     <Button
-        android:id="@+id/editAssetsButton"
+        android:id="@+id/aboutButton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="@string/edit_assets"
+        android:text="@string/about"
         android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:padding="20dp"/>
