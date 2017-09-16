@@ -1,10 +1,12 @@
 package xyz.taika.cryptohodler;
 
+import java.io.Serializable;
+
 /**
  * Created by jukka1 on 5.8.2017.
  */
 
-public class Asset {
+public class Asset implements Serializable {
 
     private String assetName;
     private String assetID;

@@ -4,7 +4,7 @@
     <string name="status_button">Check status</string>
     <string name="info_text_view">Get the fresh data and check status or edit your assets.</string>
     <string name="title_activity_asset_list">Asset list</string>
-    <string name="edit_assets">Edit Assets</string>
+    <string name="about">About</string>
     <string name="logo_image">Logo image</string>
     <string name="price">Price | $</string>
     <string name="total_value">Total value</string>

@@ -3,20 +3,16 @@ package xyz.taika.cryptohodler;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -25,30 +21,22 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
-
-import android.support.design.widget.FloatingActionButton;
 
 import static java.lang.Math.round;
-import static java.security.AccessController.getContext;
 
 public class AssetListActivity extends AppCompatActivity {
 
-    private ArrayList<Asset> assetList;
-    private AssetList assetListTest; //Startin to test using custom AssetList class
-    private ListView listView;
+    private AssetList assetList;
     private AssetAdapter assetAdapter;
 
 
@@ -58,13 +46,65 @@ public class AssetListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_asset_list);
 
         //Get AssetList object from MainActivity an initialize it to this.assetList
-        ArrayList<Asset> assetList2 = (ArrayList<Asset>) getIntent().getSerializableExtra("assetList");
-        Log.i("AssetListActivity", assetList2.toString());
-        this.assetListTest = new AssetList(assetList);
+        // WORKING TEST ArrayList<Asset> assetList2 = (ArrayList<Asset>) getIntent().getSerializableExtra("assetList");
+        // Log.i("AssetListActivity", assetList2.toString());
+
+        //TEST WORKING this.assetList = new AssetList();
+        // TEST this.assetList.readFromInternalStorage(AssetListActivity.this);
+
+
+        this.assetList = readFromInternalStorage(AssetListActivity.this);
+        Log.i("AssetListActivity", "Logita tallennukset luettu: " + assetList.getAssetList().toString());
+
 
         /* Not sure if toolbar is needed here
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar); */
+
+        //TEST Execute JsonTask to get fresh API data
+        new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
+
+        //TEST Create  all default Asset objects
+        assetList.addNewAssetToList("Bitcoin", 6.045, R.mipmap.bitcoin);
+        assetList.addNewAssetToList("Ethereum", 2.070);
+        assetList.addNewAssetToList("Komodo", 15006.50);
+        assetList.addNewAssetToList("Byteball", 20.7860);
+        assetList.addNewAssetToList("DeepONION", 4005.40);
+        assetList.addNewAssetToList("NEO", 1000.001);
+        assetList.addNewAssetToList("GAS", 162.54);
+        assetList.addNewAssetToList("Bitcore", 5.6);
+        assetList.addNewAssetToList("Bitcoin Cash", 5.847);
+        assetList.addNewAssetToList("HEAT", 8045.30);
+        assetList.addNewAssetToList("NEM", 23000.70);
+        assetList.addNewAssetToList("Zcash", 5.90);
+        assetList.addNewAssetToList("Stellar", 5400.12);
+        assetList.addNewAssetToList("KEK", 10000.0);
+        assetList.addNewAssetToList("Lisk", 580.0);
+        assetList.addNewAssetToList("Monero");
+        assetList.addNewAssetToList("Factom", 20.67);
+
+        saveAssetListToInternalStorage(AssetListActivity.this);
+
+        /* WORKING TEST Create new AssetList and all default Asset objects
+        assetList = new ArrayList<>();
+        assetList.add(new Asset("Bitcoin", 6.045, R.mipmap.bitcoin));
+        assetList.add(new Asset("Ethereum", 2.070));
+        assetList.add(new Asset("Komodo", 15006.50));
+        assetList.add(new Asset("Byteball", 20.7860));
+        assetList.add(new Asset("DeepONION", 4005.40));
+        assetList.add(new Asset("NEO", 1000.001));
+        assetList.add(new Asset("GAS", 162.54));
+        assetList.add(new Asset("Bitcore", 5.6));
+        assetList.add(new Asset("Bitcoin Cash", 5.847));
+        assetList.add(new Asset("HEAT", 8045.30));
+        assetList.add(new Asset("NEM", 23000.70));
+        assetList.add(new Asset("Zcash", 5.90));
+        assetList.add(new Asset("Stellar", 5400.12));
+        assetList.add(new Asset("KEK", 10000.0));
+        assetList.add(new Asset("Lisk", 580.0));
+        assetList.add(new Asset("Monero"));
+        assetList.add(new Asset("Factom", 20.67));  */
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -83,30 +123,6 @@ public class AssetListActivity extends AppCompatActivity {
         // TEST
         // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //TEST Execute JsonTask to get fresh API data
-        new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=100");
-
-        //Create new AssetList and all default Asset objects
-        assetList = new ArrayList<>();
-        assetList.add(new Asset("Bitcoin", 6.045, R.mipmap.bitcoin));
-        assetList.add(new Asset("Ethereum", 2.070));
-        assetList.add(new Asset("Komodo", 15006.50));
-        assetList.add(new Asset("Byteball", 20.7860));
-        assetList.add(new Asset("DeepONION", 4005.40));
-        assetList.add(new Asset("NEO", 1000.001));
-        assetList.add(new Asset("GAS", 162.54));
-        assetList.add(new Asset("Bitcore", 5.6));
-        assetList.add(new Asset("Bitcoin Cash", 5.847));
-        assetList.add(new Asset("HEAT", 8045.30));
-        assetList.add(new Asset("NEM", 23000.70));
-        assetList.add(new Asset("Zcash", 5.90));
-        assetList.add(new Asset("Stellar", 5400.12));
-        assetList.add(new Asset("KEK", 10000.0));
-        assetList.add(new Asset("Lisk", 580.0));
-        assetList.add(new Asset("Monero"));
-        assetList.add(new Asset("Factom", 20.67));
-
-
         //TEST test for the file input and output
         /*
         FileInputStream fis;
@@ -122,10 +138,12 @@ public class AssetListActivity extends AppCompatActivity {
 
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
-        assetAdapter = new AssetAdapter(this, assetList);
+        //WORKING TEST assetAdapter = new AssetAdapter(this, assetList);
+
+        assetAdapter = new AssetAdapter(this, assetList.getAssetList());
 
         //Create a ListView object and allocate correct XML-layout to it
-        listView = (ListView) findViewById(R.id.asset_list);
+        ListView listView = (ListView) findViewById(R.id.asset_list);
 
         if (listView != null) {
             listView.setAdapter(assetAdapter);
@@ -173,14 +191,22 @@ public class AssetListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
-                        Toast.makeText(getApplicationContext(), "Asset created", Toast.LENGTH_SHORT).show();
 
                         String assetName = assetNameField.getText().toString();
                         String assetQuantity = assetQuantityField.getText().toString();
                         Double quantity = Double.valueOf(assetQuantity);
 
+                        assetList.addNewAssetToList(assetName, quantity);
+
                         Log.i("AssetListActivity", assetName);
                         Log.i("AssetListActivity", String.valueOf(quantity));
+
+                        //Notify adapter that data has changed and refresh ListView
+                        assetAdapter.notifyDataSetChanged();
+
+                        // Show toast
+                        Toast.makeText(getApplicationContext(), "Asset created", Toast.LENGTH_SHORT).show();
+
 
                         // TEST Possibility to start different activity
                         //Intent myIntent1 = new Intent(view.getContext(), Show.class);
@@ -281,13 +307,21 @@ public class AssetListActivity extends AppCompatActivity {
                     String jsonObjectID = jsonObjectI.getString("id");
                     String jsonObjectName = jsonObjectI.getString("name");
 
-                    for (Asset asset : assetList) {
+                    for (Asset asset : assetList.getAssetList()) {
                         if (jsonObjectID.equals(asset.getAssetID()) || jsonObjectName.equals(asset.getAssetName())) {
                             Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
                             asset.setAssetValue(assetPrice);
                             asset.setTotalValue(assetPrice);
                         }
                     }
+
+                    /* WORKING TEST for (Asset asset : assetList) {
+                        if (jsonObjectID.equals(asset.getAssetID()) || jsonObjectName.equals(asset.getAssetName())) {
+                            Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
+                            asset.setAssetValue(assetPrice);
+                            asset.setTotalValue(assetPrice);
+                        }
+                    } */
 
 
                     //Move fresh data from JSON object to correct Asset in AssetList at position[i]
@@ -309,6 +343,61 @@ public class AssetListActivity extends AppCompatActivity {
             //Notify adapter that data has changed and refresh ListView
             assetAdapter.notifyDataSetChanged();
 
+        }
+
+
+    }
+
+    //Get assetlist data from internal Storage
+
+    public AssetList readFromInternalStorage(Context context) {
+        AssetList toReturn = new AssetList();
+        FileInputStream fis;
+        try {
+            fis = context.openFileInput("AssetListData");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            toReturn = (AssetList) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException e) {
+            Log.e("InternalStorage", e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+
+    /*TEST public ArrayList<Asset> readFromInternalStorage(Context context) {
+        ArrayList<Asset> toReturn = new ArrayList<>();
+        FileInputStream fis;
+        try {
+            fis = context.openFileInput("AssetListData");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            toReturn = (ArrayList<Asset>) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException e) {
+            Log.e("InternalStorage", e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    } */
+
+    // Save assetList to internal storage
+    public void saveAssetListToInternalStorage(Context context) {
+        try {
+            String filename = "AssetListData";
+            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            ObjectOutputStream ous = new ObjectOutputStream(fos);
+            ous.writeObject(this.assetList);
+            //TEST ous.writeObject(this.assetList.getAssetList());
+            ous.flush();
+            ous.close();
+            fos.close();
+        }
+        catch (Exception e) {
+            Log.e("InternalStorage", e.getMessage());
         }
     }
 
