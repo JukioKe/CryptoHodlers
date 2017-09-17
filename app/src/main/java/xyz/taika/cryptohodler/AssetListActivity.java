@@ -14,11 +14,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,12 +25,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-
-import static java.lang.Math.round;
 
 public class AssetListActivity extends AppCompatActivity {
 
@@ -45,17 +39,8 @@ public class AssetListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_list);
 
-        //Get AssetList object from MainActivity an initialize it to this.assetList
-        // WORKING TEST ArrayList<Asset> assetList2 = (ArrayList<Asset>) getIntent().getSerializableExtra("assetList");
-        // Log.i("AssetListActivity", assetList2.toString());
-
-        //TEST WORKING this.assetList = new AssetList();
-        // TEST this.assetList.readFromInternalStorage(AssetListActivity.this);
-
-
+        //Read file from internal storage
         this.assetList = readFromInternalStorage(AssetListActivity.this);
-        Log.i("AssetListActivity", "Logita tallennukset luettu: " + assetList.getAssetList().toString());
-
 
         /* Not sure if toolbar is needed here
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -138,8 +123,6 @@ public class AssetListActivity extends AppCompatActivity {
 
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
-        //WORKING TEST assetAdapter = new AssetAdapter(this, assetList);
-
         assetAdapter = new AssetAdapter(this, assetList.getAssetList());
 
         //Create a ListView object and allocate correct XML-layout to it
@@ -318,15 +301,6 @@ public class AssetListActivity extends AppCompatActivity {
                         }
                     }
 
-                    /* WORKING TEST for (Asset asset : assetList) {
-                        if (jsonObjectID.equals(asset.getAssetID()) || jsonObjectName.equals(asset.getAssetName())) {
-                            Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
-                            asset.setAssetValue(assetPrice);
-                            asset.setTotalValue(assetPrice);
-                        }
-                    } */
-
-
                     //Move fresh data from JSON object to correct Asset in AssetList at position[i]
                     /*Asset asset = assetList.get(i);
                     String jsonObjectName = jsonObjectI.getString("name");
@@ -348,11 +322,9 @@ public class AssetListActivity extends AppCompatActivity {
 
         }
 
-
     }
 
     //Get assetlist data from internal Storage
-
     public AssetList readFromInternalStorage(Context context) {
         AssetList toReturn = new AssetList();
         FileInputStream fis;
@@ -369,23 +341,6 @@ public class AssetListActivity extends AppCompatActivity {
         }
         return toReturn;
     }
-
-    /*TEST public ArrayList<Asset> readFromInternalStorage(Context context) {
-        ArrayList<Asset> toReturn = new ArrayList<>();
-        FileInputStream fis;
-        try {
-            fis = context.openFileInput("AssetListData");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            toReturn = (ArrayList<Asset>) ois.readObject();
-            ois.close();
-            fis.close();
-        } catch (IOException e) {
-            Log.e("InternalStorage", e.getMessage());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return toReturn;
-    } */
 
     // Save assetList to internal storage
     public void saveAssetListToInternalStorage(Context context) {
