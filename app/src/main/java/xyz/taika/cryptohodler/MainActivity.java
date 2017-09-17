@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         statusButton = (Button) findViewById(R.id.statusButton);
         infoTextView = (TextView) findViewById(R.id.infoTextView);
 
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

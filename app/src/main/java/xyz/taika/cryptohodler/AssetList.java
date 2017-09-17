@@ -62,44 +62,11 @@ public class AssetList implements Serializable {
     }
 
     public void deleteAssetFromList(String assetID) {
-        for (Asset asset: assetList) {
+        for (Asset asset : assetList) {
             if (asset.getAssetID().equals(assetID)) {
                 assetList.remove(asset);
             }
         }
-    }
-
-    // Save assetlist to internal storage
-    public void saveAssetListToInternalStorage(Context ctx) {
-        try {
-            String filename = "AssetListData";
-            FileOutputStream fos = ctx.openFileOutput(filename, Context.MODE_PRIVATE);
-            ObjectOutputStream of = new ObjectOutputStream(fos);
-            of.writeObject(this.assetList);
-            of.flush();
-            of.close();
-            fos.close();
-        }
-        catch (Exception e) {
-            Log.e("InternalStorage", e.getMessage());
-        }
-    }
-
-    //Get assetlist data from internal Storage
-    public ArrayList<Asset> readFromInternalStorage(Context ctx) {
-        ArrayList<Asset> toReturn = new ArrayList<>();
-        FileInputStream fis;
-        try {
-            fis = ctx.openFileInput("AssetListData");
-            ObjectInputStream oi = new ObjectInputStream(fis);
-            toReturn = (ArrayList<Asset>) oi.readObject();
-            oi.close();
-        } catch (IOException e) {
-            Log.e("InternalStorage", e.getMessage());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return toReturn;
     }
 
 }
