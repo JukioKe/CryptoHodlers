@@ -83,7 +83,7 @@ public class AssetListActivity extends AppCompatActivity {
         assetList.addNewAssetToList("Monero");
         assetList.addNewAssetToList("Factom", 20.67);
 
-        saveAssetListToInternalStorage(AssetListActivity.this);
+        //TEST saveAssetListToInternalStorage(AssetListActivity.this);
 
         /* WORKING TEST Create new AssetList and all default Asset objects
         assetList = new ArrayList<>();
@@ -197,6 +197,9 @@ public class AssetListActivity extends AppCompatActivity {
                         Double quantity = Double.valueOf(assetQuantity);
 
                         assetList.addNewAssetToList(assetName, quantity);
+
+                        deleteFile("assetListData");
+                        saveAssetListToInternalStorage(AssetListActivity.this);
 
                         Log.i("AssetListActivity", assetName);
                         Log.i("AssetListActivity", String.valueOf(quantity));
