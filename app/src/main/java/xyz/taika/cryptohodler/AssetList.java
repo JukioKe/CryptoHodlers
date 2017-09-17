@@ -35,15 +35,30 @@ public class AssetList implements Serializable {
     }
 
     public void addNewAssetToList(String assetName) {
-        assetList.add(new Asset(assetName));
+        if (!isAlreadyInList(assetName)) {
+            assetList.add(new Asset(assetName));
+        }
     }
 
     public void addNewAssetToList(String assetName, Double assetQuantity) {
-        assetList.add(new Asset(assetName, assetQuantity));
+        if (!isAlreadyInList(assetName)) {
+            assetList.add(new Asset(assetName, assetQuantity));
+        }
     }
 
     public void addNewAssetToList(String assetName, Double assetQuantity, int imageResourceID) {
-        assetList.add(new Asset(assetName, assetQuantity, imageResourceID));
+        if (!isAlreadyInList(assetName)) {
+            assetList.add(new Asset(assetName, assetQuantity, imageResourceID));
+        }
+    }
+
+    public boolean isAlreadyInList(String assetName) {
+        for (Asset asset : assetList) {
+            if (asset.getAssetName().equals(assetName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void deleteAssetFromList(String assetID) {
