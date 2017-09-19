@@ -10,4 +10,5 @@
     <string name="total_value">Total value</string>
     <string name="dollarsign">$</string>
     <string name="quantity">Quantity |&#160;</string>
+    <string name="app_logo">App logo</string>
 </resources>
