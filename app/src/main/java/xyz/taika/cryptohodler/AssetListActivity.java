@@ -155,8 +155,6 @@ public class AssetListActivity extends AppCompatActivity {
         // Creating alert Dialog with one Button
         final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(AssetListActivity.this);
 
-        //AlertDialog editAssetDialog = new AlertDialog.Builder(MainActivity.this).create();
-
         // Setting Dialog Title
         editAssetDialog.setTitle("EDIT ASSET");
 
@@ -171,7 +169,6 @@ public class AssetListActivity extends AppCompatActivity {
         // Create EditText View for asset quantity and add it to LinearLayout
         final EditText assetQuantityField = new EditText(AssetListActivity.this);
         assetQuantityField.setHint("Change quantity");
-
         layout.addView(assetQuantityField);
 
         // Create Button that delete asset
@@ -240,6 +237,7 @@ public class AssetListActivity extends AppCompatActivity {
         // Showing Alert Message
         editAssetDialog.show();
 
+        //Set listener to the Delete button
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,15 +252,15 @@ public class AssetListActivity extends AppCompatActivity {
     public void showNewAssetDialog() {
 
         // Creating alert Dialog with one Button
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(AssetListActivity.this);
+        AlertDialog.Builder newAssetDialog = new AlertDialog.Builder(AssetListActivity.this);
 
-        //AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        //AlertDialog newAssetDialog = new AlertDialog.Builder(MainActivity.this).create();
 
         // Setting Dialog Title
-        alertDialog.setTitle("ADD NEW ASSET");
+        newAssetDialog.setTitle("ADD NEW ASSET");
 
         // Setting Dialog Message
-        alertDialog.setMessage("Give asset name and quantity");
+        newAssetDialog.setMessage("Give asset name and quantity");
 
 
         // Add LinearLayout to show in custom AlertDialog
@@ -281,14 +279,14 @@ public class AssetListActivity extends AppCompatActivity {
         layout.addView(assetQuantityField);
 
         // Set LinearLayout to AlertDialog
-        alertDialog.setView(layout);
+        newAssetDialog.setView(layout);
 
 
         // TEST Possibility to set Icon to Dialog
-        //alertDialog.setIcon(R.drawable.XXX);
+        //newAssetDialog.setIcon(R.drawable.XXX);
 
         // Setting Positive "Done" Button
-        alertDialog.setPositiveButton("DONE",
+        newAssetDialog.setPositiveButton("DONE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
@@ -323,7 +321,7 @@ public class AssetListActivity extends AppCompatActivity {
                 });
 
         // Setting Negative "Cancel" Button
-        alertDialog.setNegativeButton("CANCEL",
+        newAssetDialog.setNegativeButton("CANCEL",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
@@ -332,7 +330,7 @@ public class AssetListActivity extends AppCompatActivity {
                 });
 
         // Showing Alert Message
-        alertDialog.show();
+        newAssetDialog.show();
 
 
     }
