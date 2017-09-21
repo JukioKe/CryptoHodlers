@@ -17,6 +17,7 @@ public class Asset implements Serializable {
 
     public Asset(String assetName) {
         this.assetName = assetName;
+        this.assetID = assetName.toLowerCase();
         this.assetQuantity = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
     }

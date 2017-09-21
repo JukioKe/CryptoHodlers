@@ -5,18 +5,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -100,27 +107,10 @@ public class AssetListActivity extends AppCompatActivity {
                 Snackbar.make(view, "Add new asset", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show(); */
 
-                showCustomDialog();
+                showNewAssetDialog();
 
             }
         });
-
-        // TEST
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //TEST test for the file input and output
-        /*
-        FileInputStream fis;
-        try {
-            fis = openFileInput("assetList");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            ArrayList<Asset> returnList = (ArrayList<Asset>) ois.readObject();
-            Log.i("AssetListActivity", "Tulostetaan returnlist: " + returnList);
-            ois.close();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } */
-
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
         assetAdapter = new AssetAdapter(this, assetList.getAssetList());
@@ -132,9 +122,136 @@ public class AssetListActivity extends AppCompatActivity {
             listView.setAdapter(assetAdapter);
         }
 
+
+
+        // Set a click listener to show custom Dialog that enables a change to change specific list view item when the list item is clicked on
+        //assert listView != null;
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Release the media player if it currently exists because we are about to
+                // play a different sound file
+                //releaseMediaPlayer();
+
+                //Get and store just clicked word object temporarily.
+                Asset assetJustClicked = assetList.getAssetList().get(position);
+
+                showEditAssetDialog(assetJustClicked);
+
+
+
+            }
+        });
+
+
     }
 
-    public void showCustomDialog() {
+
+    //Show dialog that gives possibility to edit asset from the list
+    public void showEditAssetDialog(Asset asset) {
+
+        final Asset clickedAsset = asset;
+
+        // Creating alert Dialog with one Button
+        final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(AssetListActivity.this);
+
+        //AlertDialog editAssetDialog = new AlertDialog.Builder(MainActivity.this).create();
+
+        // Setting Dialog Title
+        editAssetDialog.setTitle("EDIT ASSET");
+
+        //Show Dialog message
+        editAssetDialog.setMessage("Edit " + clickedAsset.getAssetName() + " asset");
+
+        // Add LinearLayout to show in custom AlertDialog
+        LinearLayout layout = new LinearLayout(AssetListActivity.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50,0,50,50);
+
+        // Create EditText View for asset quantity and add it to LinearLayout
+        final EditText assetQuantityField = new EditText(AssetListActivity.this);
+        assetQuantityField.setHint("Change quantity");
+
+        layout.addView(assetQuantityField);
+
+        // Create Button that delete asset
+        final Button deleteButton = new Button(AssetListActivity.this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        deleteButton.setLayoutParams(params);
+        deleteButton.setGravity(Gravity.CENTER_VERTICAL);
+        deleteButton.setText("Delete asset");
+        deleteButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        deleteButton.setPadding(80, 50, 80, 50);
+        layout.addView(deleteButton);
+
+        // Set LinearLayout to AlertDialog
+        editAssetDialog.setView(layout);
+
+
+        // TEST Possibility to set Icon to Dialog
+        //editAssetDialog.setIcon(R.drawable.XXX);
+
+        // Setting Positive "Done" Button
+        editAssetDialog.setPositiveButton("DONE",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog id DONE button is pressed
+
+                        String assetQuantity = assetQuantityField.getText().toString();
+
+                        if (assetQuantity.isEmpty()) {
+                            assetQuantity = "0.0";
+                        }
+                        Double quantity = Double.valueOf(assetQuantity);
+
+                        for (Asset asset : assetList.getAssetList()) {
+                            if (clickedAsset.getAssetID().equals(asset.getAssetID())) {
+                                asset.setAssetQuantity(quantity);
+                            }
+                        }
+
+                        //Delete old saved file and save new one with changed data
+                        deleteFile("assetListData");
+                        saveAssetListToInternalStorage(AssetListActivity.this);
+
+                        //Notify adapter that data has changed and refresh ListView
+                        assetAdapter.notifyDataSetChanged();
+
+                        // Show toast
+                        Toast.makeText(getApplicationContext(), "Asset data changed", Toast.LENGTH_SHORT).show();
+
+
+                        // TEST Possibility to start different activity
+                        //Intent myIntent1 = new Intent(view.getContext(), Show.class);
+                        //startActivityForResult(myIntent1, 0);
+                    }
+                });
+
+        // Setting Negative "Cancel" Button
+        editAssetDialog.setNegativeButton("CANCEL",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        dialog.cancel();
+                    }
+                });
+
+        // Showing Alert Message
+        editAssetDialog.show();
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //assetList.deleteAssetFromList(clickedAsset.getAssetID());
+            }
+        });
+
+    }
+
+
+    //Show dialog that gives possibility to add new asset to the list
+    public void showNewAssetDialog() {
 
         // Creating alert Dialog with one Button
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(AssetListActivity.this);
@@ -151,6 +268,7 @@ public class AssetListActivity extends AppCompatActivity {
         // Add LinearLayout to show in custom AlertDialog
         LinearLayout layout = new LinearLayout(AssetListActivity.this);
         layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50,0,50,50);
 
         // Create EditText View and add it to LinearLayout
         final EditText assetNameField = new EditText(AssetListActivity.this);
@@ -177,6 +295,10 @@ public class AssetListActivity extends AppCompatActivity {
 
                         String assetName = assetNameField.getText().toString();
                         String assetQuantity = assetQuantityField.getText().toString();
+
+                        if (assetQuantity.isEmpty()) {
+                            assetQuantity = "0.0";
+                        }
                         Double quantity = Double.valueOf(assetQuantity);
 
                         assetList.addNewAssetToList(assetName, quantity);
@@ -353,8 +475,7 @@ public class AssetListActivity extends AppCompatActivity {
             ous.flush();
             ous.close();
             fos.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Log.e("InternalStorage", e.getMessage());
         }
     }
