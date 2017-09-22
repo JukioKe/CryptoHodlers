@@ -54,11 +54,11 @@ public class AssetListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar); */
 
         //TEST Execute JsonTask to get fresh API data
-        new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
+        //new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
 
         //TEST Create  all default Asset objects
         assetList.addNewAssetToList("Bitcoin", 6.045, R.mipmap.bitcoin);
-        assetList.addNewAssetToList("Ethereum", 2.070);
+        /*assetList.addNewAssetToList("Ethereum", 2.070);
         assetList.addNewAssetToList("Komodo", 15006.50);
         assetList.addNewAssetToList("Byteball", 20.7860);
         assetList.addNewAssetToList("DeepONION", 4005.40);
@@ -70,32 +70,10 @@ public class AssetListActivity extends AppCompatActivity {
         assetList.addNewAssetToList("NEM", 23000.70);
         assetList.addNewAssetToList("Zcash", 5.90);
         assetList.addNewAssetToList("Stellar", 5400.12);
-        assetList.addNewAssetToList("KEK", 10000.0);
+        assetList.addNewAssetToList("KekCoin", 10000.0);
         assetList.addNewAssetToList("Lisk", 580.0);
         assetList.addNewAssetToList("Monero");
-        assetList.addNewAssetToList("Factom", 20.67);
-
-        //TEST saveAssetListToInternalStorage(AssetListActivity.this);
-
-        /* WORKING TEST Create new AssetList and all default Asset objects
-        assetList = new ArrayList<>();
-        assetList.add(new Asset("Bitcoin", 6.045, R.mipmap.bitcoin));
-        assetList.add(new Asset("Ethereum", 2.070));
-        assetList.add(new Asset("Komodo", 15006.50));
-        assetList.add(new Asset("Byteball", 20.7860));
-        assetList.add(new Asset("DeepONION", 4005.40));
-        assetList.add(new Asset("NEO", 1000.001));
-        assetList.add(new Asset("GAS", 162.54));
-        assetList.add(new Asset("Bitcore", 5.6));
-        assetList.add(new Asset("Bitcoin Cash", 5.847));
-        assetList.add(new Asset("HEAT", 8045.30));
-        assetList.add(new Asset("NEM", 23000.70));
-        assetList.add(new Asset("Zcash", 5.90));
-        assetList.add(new Asset("Stellar", 5400.12));
-        assetList.add(new Asset("KEK", 10000.0));
-        assetList.add(new Asset("Lisk", 580.0));
-        assetList.add(new Asset("Monero"));
-        assetList.add(new Asset("Factom", 20.67));  */
+        assetList.addNewAssetToList("Factom", 20.67);*/
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -108,6 +86,21 @@ public class AssetListActivity extends AppCompatActivity {
                         .setAction("Action", null).show(); */
 
                 showNewAssetDialog();
+
+            }
+        });
+
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                /* TEST SnackbarTest
+                Snackbar.make(view, "Add new asset", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show(); */
+
+                //TEST Execute JsonTask to get fresh API data
+                new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
 
             }
         });
@@ -164,14 +157,14 @@ public class AssetListActivity extends AppCompatActivity {
         // Add LinearLayout to show in custom AlertDialog
         LinearLayout layout = new LinearLayout(AssetListActivity.this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50,0,50,50);
+        layout.setPadding(50,0,50,0);
 
         // Create EditText View for asset quantity and add it to LinearLayout
         final EditText assetQuantityField = new EditText(AssetListActivity.this);
         assetQuantityField.setHint("Change quantity");
         layout.addView(assetQuantityField);
 
-        // Create Button that delete asset
+        /* Create Button that delete asset
         final Button deleteButton = new Button(AssetListActivity.this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -181,13 +174,11 @@ public class AssetListActivity extends AppCompatActivity {
         deleteButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         deleteButton.setPadding(80, 50, 80, 50);
         layout.addView(deleteButton);
+        */
 
         // Set LinearLayout to AlertDialog
         editAssetDialog.setView(layout);
 
-
-        // TEST Possibility to set Icon to Dialog
-        //editAssetDialog.setIcon(R.drawable.XXX);
 
         // Setting Positive "Done" Button
         editAssetDialog.setPositiveButton("DONE",
@@ -234,16 +225,35 @@ public class AssetListActivity extends AppCompatActivity {
                     }
                 });
 
+        // TEST trying to add delete button to edit asset dialog
+        editAssetDialog.setNeutralButton("DELETE ASSET",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+
+                        assetList.deleteAssetFromList(clickedAsset.getAssetID());
+
+                        //Notify adapter that data has changed and refresh ListView
+                        assetAdapter.notifyDataSetChanged();
+
+                        //Delete old assetlist -file and save new one with fresh data
+                        deleteFile("assetListData");
+                        saveAssetListToInternalStorage(AssetListActivity.this);
+
+                        // Show toast
+                        Toast.makeText(getApplicationContext(), "Asset deleted", Toast.LENGTH_SHORT).show();
+
+                        dialog.cancel();
+                    }
+                });
+
+
         // Showing Alert Message
         editAssetDialog.show();
 
-        //Set listener to the Delete button
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //assetList.deleteAssetFromList(clickedAsset.getAssetID());
-            }
-        });
+        // TEST Possibility to set Icon to Dialog
+        //editAssetDialog.setIcon(R.drawable.XXX);
+
 
     }
 
@@ -301,6 +311,7 @@ public class AssetListActivity extends AppCompatActivity {
 
                         assetList.addNewAssetToList(assetName, quantity);
 
+                        //Delete old assetlist -file and save new one with fresh data
                         deleteFile("assetListData");
                         saveAssetListToInternalStorage(AssetListActivity.this);
 
