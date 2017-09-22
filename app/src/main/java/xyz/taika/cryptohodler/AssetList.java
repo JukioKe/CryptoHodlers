@@ -52,9 +52,9 @@ public class AssetList implements Serializable {
     }
 
     public void deleteAssetFromList(String assetID) {
-        for (Asset asset : assetList) {
-            if (asset.getAssetID().equals(assetID)) {
-                assetList.remove(asset);
+        for (int i=0; i<assetList.size(); i++) {
+            if (assetList.get(i).getAssetID().equals(assetID)) {
+                assetList.remove(i);
             }
         }
     }

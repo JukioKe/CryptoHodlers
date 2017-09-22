@@ -10,9 +10,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
     Button statusButton;
@@ -25,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        statusButton = (Button) findViewById(R.id.statusButton);
+        statusButton = (Button) findViewById(R.id.AssetListButton);
         infoTextView = (TextView) findViewById(R.id.infoTextView);
 
         statusButton.setOnClickListener(new View.OnClickListener() {

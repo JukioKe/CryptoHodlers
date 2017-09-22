@@ -46,10 +46,10 @@
         android:layout_centerHorizontal="true">
 
     <Button
-        android:id="@+id/statusButton"
+        android:id="@+id/AssetListButton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="@string/status_button"
+        android:text="@string/assetlist_button"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="16dp"
         android:padding="20dp"/>
