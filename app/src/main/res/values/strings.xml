@@ -12,5 +12,5 @@
     <string name="dollarsign">$</string>
     <string name="quantity">Quantity |&#160;</string>
     <string name="app_logo">App logo</string>
-    <string name="about_textview">This info is about this app. This will be cool app </string>
+    <string name="about_textview">This info is about this app.\n This will be cool app </string>
 </resources>
