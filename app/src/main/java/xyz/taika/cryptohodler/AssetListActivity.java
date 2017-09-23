@@ -5,25 +5,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.MotionEvent; 
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -40,7 +35,6 @@ public class AssetListActivity extends AppCompatActivity {
     private AssetList assetList;
     private AssetAdapter assetAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +43,10 @@ public class AssetListActivity extends AppCompatActivity {
         //Read file from internal storage
         this.assetList = readFromInternalStorage(AssetListActivity.this);
 
-        /* Not sure if toolbar is needed here
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar); */
 
         //TEST Execute JsonTask to get fresh API data
         //new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
+
 
         //TEST Create  all default Asset objects
         assetList.addNewAssetToList("Bitcoin", 6.045, R.mipmap.bitcoin);
@@ -76,34 +68,61 @@ public class AssetListActivity extends AppCompatActivity {
         assetList.addNewAssetToList("Factom", 20.67);*/
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        //Add floating action button with add new asset -functionality
+        FloatingActionButton newAssetFAB = (FloatingActionButton) findViewById(R.id.new_asset_fab);
+        newAssetFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                /* TEST SnackbarTest
-                Snackbar.make(view, "Add new asset", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show(); */
-
+                //Show Add new asset dialog
                 showNewAssetDialog();
 
             }
         });
 
-        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        fab2.setOnClickListener(new View.OnClickListener() {
+        //Add floating action button with add refresh asset list -functionality
+        final FloatingActionButton refreshFAB = (FloatingActionButton) findViewById(R.id.refresh_fab);
+
+        //Set onClick listener to the refresh button
+        refreshFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                /* TEST SnackbarTest
-                Snackbar.make(view, "Add new asset", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show(); */
+                refreshFAB.setEnabled(false);
+                refreshFAB.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshFAB.setEnabled(true);
+                    }
+                }, 10000);
 
                 //TEST Execute JsonTask to get fresh API data
                 new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
 
+                //Delete old saved file and save new one with changed data
+                //deleteFile("assetListData");
+                //saveAssetListToInternalStorage(AssetListActivity.this);
             }
         });
+
+        /*TEST trying to show Toast if refresh button is NOT enabled
+        refreshFAB.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                Log.i("Touch eventssssss","Inside onTouch");
+
+                if(refreshFAB.isEnabled()) {
+                    // Show toast
+                    //Toast.makeText(getApplicationContext(), "Disabled Button", Toast.LENGTH_SHORT).show();
+                    Log.i("refreshFAB","is enabled");
+                    return true;
+                }
+                Log.i("refreshFAB","is disabled");
+                return false;
+
+            }
+        }); */
+
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
         assetAdapter = new AssetAdapter(this, assetList.getAssetList());
@@ -116,27 +135,20 @@ public class AssetListActivity extends AppCompatActivity {
         }
 
 
-
         // Set a click listener to show custom Dialog that enables a change to change specific list view item when the list item is clicked on
         //assert listView != null;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Release the media player if it currently exists because we are about to
-                // play a different sound file
-                //releaseMediaPlayer();
 
                 //Get and store just clicked word object temporarily.
                 Asset assetJustClicked = assetList.getAssetList().get(position);
 
+                //Show dialog
                 showEditAssetDialog(assetJustClicked);
-
-
 
             }
         });
-
-
     }
 
 
@@ -157,24 +169,13 @@ public class AssetListActivity extends AppCompatActivity {
         // Add LinearLayout to show in custom AlertDialog
         LinearLayout layout = new LinearLayout(AssetListActivity.this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50,0,50,0);
+        layout.setPadding(50, 0, 50, 0);
 
         // Create EditText View for asset quantity and add it to LinearLayout
         final EditText assetQuantityField = new EditText(AssetListActivity.this);
         assetQuantityField.setHint("Change quantity");
         layout.addView(assetQuantityField);
 
-        /* Create Button that delete asset
-        final Button deleteButton = new Button(AssetListActivity.this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        deleteButton.setLayoutParams(params);
-        deleteButton.setGravity(Gravity.CENTER_VERTICAL);
-        deleteButton.setText("Delete asset");
-        deleteButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        deleteButton.setPadding(80, 50, 80, 50);
-        layout.addView(deleteButton);
-        */
 
         // Set LinearLayout to AlertDialog
         editAssetDialog.setView(layout);
@@ -185,7 +186,6 @@ public class AssetListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog id DONE button is pressed
-
                         String assetQuantity = assetQuantityField.getText().toString();
 
                         if (assetQuantity.isEmpty()) {
@@ -230,7 +230,6 @@ public class AssetListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
-
                         assetList.deleteAssetFromList(clickedAsset.getAssetID());
 
                         //Notify adapter that data has changed and refresh ListView
@@ -243,17 +242,13 @@ public class AssetListActivity extends AppCompatActivity {
                         // Show toast
                         Toast.makeText(getApplicationContext(), "Asset deleted", Toast.LENGTH_SHORT).show();
 
+                        //Dismiss dialog
                         dialog.cancel();
                     }
                 });
 
-
         // Showing Alert Message
         editAssetDialog.show();
-
-        // TEST Possibility to set Icon to Dialog
-        //editAssetDialog.setIcon(R.drawable.XXX);
-
 
     }
 
@@ -276,7 +271,7 @@ public class AssetListActivity extends AppCompatActivity {
         // Add LinearLayout to show in custom AlertDialog
         LinearLayout layout = new LinearLayout(AssetListActivity.this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50,0,50,50);
+        layout.setPadding(50, 0, 50, 50);
 
         // Create EditText View and add it to LinearLayout
         final EditText assetNameField = new EditText(AssetListActivity.this);
@@ -291,9 +286,6 @@ public class AssetListActivity extends AppCompatActivity {
         // Set LinearLayout to AlertDialog
         newAssetDialog.setView(layout);
 
-
-        // TEST Possibility to set Icon to Dialog
-        //newAssetDialog.setIcon(R.drawable.XXX);
 
         // Setting Positive "Done" Button
         newAssetDialog.setPositiveButton("DONE",
@@ -342,10 +334,9 @@ public class AssetListActivity extends AppCompatActivity {
 
         // Showing Alert Message
         newAssetDialog.show();
-
-
     }
 
+    //Create JsonTask class that gets API-data via Inet
     private class JsonTask extends AsyncTask<String, String, String> {
 
         JSONArray jsonArray = null;
@@ -432,17 +423,6 @@ public class AssetListActivity extends AppCompatActivity {
                         }
                     }
 
-                    //Move fresh data from JSON object to correct Asset in AssetList at position[i]
-                    /*Asset asset = assetList.get(i);
-                    String jsonObjectName = jsonObjectI.getString("name");
-                    Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
-                    asset.setAssetName(jsonObjectName);
-                    asset.setAssetValue(assetPrice);
-                    asset.setTotalValue(assetPrice);*/
-
-                    //Notify adapter that data has changed and refresh ListView
-                    //assetAdapter.notifyDataSetChanged();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -480,7 +460,8 @@ public class AssetListActivity extends AppCompatActivity {
             FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
             ObjectOutputStream ous = new ObjectOutputStream(fos);
             ous.writeObject(this.assetList);
-            //TEST ous.writeObject(this.assetList.getAssetList());
+
+
             ous.flush();
             ous.close();
             fos.close();
