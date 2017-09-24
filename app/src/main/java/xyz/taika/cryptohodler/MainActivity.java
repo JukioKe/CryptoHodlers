@@ -96,10 +96,10 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(MainActivity.this);
 
         // Setting Dialog Title
-        editAssetDialog.setTitle("About Crypto Hodlers");
+        editAssetDialog.setTitle("Crypto Hodlers");
 
         //Show Dialog message
-        editAssetDialog.setMessage("GNU GENERAL PUBLIC LICENSE Version 3.");
+        editAssetDialog.setMessage("ABOUT");
 
         // Add LinearLayout to show in custom AlertDialog
         LinearLayout layout = new LinearLayout(MainActivity.this);
