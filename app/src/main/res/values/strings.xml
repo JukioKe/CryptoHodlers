@@ -12,19 +12,19 @@
     <string name="dollarsign">$</string>
     <string name="quantity">Quantity |&#160;</string>
     <string name="app_logo">App logo</string>
-    <string name="about_textview">*Notice: This app is still under development. This README -file get updated once in a while as development get further.\n\n
+    <string name="about_textview">*Notice: This app is still under development. This README -file gets updated once in a while as development gets further.\n\n
 
         An Android app that makes it easy to gather data from various assets to one place.
-        Powerful use of web API user can get fresh assetdata from the Internet and follow and
-        analyze crypto- and blockchain-asset values and holdings of they like. With this app user
+        With powerful use of web API, user can get fresh data of assets of they like from the Internet. Fresh data makes it easy to follow and
+        analyze different crypto- and blockchain-asset values and holdings. With this app user
         can get complete up to date information of his/her holdings.\n\n
 
         Main features:\n
-        -Powerful API to get fresh data from the Internet\n
-        -Add and remove asset\n
-        -Change asset data\n
-        -Store app data in secure Internal storage, where only this app have access\n
-        -App is using ListView-ArrayAdapter solution to be as memory efficient as possible\n\n
+        *Powerful web API to get fresh data from the Internet\n
+        *Add and remove asset\n
+        *Change asset data\n
+        *Store app data in secure Internal storage, where only this app have access\n
+        *App is using ListView-ArrayAdapter solution to be as memory efficient as possible\n\n
 
         Developed by Taika Ent.\n\n
 

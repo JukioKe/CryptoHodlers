@@ -51,6 +51,14 @@ public class AssetList implements Serializable {
         return false;
     }
 
+    public void updateTotalValues() {
+        for (Asset asset : assetList) {
+            if (!asset.getAssetValue().isNaN()) {
+                asset.setTotalValue(asset.getAssetValue());
+            }
+        }
+    }
+
     public void deleteAssetFromList(String assetID) {
         for (int i=0; i<assetList.size(); i++) {
             if (assetList.get(i).getAssetID().equals(assetID)) {
