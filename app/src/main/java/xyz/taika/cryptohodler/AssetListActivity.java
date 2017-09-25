@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent; 
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -34,6 +34,7 @@ public class AssetListActivity extends AppCompatActivity {
 
     private AssetList assetList;
     private AssetAdapter assetAdapter;
+    private boolean needDelay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class AssetListActivity extends AppCompatActivity {
 
         //Read file from internal storage
         this.assetList = readFromInternalStorage(AssetListActivity.this);
+        needDelay = false;
 
 
         //TEST Execute JsonTask to get fresh API data
@@ -87,16 +89,7 @@ public class AssetListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                refreshFAB.setEnabled(false);
-                refreshFAB.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshFAB.setEnabled(true);
-                    }
-                }, 10000);
-
-                //TEST Execute JsonTask to get fresh API data
-                new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
+                getApiData();
 
                 //Delete old saved file and save new one with changed data
                 //deleteFile("assetListData");
@@ -198,6 +191,8 @@ public class AssetListActivity extends AppCompatActivity {
                                 asset.setAssetQuantity(quantity);
                             }
                         }
+
+                        assetList.updateTotalValues();
 
                         //Delete old saved file and save new one with changed data
                         deleteFile("assetListData");
@@ -303,12 +298,16 @@ public class AssetListActivity extends AppCompatActivity {
 
                         assetList.addNewAssetToList(assetName, quantity);
 
+
+
+                        getApiData();
+
+                        //Execute JsonTask to get fresh API data
+                        //new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
+
                         //Delete old assetlist -file and save new one with fresh data
                         deleteFile("assetListData");
                         saveAssetListToInternalStorage(AssetListActivity.this);
-
-                        Log.i("AssetListActivity", assetName);
-                        Log.i("AssetListActivity", String.valueOf(quantity));
 
                         //Notify adapter that data has changed and refresh ListView
                         assetAdapter.notifyDataSetChanged();
@@ -347,7 +346,7 @@ public class AssetListActivity extends AppCompatActivity {
 
             //Set dialog that show Please wait sign to user while getting fresh data via API
             progressDialog = new ProgressDialog(AssetListActivity.this);
-            progressDialog.setMessage("Please wait");
+            progressDialog.setMessage("Getting fresh data...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -431,6 +430,27 @@ public class AssetListActivity extends AppCompatActivity {
             //Notify adapter that data has changed and refresh ListView
             assetAdapter.notifyDataSetChanged();
 
+        }
+
+    }
+
+
+    public void getApiData() {
+        if (!needDelay) {
+            //Execute JsonTask to get fresh API data
+            new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
+            needDelay = true;
+        } else {
+            // Show toast
+            Toast.makeText(getApplicationContext(), "Fresh asset data can updated once in every 10 seconds", Toast.LENGTH_SHORT).show();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    //Execute JsonTask to get fresh API data
+                    needDelay = false;
+                }
+            }, 10000);
         }
 
     }
