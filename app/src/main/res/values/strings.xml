@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Crypto Hodlers</string>
     <string name="action_settings">Settings</string>
+    <string name="action_report_bug">Report bug ^</string>
     <string name="action_exit">Exit</string>
     <string name="assetlist_button">Check assets</string>
     <string name="info_text_view">Get the fresh data and check status or edit your assets.</string>

@@ -80,4 +80,16 @@ public class Asset implements Serializable {
     public Double getTotalValue() {
         return totalValue;
     }
+
+    @Override
+    public String toString() {
+        return "Asset{" +
+                "assetName='" + assetName + '\'' +
+                ", assetID='" + assetID + '\'' +
+                ", assetValue=" + assetValue +
+                ", assetQuantity=" + assetQuantity +
+                ", totalValue=" + totalValue +
+                ", imageResourceId=" + imageResourceId +
+                '}';
+    }
 }

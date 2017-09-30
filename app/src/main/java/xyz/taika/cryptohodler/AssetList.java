@@ -1,6 +1,8 @@
 package xyz.taika.cryptohodler;
 
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -24,11 +26,6 @@ public class AssetList implements Serializable {
         return assetList;
     }
 
-    public void addNewAssetToList(String assetName) {
-        if (!isAlreadyInList(assetName)) {
-            assetList.add(new Asset(assetName));
-        }
-    }
 
     public void addNewAssetToList(String assetName, Double assetQuantity) {
         if (!isAlreadyInList(assetName)) {
@@ -51,9 +48,13 @@ public class AssetList implements Serializable {
         return false;
     }
 
+    //Updates total values to all assets in list
     public void updateTotalValues() {
         for (Asset asset : assetList) {
-            if (!asset.getAssetValue().isNaN()) {
+            System.out.println(asset.toString());
+            if (asset.getAssetValue() == null) {
+                continue;
+            } else {
                 asset.setTotalValue(asset.getAssetValue());
             }
         }

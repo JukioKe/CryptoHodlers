@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,6 +43,7 @@ public class AssetListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_asset_list);
 
         //Read file from internal storage
+        this.assetList = new AssetList();
         this.assetList = readFromInternalStorage(AssetListActivity.this);
         needDelay = false;
 
@@ -97,25 +99,6 @@ public class AssetListActivity extends AppCompatActivity {
             }
         });
 
-        /*TEST trying to show Toast if refresh button is NOT enabled
-        refreshFAB.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent)
-            {
-                Log.i("Touch eventssssss","Inside onTouch");
-
-                if(refreshFAB.isEnabled()) {
-                    // Show toast
-                    //Toast.makeText(getApplicationContext(), "Disabled Button", Toast.LENGTH_SHORT).show();
-                    Log.i("refreshFAB","is enabled");
-                    return true;
-                }
-                Log.i("refreshFAB","is disabled");
-                return false;
-
-            }
-        }); */
-
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
         assetAdapter = new AssetAdapter(this, assetList.getAssetList());
@@ -146,9 +129,9 @@ public class AssetListActivity extends AppCompatActivity {
 
 
     //Show dialog that gives possibility to edit asset from the list
-    public void showEditAssetDialog(Asset asset) {
+    public void showEditAssetDialog(Asset assetJustClicked) {
 
-        final Asset clickedAsset = asset;
+        final Asset clickedAsset = assetJustClicked;
 
         // Creating alert Dialog with one Button
         final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(AssetListActivity.this);
@@ -157,7 +140,7 @@ public class AssetListActivity extends AppCompatActivity {
         editAssetDialog.setTitle("EDIT ASSET");
 
         //Show Dialog message
-        editAssetDialog.setMessage("Edit " + clickedAsset.getAssetName() + " asset");
+        editAssetDialog.setMessage("Edit your " + clickedAsset.getAssetName() + " asset");
 
         // Add LinearLayout to show in custom AlertDialog
         LinearLayout layout = new LinearLayout(AssetListActivity.this);
@@ -166,7 +149,8 @@ public class AssetListActivity extends AppCompatActivity {
 
         // Create EditText View for asset quantity and add it to LinearLayout
         final EditText assetQuantityField = new EditText(AssetListActivity.this);
-        assetQuantityField.setHint("Change quantity");
+        assetQuantityField.setInputType(InputType.TYPE_CLASS_NUMBER);
+        assetQuantityField.setHint("Change your " + clickedAsset.getAssetName() + " quantity");
         layout.addView(assetQuantityField);
 
 
@@ -299,15 +283,8 @@ public class AssetListActivity extends AppCompatActivity {
                         assetList.addNewAssetToList(assetName, quantity);
 
 
-
-                        getApiData();
-
                         //Execute JsonTask to get fresh API data
-                        //new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
-
-                        //Delete old assetlist -file and save new one with fresh data
-                        deleteFile("assetListData");
-                        saveAssetListToInternalStorage(AssetListActivity.this);
+                        getApiData();
 
                         //Notify adapter that data has changed and refresh ListView
                         assetAdapter.notifyDataSetChanged();
@@ -368,7 +345,8 @@ public class AssetListActivity extends AppCompatActivity {
 
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line).append("\n");
-                    Log.d("Response: ", "> " + line);   //Log whole response line by line
+
+                    // Log.d("Response: ", "> " + line);   //Log whole response line by line
 
                 }
 
@@ -438,7 +416,12 @@ public class AssetListActivity extends AppCompatActivity {
     public void getApiData() {
         if (!needDelay) {
             //Execute JsonTask to get fresh API data
-            new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
+            new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=900");
+
+            //Delete old assetlist -file and save new one with fresh data
+            deleteFile("assetListData");
+            saveAssetListToInternalStorage(AssetListActivity.this);
+
             needDelay = true;
         } else {
             // Show toast
