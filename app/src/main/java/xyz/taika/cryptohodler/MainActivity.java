@@ -79,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 super.onOptionsItemSelected(item);
                 return true;
+            case R.id.action_report_bug:
+                // Show toast
+                Toast.makeText(getApplicationContext(), "Bug reported, thanks!", Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.action_exit:
                 // Show toast
                 Toast.makeText(getApplicationContext(), "Crypto Hodlers closed", Toast.LENGTH_SHORT).show();
