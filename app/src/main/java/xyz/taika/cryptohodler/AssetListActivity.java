@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -83,7 +84,7 @@ public class AssetListActivity extends AppCompatActivity {
             }
         });
 
-        //Add floating action button with add refresh asset list -functionality
+        /*Add floating action button with add refresh asset list -functionality
         final FloatingActionButton refreshFAB = (FloatingActionButton) findViewById(R.id.refresh_fab);
 
         //Set onClick listener to the refresh button
@@ -97,7 +98,7 @@ public class AssetListActivity extends AppCompatActivity {
                 //deleteFile("assetListData");
                 //saveAssetListToInternalStorage(AssetListActivity.this);
             }
-        });
+        }); */
 
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
@@ -125,6 +126,26 @@ public class AssetListActivity extends AppCompatActivity {
 
             }
         });
+
+        /* TEST Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
+        performs a swipe-to-refresh gesture.
+*/
+        final SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i("AssetListActivity", "onRefresh called from SwipeRefreshLayout");
+
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        getApiData();
+
+                        mySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
+
     }
 
 
