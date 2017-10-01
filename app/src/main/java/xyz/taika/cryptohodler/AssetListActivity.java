@@ -149,7 +149,7 @@ public class AssetListActivity extends AppCompatActivity {
 
         // Create EditText View for asset quantity and add it to LinearLayout
         final EditText assetQuantityField = new EditText(AssetListActivity.this);
-        assetQuantityField.setInputType(InputType.TYPE_CLASS_NUMBER);
+        assetQuantityField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         assetQuantityField.setHint("Change your " + clickedAsset.getAssetName() + " quantity");
         layout.addView(assetQuantityField);
 
@@ -259,7 +259,8 @@ public class AssetListActivity extends AppCompatActivity {
 
         // Create another EditText View and add it to LinearLayout
         final EditText assetQuantityField = new EditText(AssetListActivity.this);
-        assetQuantityField.setHint("Quantity");
+        assetQuantityField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        assetQuantityField.setHint("Your asset quantity");
         layout.addView(assetQuantityField);
 
         // Set LinearLayout to AlertDialog
