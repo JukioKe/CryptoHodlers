@@ -33,30 +33,38 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-
-
     <include layout="@layout/content_asset_list"
         android:id="@+id/include" />
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/asset_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:drawSelectorOnTop="true"
-        android:orientation="vertical">
-    </ListView>
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/asset_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawSelectorOnTop="true"
+            android:orientation="vertical">
+        </ListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/new_asset_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|left"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@+id/include"
         app:fabSize="mini"
-        app:layout_anchorGravity="bottom|right"
+        app:layout_anchorGravity="bottom|center_horizontal"
         app:srcCompat="@android:drawable/ic_input_add" />
 
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/refresh_fab"
         android:layout_width="wrap_content"
@@ -66,5 +74,6 @@
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="bottom|center_horizontal"
         app:srcCompat="@android:drawable/ic_menu_rotate" />
+        -->
 
 </android.support.design.widget.CoordinatorLayout>

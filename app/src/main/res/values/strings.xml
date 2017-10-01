@@ -4,7 +4,7 @@
     <string name="action_report_bug">Report bug ^</string>
     <string name="action_exit">Exit</string>
     <string name="assetlist_button">Check assets</string>
-    <string name="info_text_view">Get the fresh data and check status or edit your assets.</string>
+    <string name="info_text_view">Get the fresh data and check status of your assets or find more about this app.</string>
     <string name="title_activity_asset_list">Asset list</string>
     <string name="about">About</string>
     <string name="logo_image">Logo image</string>
