@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +38,12 @@ public class AssetListActivity extends AppCompatActivity {
     private AssetList assetList;
     private AssetAdapter assetAdapter;
     private boolean needDelay;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        needDelay = false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,7 +199,7 @@ public class AssetListActivity extends AppCompatActivity {
                         Double quantity = Double.valueOf(assetQuantity);
 
                         for (Asset asset : assetList.getAssetList()) {
-                            if (clickedAsset.getAssetID().equals(asset.getAssetID())) {
+                            if (clickedAsset.getAssetName().toLowerCase().equals(asset.getAssetName().toLowerCase())) {
                                 asset.setAssetQuantity(quantity);
                             }
                         }
@@ -230,7 +237,7 @@ public class AssetListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
-                        assetList.deleteAssetFromList(clickedAsset.getAssetID());
+                        assetList.deleteAssetFromList(clickedAsset.getAssetName());
 
                         //Notify adapter that data has changed and refresh ListView
                         assetAdapter.notifyDataSetChanged();
@@ -265,7 +272,7 @@ public class AssetListActivity extends AppCompatActivity {
         newAssetDialog.setTitle("ADD NEW ASSET");
 
         // Setting Dialog Message
-        newAssetDialog.setMessage("Give asset name and quantity");
+        newAssetDialog.setMessage("Give asset name, symbol and quantity");
 
 
         // Add LinearLayout to show in custom AlertDialog
@@ -277,6 +284,12 @@ public class AssetListActivity extends AppCompatActivity {
         final EditText assetNameField = new EditText(AssetListActivity.this);
         assetNameField.setHint("Asset name");
         layout.addView(assetNameField);
+
+        // Create EditText View and add it to LinearLayout
+        final EditText assetSymbolField = new EditText(AssetListActivity.this);
+        assetSymbolField.setHint("Asset symbol(ie. BTC)");
+        assetSymbolField.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        layout.addView(assetSymbolField);
 
         // Create another EditText View and add it to LinearLayout
         final EditText assetQuantityField = new EditText(AssetListActivity.this);
@@ -295,6 +308,7 @@ public class AssetListActivity extends AppCompatActivity {
                         // Write your code here to execute after dialog
 
                         String assetName = assetNameField.getText().toString();
+                        String assetSymbol = assetSymbolField.getText().toString();
                         String assetQuantity = assetQuantityField.getText().toString();
 
                         if (assetQuantity.isEmpty()) {
@@ -302,7 +316,7 @@ public class AssetListActivity extends AppCompatActivity {
                         }
                         Double quantity = Double.valueOf(assetQuantity);
 
-                        assetList.addNewAssetToList(assetName, quantity);
+                        assetList.addNewAssetToList(assetName, assetSymbol, quantity);
 
 
                         //Execute JsonTask to get fresh API data
@@ -368,7 +382,7 @@ public class AssetListActivity extends AppCompatActivity {
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line).append("\n");
 
-                    // Log.d("Response: ", "> " + line);   //Log whole response line by line
+                    Log.d("Response: ", "> " + line);   //Log whole response line by line
 
                 }
 
@@ -411,14 +425,14 @@ public class AssetListActivity extends AppCompatActivity {
                 try {
                     //Get JSON object from JSON array at position[i]
                     JSONObject jsonObjectI = jsonArray.getJSONObject(i);
-                    String jsonObjectID = jsonObjectI.getString("id");
                     String jsonObjectName = jsonObjectI.getString("name");
+                    String jsonObjectSymbol = jsonObjectI.getString("symbol");
 
                     for (Asset asset : assetList.getAssetList()) {
-                        if (jsonObjectID.equals(asset.getAssetID()) || jsonObjectName.equals(asset.getAssetName())) {
+                        if (jsonObjectName.equals(asset.getAssetName()) || jsonObjectSymbol.equals(asset.getAssetSymbol())) {
                             Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
                             asset.setAssetValue(assetPrice);
-                            asset.setTotalValue(assetPrice);
+                            asset.calculateAssetTotalValue(assetPrice);
                         }
                     }
 

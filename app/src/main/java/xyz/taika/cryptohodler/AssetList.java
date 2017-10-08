@@ -1,8 +1,6 @@
 package xyz.taika.cryptohodler;
 
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -33,6 +31,12 @@ public class AssetList implements Serializable {
         }
     }
 
+    public void addNewAssetToList(String assetName, String assetSymbol, Double assetQuantity) {
+        if (!isAlreadyInList(assetName)) {
+            assetList.add(new Asset(assetName, assetSymbol, assetQuantity));
+        }
+    }
+
     public void addNewAssetToList(String assetName, Double assetQuantity, int imageResourceID) {
         if (!isAlreadyInList(assetName)) {
             assetList.add(new Asset(assetName, assetQuantity, imageResourceID));
@@ -55,14 +59,14 @@ public class AssetList implements Serializable {
             if (asset.getAssetValue() == null) {
                 continue;
             } else {
-                asset.setTotalValue(asset.getAssetValue());
+                asset.calculateAssetTotalValue(asset.getAssetValue());
             }
         }
     }
 
-    public void deleteAssetFromList(String assetID) {
+    public void deleteAssetFromList(String assetName) {
         for (int i=0; i<assetList.size(); i++) {
-            if (assetList.get(i).getAssetID().equals(assetID)) {
+            if (assetList.get(i).getAssetName().toLowerCase().equals(assetName.toLowerCase())) {
                 assetList.remove(i);
             }
         }

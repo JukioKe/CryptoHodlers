@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Asset implements Serializable {
 
     private String assetName;
-    private String assetID;
+    private String assetSymbol;
     private Double assetValue;
     private Double assetQuantity;
     private Double totalValue;
@@ -17,7 +17,13 @@ public class Asset implements Serializable {
 
     public Asset(String assetName) {
         this.assetName = assetName;
-        this.assetID = assetName.toLowerCase();
+        this.assetQuantity = 0.0;
+        this.imageResourceId = R.mipmap.crypto_hodlers_icon;
+    }
+
+    public Asset(String assetName, String assetSymbol) {
+        this.assetName = assetName;
+        this.assetSymbol = assetSymbol;
         this.assetQuantity = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
     }
@@ -25,7 +31,13 @@ public class Asset implements Serializable {
     public Asset(String assetName, Double assetQuantity) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
-        this.assetID = assetName.toLowerCase();
+        this.imageResourceId = R.mipmap.crypto_hodlers_icon;
+    }
+
+    public Asset(String assetName, String assetSymbol, Double assetQuantity) {
+        this.assetName = assetName;
+        this.assetQuantity = assetQuantity;
+        this.assetSymbol = assetSymbol;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
     }
 
@@ -33,9 +45,14 @@ public class Asset implements Serializable {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
         this.imageResourceId = imageResourceId;
-        this.assetID = assetName.toLowerCase();
     }
 
+    public Asset(String assetName, String assetSymbol, Double assetQuantity, int imageResourceId) {
+        this.assetName = assetName;
+        this.assetQuantity = assetQuantity;
+        this.imageResourceId = imageResourceId;
+        this.assetSymbol = assetSymbol;
+    }
 
     public String getAssetName() {
         return assetName;
@@ -69,11 +86,7 @@ public class Asset implements Serializable {
         this.imageResourceId = imageResourceId;
     }
 
-    public String getAssetID() {
-        return assetID;
-    }
-
-    public void setTotalValue(Double price) {
+    public void calculateAssetTotalValue(Double price) {
         this.totalValue = this.assetQuantity * price;
     }
 
@@ -81,15 +94,20 @@ public class Asset implements Serializable {
         return totalValue;
     }
 
+    public String getAssetSymbol() {
+        return assetSymbol;
+    }
+
     @Override
     public String toString() {
         return "Asset{" +
                 "assetName='" + assetName + '\'' +
-                ", assetID='" + assetID + '\'' +
                 ", assetValue=" + assetValue +
                 ", assetQuantity=" + assetQuantity +
                 ", totalValue=" + totalValue +
                 ", imageResourceId=" + imageResourceId +
                 '}';
     }
+
+
 }
