@@ -442,6 +442,11 @@ public class AssetListActivity extends AppCompatActivity {
 
             }
             //Notify adapter that data has changed and refresh ListView
+
+            //Delete old assetlist -file and save new one with fresh data
+            deleteFile("assetListData");
+            saveAssetListToInternalStorage(AssetListActivity.this);
+
             assetAdapter.notifyDataSetChanged();
 
         }
@@ -453,10 +458,6 @@ public class AssetListActivity extends AppCompatActivity {
         if (!needDelay) {
             //Execute JsonTask to get fresh API data
             new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=900");
-
-            //Delete old assetlist -file and save new one with fresh data
-            deleteFile("assetListData");
-            saveAssetListToInternalStorage(AssetListActivity.this);
 
             needDelay = true;
         } else {
