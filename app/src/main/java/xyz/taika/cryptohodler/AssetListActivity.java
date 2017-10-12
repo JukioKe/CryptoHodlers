@@ -19,9 +19,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,6 +34,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class AssetListActivity extends AppCompatActivity {
 
@@ -288,7 +292,7 @@ public class AssetListActivity extends AppCompatActivity {
         // Create EditText View and add it to LinearLayout
         final EditText assetSymbolField = new EditText(AssetListActivity.this);
         assetSymbolField.setHint("Asset symbol(ie. BTC)");
-        assetSymbolField.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
+        assetSymbolField.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         layout.addView(assetSymbolField);
 
         // Create another EditText View and add it to LinearLayout
@@ -441,12 +445,12 @@ public class AssetListActivity extends AppCompatActivity {
                 }
 
             }
-            //Notify adapter that data has changed and refresh ListView
 
             //Delete old assetlist -file and save new one with fresh data
             deleteFile("assetListData");
             saveAssetListToInternalStorage(AssetListActivity.this);
 
+            //Notify adapter that data has changed and refresh ListView
             assetAdapter.notifyDataSetChanged();
 
         }
@@ -509,5 +513,6 @@ public class AssetListActivity extends AppCompatActivity {
             Log.e("InternalStorage", e.getMessage());
         }
     }
+
 
 }
