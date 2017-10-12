@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by jukka13 on 8.8.2017.
@@ -50,7 +51,7 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         TextView valueTextView = (TextView) listItemView.findViewById(R.id.asset_value);
         // Get the asset value from the current object and set this as a text on the value TextView
         if (currentAssetObject != null) {
-            valueTextView.setText("" + String.format("%.2f", currentAssetObject.getAssetValue()));
+            valueTextView.setText("" + String.format("%.3f", currentAssetObject.getAssetValue()));
         }
 
         // Find the TextView in the list_item.xml layout with the ID version_number
@@ -88,4 +89,5 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         // Return the whole list item layout (containing 2 TextViews and an ImageView) so that it can be shown in the ListView
         return listItemView;
     }
+
 }

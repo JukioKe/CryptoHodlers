@@ -98,6 +98,7 @@ public class Asset implements Serializable {
         return assetSymbol;
     }
 
+
     @Override
     public String toString() {
         return "Asset{" +
