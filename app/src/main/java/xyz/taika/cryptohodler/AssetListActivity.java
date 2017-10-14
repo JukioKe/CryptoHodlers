@@ -352,6 +352,7 @@ public class AssetListActivity extends AppCompatActivity {
         newAssetDialog.show();
     }
 
+
     //Create JsonTask class that gets API-data via Inet
     private class JsonTask extends AsyncTask<String, String, String> {
 
@@ -458,6 +459,7 @@ public class AssetListActivity extends AppCompatActivity {
     }
 
 
+    //This method starts JsonTask that tries to get fresh API data from internet
     public void getApiData() {
         if (!needDelay) {
             //Execute JsonTask to get fresh API data
@@ -479,6 +481,7 @@ public class AssetListActivity extends AppCompatActivity {
 
     }
 
+
     //Get assetlist data from internal Storage
     public AssetList readFromInternalStorage(Context context) {
         AssetList toReturn = new AssetList();
@@ -496,6 +499,7 @@ public class AssetListActivity extends AppCompatActivity {
         }
         return toReturn;
     }
+
 
     // Save assetList to internal storage
     public void saveAssetListToInternalStorage(Context context) {

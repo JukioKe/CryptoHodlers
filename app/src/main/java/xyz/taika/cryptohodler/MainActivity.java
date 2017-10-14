@@ -2,6 +2,7 @@ package xyz.taika.cryptohodler;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -76,12 +77,36 @@ public class MainActivity extends AppCompatActivity {
         return id == R.id.action_settings || super.onOptionsItemSelected(item); */
 
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            /*case R.id.action_settings:
                 super.onOptionsItemSelected(item);
                 return true;
+            */
             case R.id.action_report_bug:
                 // Show toast
-                Toast.makeText(getApplicationContext(), "Bug reported, thanks!", Toast.LENGTH_SHORT).show();
+                String subject = "Crypto Hodlers bug";
+                String[] addresses = new String[1];
+                addresses[0] = "jukka@taika.xyz";
+                String mssg = "Hey, good job finding that little ****(bug). Describe your findings here and send it to Taika Inc. Thanks!: \n";
+
+                //remove the last line(Press Order-button to confirm your order.) of Order summary, as it not needed in email confirmation
+                if(mssg.lastIndexOf("\n")>0) {
+                    mssg = mssg.substring(0, mssg.lastIndexOf("\n"));
+                }
+
+
+                //start email intent to send Order confirmation via email
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setType("*/*");
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+                intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                intent.putExtra(Intent.EXTRA_TEXT, mssg);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+
+
+                // Toast.makeText(getApplicationContext(), "Bug reported, thanks!", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_exit:
                 // Show toast
