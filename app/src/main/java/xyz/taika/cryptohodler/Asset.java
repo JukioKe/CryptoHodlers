@@ -1,6 +1,8 @@
 package xyz.taika.cryptohodler;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by jukka1 on 5.8.2017.
@@ -97,6 +99,7 @@ public class Asset implements Serializable {
     public String getAssetSymbol() {
         return assetSymbol;
     }
+
 
 
     @Override

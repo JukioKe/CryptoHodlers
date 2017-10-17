@@ -3,6 +3,8 @@ package xyz.taika.cryptohodler;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Jukka on 5.8.2017. JEE
@@ -70,6 +72,21 @@ public class AssetList implements Serializable {
                 assetList.remove(i);
             }
         }
+    }
+
+    public void sortList() {
+
+        Collections.sort(assetList, new Comparator<Asset>() {
+            @Override public int compare(Asset p1, Asset p2) {
+                if (p1.getTotalValue() > p2.getTotalValue()) {
+                    return -1;
+                } else if (p1.getTotalValue() < p2.getTotalValue()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+
     }
 
 }
