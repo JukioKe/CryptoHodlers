@@ -447,6 +447,8 @@ public class AssetListActivity extends AppCompatActivity {
 
             }
 
+            assetList.sortList();
+
             //Delete old assetlist -file and save new one with fresh data
             deleteFile("assetListData");
             saveAssetListToInternalStorage(AssetListActivity.this);

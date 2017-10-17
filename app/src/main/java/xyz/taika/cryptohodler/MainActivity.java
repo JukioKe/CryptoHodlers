@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                     mssg = mssg.substring(0, mssg.lastIndexOf("\n"));
                 }
 
-
                 //start email intent to send Order confirmation via email
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setType("*/*");
