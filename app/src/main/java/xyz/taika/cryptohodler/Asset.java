@@ -15,45 +15,67 @@ public class Asset implements Serializable {
     private Double assetValue;
     private Double assetQuantity;
     private Double totalValue;
+    private Double change24h;
     private int imageResourceId;
 
     public Asset(String assetName) {
         this.assetName = assetName;
         this.assetQuantity = 0.0;
+        this.assetValue = 0.0;
+        this.change24h = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
+        calculateAssetTotalValue();
+
     }
 
     public Asset(String assetName, String assetSymbol) {
         this.assetName = assetName;
         this.assetSymbol = assetSymbol;
         this.assetQuantity = 0.0;
+        this.assetValue = 0.0;
+        this.change24h = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
+        calculateAssetTotalValue();
+
     }
 
     public Asset(String assetName, Double assetQuantity) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
+        this.assetValue = 0.0;
+        this.change24h = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
+        calculateAssetTotalValue();
+
     }
 
     public Asset(String assetName, String assetSymbol, Double assetQuantity) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
         this.assetSymbol = assetSymbol;
+        this.assetValue = 0.0;
+        this.change24h = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
+        calculateAssetTotalValue();
     }
 
     public Asset(String assetName, Double assetQuantity, int imageResourceId) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
+        this.assetValue = 0.0;
+        this.change24h = 0.0;
         this.imageResourceId = imageResourceId;
+        calculateAssetTotalValue();
     }
 
     public Asset(String assetName, String assetSymbol, Double assetQuantity, int imageResourceId) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
         this.imageResourceId = imageResourceId;
+        this.assetValue = 0.0;
+        this.change24h = 0.0;
         this.assetSymbol = assetSymbol;
+        calculateAssetTotalValue();
     }
 
     public String getAssetName() {
@@ -88,8 +110,8 @@ public class Asset implements Serializable {
         this.imageResourceId = imageResourceId;
     }
 
-    public void calculateAssetTotalValue(Double price) {
-        this.totalValue = this.assetQuantity * price;
+    public void calculateAssetTotalValue() {
+        this.totalValue = this.assetQuantity * this.assetValue;
     }
 
     public Double getTotalValue() {
@@ -100,7 +122,13 @@ public class Asset implements Serializable {
         return assetSymbol;
     }
 
+    public Double getChange24h() {
+        return change24h;
+    }
 
+    public void setChange24h(Double change24h) {
+        this.change24h = change24h;
+    }
 
     @Override
     public String toString() {
