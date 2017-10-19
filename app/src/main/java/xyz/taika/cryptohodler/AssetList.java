@@ -61,7 +61,7 @@ public class AssetList implements Serializable {
             if (asset.getAssetValue() == null) {
                 continue;
             } else {
-                asset.calculateAssetTotalValue(asset.getAssetValue());
+                asset.calculateAssetTotalValue();
             }
         }
     }
@@ -78,12 +78,17 @@ public class AssetList implements Serializable {
 
         Collections.sort(assetList, new Comparator<Asset>() {
             @Override public int compare(Asset p1, Asset p2) {
-                if (p1.getTotalValue() > p2.getTotalValue()) {
-                    return -1;
-                } else if (p1.getTotalValue() < p2.getTotalValue()) {
+
+                try {
+                    if (p1.getTotalValue() > p2.getTotalValue()) {
+                        return -1;
+                    } else if (p1.getTotalValue() < p2.getTotalValue()) {
+                        return 1;
+                    }
+                    return 0;
+                } catch (Exception e) {
                     return 1;
                 }
-                return 0;
             }
         });
 

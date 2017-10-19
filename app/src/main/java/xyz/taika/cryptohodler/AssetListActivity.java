@@ -210,12 +210,15 @@ public class AssetListActivity extends AppCompatActivity {
 
                         assetList.updateTotalValues();
 
-                        //Delete old saved file and save new one with changed data
-                        deleteFile("assetListData");
-                        saveAssetListToInternalStorage(AssetListActivity.this);
+                        //Sort list
+                        assetList.sortList();
 
                         //Notify adapter that data has changed and refresh ListView
                         assetAdapter.notifyDataSetChanged();
+
+                        //Delete old saved file and save new one with changed data
+                        deleteFile("assetListData");
+                        saveAssetListToInternalStorage(AssetListActivity.this);
 
                         // Show toast
                         Toast.makeText(getApplicationContext(), "Asset data changed", Toast.LENGTH_SHORT).show();
@@ -242,6 +245,7 @@ public class AssetListActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
                         assetList.deleteAssetFromList(clickedAsset.getAssetName());
+
 
                         //Notify adapter that data has changed and refresh ListView
                         assetAdapter.notifyDataSetChanged();
@@ -436,8 +440,10 @@ public class AssetListActivity extends AppCompatActivity {
                     for (Asset asset : assetList.getAssetList()) {
                         if (jsonObjectName.equals(asset.getAssetName()) || jsonObjectSymbol.equals(asset.getAssetSymbol())) {
                             Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
+                            Double change24h = Double.parseDouble(jsonObjectI.getString("percent_change_24h"));
                             asset.setAssetValue(assetPrice);
-                            asset.calculateAssetTotalValue(assetPrice);
+                            asset.setChange24h(change24h);
+                            asset.calculateAssetTotalValue();
                         }
                     }
 

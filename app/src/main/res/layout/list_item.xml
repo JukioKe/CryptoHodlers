@@ -52,12 +52,24 @@
 
                 <TextView
                     android:id="@+id/asset_value"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:textAppearance="?android:textAppearanceListItem"
                     android:textColor="@android:color/tertiary_text_dark"
                     tools:text="3200" />
+
+
+                <TextView
+                    android:id="@+id/change_24h"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:textSize="13dp"
+                    android:textAppearance="?android:textAppearanceListItem"
+                    android:textColor="@android:color/holo_green_dark"
+                    tools:text="(24%)" />
 
             </LinearLayout>
 

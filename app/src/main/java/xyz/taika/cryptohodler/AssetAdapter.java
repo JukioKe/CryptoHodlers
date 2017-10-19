@@ -1,6 +1,7 @@
 package xyz.taika.cryptohodler;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -52,6 +53,18 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         // Get the asset value from the current object and set this as a text on the value TextView
         if (currentAssetObject != null) {
             valueTextView.setText("" + String.format("%.3f", currentAssetObject.getAssetValue()));
+        }
+
+        // Find the TextView in the list_item.xml layout with the ID version_number
+        TextView changeTextView = (TextView) listItemView.findViewById(R.id.change_24h);
+        // Get the 24h change of the asset value from the current object and set this as a text on the change TextView
+        if (currentAssetObject != null) {
+            changeTextView.setText("(" + String.format("%.1f", currentAssetObject.getChange24h()) + "%)");
+            if (currentAssetObject.getChange24h() < 0.0) {
+                changeTextView.setTextColor(Color.parseColor("#FE2E2E"));
+            } else {
+                changeTextView.setTextColor(Color.parseColor("#298A08"));
+            }
         }
 
         // Find the TextView in the list_item.xml layout with the ID version_number
