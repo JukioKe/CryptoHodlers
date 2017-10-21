@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,7 +61,6 @@ public class AssetListActivity extends AppCompatActivity {
         this.assetList = readFromInternalStorage(AssetListActivity.this);
         needDelay = false;
 
-
         //TEST Create  all default Asset objects
         assetList.addNewAssetToList("Bitcoin", 5.0, R.mipmap.bitcoin);
         /*assetList.addNewAssetToList("Ethereum", 2.070);
@@ -92,7 +92,7 @@ public class AssetListActivity extends AppCompatActivity {
             }
         });
 
-        /*Add floating action button with add refresh asset list -functionality
+        /*Add floating action button with refresh asset list -functionality
         final FloatingActionButton refreshFAB = (FloatingActionButton) findViewById(R.id.refresh_fab);
 
         //Set onClick listener to the refresh button
@@ -153,6 +153,7 @@ public class AssetListActivity extends AppCompatActivity {
                     }
                 }
         );
+
 
     }
 
@@ -435,15 +436,18 @@ public class AssetListActivity extends AppCompatActivity {
                     JSONObject jsonObjectI = jsonArray.getJSONObject(i);
                     String jsonObjectName = jsonObjectI.getString("name");
                     String jsonObjectSymbol = jsonObjectI.getString("symbol");
+                    String eurOrUsd = "";
+                    if (eurFiat) {
+                        eurOrUsd += "price_eur";
+                    } else {
+                        eurOrUsd += "price_usd";
+                    }
 
                     for (Asset asset : assetList.getAssetList()) {
+
                         if (jsonObjectName.equals(asset.getAssetName()) || jsonObjectSymbol.equals(asset.getAssetSymbol())) {
                             Double assetPrice = 0.0;
-                            if (eurFiat) {
-                                assetPrice = Double.parseDouble(jsonObjectI.getString("price_eur"));
-                            } else {
-                                assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
-                            }
+                            assetPrice = Double.parseDouble(jsonObjectI.getString(eurOrUsd));
 
                             Double change24h = Double.parseDouble(jsonObjectI.getString("percent_change_24h"));
                             asset.setAssetValue(assetPrice);
