@@ -19,11 +19,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,14 +32,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class AssetListActivity extends AppCompatActivity {
 
     private AssetList assetList;
     private AssetAdapter assetAdapter;
     private boolean needDelay;
+    private boolean eurFiat;
 
     @Override
     public void onResume() {
@@ -53,6 +50,10 @@ public class AssetListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asset_list);
+        eurFiat = false;
+
+        //Get Intent data from MainActivity
+        eurFiat = getIntent().getExtras().getBoolean("eurFiat");
 
         //Read file from internal storage
         this.assetList = new AssetList();
@@ -60,12 +61,8 @@ public class AssetListActivity extends AppCompatActivity {
         needDelay = false;
 
 
-        //TEST Execute JsonTask to get fresh API data
-        //new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=400");
-
-
         //TEST Create  all default Asset objects
-        assetList.addNewAssetToList("Bitcoin", 6.045, R.mipmap.bitcoin);
+        assetList.addNewAssetToList("Bitcoin", 5.0, R.mipmap.bitcoin);
         /*assetList.addNewAssetToList("Ethereum", 2.070);
         assetList.addNewAssetToList("Komodo", 15006.50);
         assetList.addNewAssetToList("Byteball", 20.7860);
@@ -388,6 +385,8 @@ public class AssetListActivity extends AppCompatActivity {
                 StringBuilder buffer = new StringBuilder();
                 String line;
 
+
+
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line).append("\n");
 
@@ -439,7 +438,13 @@ public class AssetListActivity extends AppCompatActivity {
 
                     for (Asset asset : assetList.getAssetList()) {
                         if (jsonObjectName.equals(asset.getAssetName()) || jsonObjectSymbol.equals(asset.getAssetSymbol())) {
-                            Double assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
+                            Double assetPrice = 0.0;
+                            if (eurFiat) {
+                                assetPrice = Double.parseDouble(jsonObjectI.getString("price_eur"));
+                            } else {
+                                assetPrice = Double.parseDouble(jsonObjectI.getString("price_usd"));
+                            }
+
                             Double change24h = Double.parseDouble(jsonObjectI.getString("percent_change_24h"));
                             asset.setAssetValue(assetPrice);
                             asset.setChange24h(change24h);
@@ -471,7 +476,12 @@ public class AssetListActivity extends AppCompatActivity {
     public void getApiData() {
         if (!needDelay) {
             //Execute JsonTask to get fresh API data
-            new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=900");
+
+            if (this.eurFiat == true) {
+                new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?convert=EUR");
+            } else {
+                new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/");
+            }
 
             needDelay = true;
         } else {

@@ -1,8 +1,7 @@
 package xyz.taika.cryptohodler;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
+
 
 /**
  * Created by jukka1 on 5.8.2017.
@@ -23,6 +22,7 @@ public class Asset implements Serializable {
         this.assetQuantity = 0.0;
         this.assetValue = 0.0;
         this.change24h = 0.0;
+
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
         calculateAssetTotalValue();
 

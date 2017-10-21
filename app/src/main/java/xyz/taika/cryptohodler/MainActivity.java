@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     Button statusButton;
     Button aboutButton;
     TextView infoTextView;
+    private boolean eurFiat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         aboutButton = (Button) findViewById(R.id.aboutButton);
         infoTextView = (TextView) findViewById(R.id.infoTextView);
 
+        eurFiat = false;
+
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
                 //Start AssetListActivity where's all the assets in a list
                 Intent checkStatusIntent = new Intent(MainActivity.this, AssetListActivity.class);
 
+                if (eurFiat) {
+                    checkStatusIntent.putExtra("eurFiat", true);
+                } else {
+                    checkStatusIntent.putExtra("eurFiat", false);
+                }
                 startActivity(checkStatusIntent);
             }
         });
@@ -50,10 +59,6 @@ public class MainActivity extends AppCompatActivity {
                 showAboutDialog();
             }
         });
-
-
-
-
 
 
     }
@@ -77,10 +82,14 @@ public class MainActivity extends AppCompatActivity {
         return id == R.id.action_settings || super.onOptionsItemSelected(item); */
 
         switch (item.getItemId()) {
-            /*case R.id.action_settings:
+            case R.id.action_settings:
+
+                showSettingsDialog();
+
+
                 super.onOptionsItemSelected(item);
                 return true;
-            */
+
             case R.id.action_report_bug:
                 // Show toast
                 String subject = "Crypto Hodlers bug";
@@ -104,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
 
-
-                // Toast.makeText(getApplicationContext(), "Bug reported, thanks!", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_exit:
                 // Show toast
@@ -164,5 +171,62 @@ public class MainActivity extends AppCompatActivity {
         // Showing Alert Message
         editAssetDialog.show();
     }
+
+    //Show dialog that gives possibility to edit settings of the app
+    public void showSettingsDialog() {
+
+
+        // Creating alert Dialog with one Button
+        final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(MainActivity.this);
+
+        // Setting Dialog Title
+        editAssetDialog.setTitle("Settings");
+
+        //Show Dialog message
+        editAssetDialog.setMessage("Edit settings");
+
+        // Add LinearLayout to show in custom AlertDialog
+        LinearLayout layout = new LinearLayout(MainActivity.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(50, 0, 50, 0);
+
+        // Create EditText View for asset quantity and add it to LinearLayout
+        final EditText assetQuantityField = new EditText(MainActivity.this);
+        assetQuantityField.setHint("Under construction...");
+        layout.addView(assetQuantityField);
+
+
+        // Set LinearLayout to AlertDialog
+        editAssetDialog.setView(layout);
+
+
+        // Setting Positive "Done" Button
+        editAssetDialog.setPositiveButton("DONE",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog id DONE button is pressed
+
+                        // Show toast
+                        Toast.makeText(getApplicationContext(), "Settings changed", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+        // Setting Negative "Cancel" Button
+        editAssetDialog.setNegativeButton("CANCEL",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        dialog.cancel();
+                    }
+                });
+
+
+
+        // Showing Alert Message
+        editAssetDialog.show();
+
+    }
+
 
 }
