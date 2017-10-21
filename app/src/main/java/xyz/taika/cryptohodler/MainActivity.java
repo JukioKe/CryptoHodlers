@@ -2,6 +2,7 @@ package xyz.taika.cryptohodler;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,10 +21,13 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String PREFS_NAME = "SettingsPrefsFile";
+
     Button statusButton;
     Button aboutButton;
     TextView infoTextView;
     private boolean eurFiat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
         aboutButton = (Button) findViewById(R.id.aboutButton);
         infoTextView = (TextView) findViewById(R.id.infoTextView);
 
-        eurFiat = false;
+
+        // Restore preferences
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        this.eurFiat = settings.getBoolean("eurFiatMode", false);
 
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,10 +198,11 @@ public class MainActivity extends AppCompatActivity {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 0, 50, 0);
 
-        // Create EditText View for asset quantity and add it to LinearLayout
-        final EditText assetQuantityField = new EditText(MainActivity.this);
-        assetQuantityField.setHint("Under construction...");
-        layout.addView(assetQuantityField);
+        // Create CheckBox View for EUR option
+        final CheckBox eurFiatCheckBox = new CheckBox(MainActivity.this);
+        eurFiatCheckBox.setText("Use EUR instead of USD");
+        eurFiatCheckBox.setChecked(eurFiat);
+        layout.addView(eurFiatCheckBox);
 
 
         // Set LinearLayout to AlertDialog
@@ -205,6 +214,21 @@ public class MainActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog id DONE button is pressed
+
+                        if (eurFiatCheckBox.isChecked()) {
+                            eurFiat = true;
+                        } else {
+                            eurFiat = false;
+                        }
+
+                        // An Editor object to make preference changes.
+                        // All objects are from android.context.Context
+                        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putBoolean("eurFiatMode", eurFiat);
+
+                        // Commit the edits!
+                        editor.commit();
 
                         // Show toast
                         Toast.makeText(getApplicationContext(), "Settings changed", Toast.LENGTH_SHORT).show();
@@ -228,5 +252,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public boolean getEurFiat() {
+        return eurFiat;
+    }
 
 }

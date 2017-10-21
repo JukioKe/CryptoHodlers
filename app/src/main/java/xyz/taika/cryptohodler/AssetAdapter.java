@@ -1,6 +1,7 @@
 package xyz.taika.cryptohodler;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import static xyz.taika.cryptohodler.MainActivity.PREFS_NAME;
+
 /**
  * Created by jukka13 on 8.8.2017.
  */
@@ -22,10 +25,14 @@ import java.util.Comparator;
 public class AssetAdapter extends ArrayAdapter<Asset> {
     //private int colorResourceId;
 
+
     public AssetAdapter(Context context, ArrayList<Asset> assetList) {
         super(context, 0, assetList);
         //this.colorResourceId = colorResourceId;
+
     }
+
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -49,6 +56,7 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         }
 
         // Find the TextView in the list_item.xml layout with the ID version_number
+
         TextView valueTextView = (TextView) listItemView.findViewById(R.id.asset_value);
         // Get the asset value from the current object and set this as a text on the value TextView
         if (currentAssetObject != null) {
