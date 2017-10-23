@@ -59,6 +59,7 @@ public class AssetListActivity extends AppCompatActivity {
         //Read file from internal storage
         this.assetList = new AssetList();
         this.assetList = readFromInternalStorage(AssetListActivity.this);
+
         needDelay = false;
 
         //TEST Create  all default Asset objects
@@ -446,10 +447,17 @@ public class AssetListActivity extends AppCompatActivity {
                     for (Asset asset : assetList.getAssetList()) {
 
                         if (jsonObjectName.equals(asset.getAssetName()) || jsonObjectSymbol.equals(asset.getAssetSymbol())) {
+                            Double change24h;
+                            String change24hString = jsonObjectI.getString("percent_change_24h");
                             Double assetPrice = 0.0;
                             assetPrice = Double.parseDouble(jsonObjectI.getString(eurOrUsd));
 
-                            Double change24h = Double.parseDouble(jsonObjectI.getString("percent_change_24h"));
+                            if (change24hString.equals("null")) {
+                                change24h = 0.0;
+                            } else {
+                                change24h = Double.parseDouble(change24hString);
+                            }
+
                             asset.setAssetValue(assetPrice);
                             asset.setChange24h(change24h);
                             asset.calculateAssetTotalValue();
@@ -488,17 +496,19 @@ public class AssetListActivity extends AppCompatActivity {
             }
 
             needDelay = true;
-        } else {
-            // Show toast
-            Toast.makeText(getApplicationContext(), "Fresh asset data can updated once in every 10 seconds", Toast.LENGTH_SHORT).show();
+
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    //Execute JsonTask to get fresh API data
                     needDelay = false;
                 }
             }, 10000);
+
+        } else {
+            // Show toast
+            Toast.makeText(getApplicationContext(), "Fresh asset data can updated once in every 10 seconds", Toast.LENGTH_SHORT).show();
+
         }
 
     }

@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean eurFiat;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         this.eurFiat = settings.getBoolean("eurFiatMode", false);
+
+
+
+
+
+
+
 
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
