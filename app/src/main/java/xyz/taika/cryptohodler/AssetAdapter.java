@@ -3,9 +3,6 @@ package xyz.taika.cryptohodler;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-
-import static xyz.taika.cryptohodler.MainActivity.PREFS_NAME;
 
 /**
  * Created by jukka13 on 8.8.2017.
@@ -24,11 +18,14 @@ import static xyz.taika.cryptohodler.MainActivity.PREFS_NAME;
 
 public class AssetAdapter extends ArrayAdapter<Asset> {
     //private int colorResourceId;
+    private static SharedPreferences settings;
+    private boolean eurFiat;
 
 
     public AssetAdapter(Context context, ArrayList<Asset> assetList) {
         super(context, 0, assetList);
         //this.colorResourceId = colorResourceId;
+        this.eurFiat = false;
 
     }
 
@@ -37,10 +34,18 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        settings = getContext().getSharedPreferences("SettingsPrefsFile", 0);
+        this.eurFiat = settings.getBoolean("eurFiatMode", false);
+
         // Check if the existing view is being reused, otherwise inflate the view
         View listItemView = convertView;
         if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            if (eurFiat) {
+                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_eur, parent, false);
+
+            } else {
+                listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+            }
 
         }
 
