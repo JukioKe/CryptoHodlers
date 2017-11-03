@@ -63,7 +63,7 @@ public class AssetListActivity extends AppCompatActivity {
         needDelay = false;
 
         //TEST Create  all default Asset objects
-        assetList.addNewAssetToList("Bitcoin", 5.0, R.mipmap.bitcoin);
+        assetList.addNewAssetToList("Bitcoin", 0.0, R.mipmap.bitcoin);
         /*assetList.addNewAssetToList("Ethereum", 2.070);
         assetList.addNewAssetToList("Komodo", 15006.50);
         assetList.addNewAssetToList("Byteball", 20.7860);
