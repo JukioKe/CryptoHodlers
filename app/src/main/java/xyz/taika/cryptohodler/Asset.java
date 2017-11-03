@@ -15,6 +15,8 @@ public class Asset implements Serializable {
     private Double assetQuantity;
     private Double totalValue;
     private Double change24h;
+    private Double change1h;
+    private Double change7d;
     private int imageResourceId;
 
     public Asset(String assetName) {
@@ -22,10 +24,21 @@ public class Asset implements Serializable {
         this.assetQuantity = 0.0;
         this.assetValue = 0.0;
         this.change24h = 0.0;
-
+        this.change1h = 0.0;
+        this.change7d = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
         calculateAssetTotalValue();
+    }
 
+    public Asset(String assetName, int imageResourceId) {
+        this.assetName = assetName;
+        this.assetQuantity = 0.0;
+        this.assetValue = 0.0;
+        this.change24h = 0.0;
+        this.change1h = 0.0;
+        this.change7d = 0.0;
+        this.imageResourceId = imageResourceId;
+        calculateAssetTotalValue();
     }
 
     public Asset(String assetName, String assetSymbol) {
@@ -34,6 +47,8 @@ public class Asset implements Serializable {
         this.assetQuantity = 0.0;
         this.assetValue = 0.0;
         this.change24h = 0.0;
+        this.change1h = 0.0;
+        this.change7d = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
         calculateAssetTotalValue();
 
@@ -44,6 +59,8 @@ public class Asset implements Serializable {
         this.assetQuantity = assetQuantity;
         this.assetValue = 0.0;
         this.change24h = 0.0;
+        this.change1h = 0.0;
+        this.change7d = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
         calculateAssetTotalValue();
 
@@ -55,6 +72,8 @@ public class Asset implements Serializable {
         this.assetSymbol = assetSymbol;
         this.assetValue = 0.0;
         this.change24h = 0.0;
+        this.change1h = 0.0;
+        this.change7d = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
         calculateAssetTotalValue();
     }
@@ -64,6 +83,8 @@ public class Asset implements Serializable {
         this.assetQuantity = assetQuantity;
         this.assetValue = 0.0;
         this.change24h = 0.0;
+        this.change1h = 0.0;
+        this.change7d = 0.0;
         this.imageResourceId = imageResourceId;
         calculateAssetTotalValue();
     }
@@ -74,6 +95,8 @@ public class Asset implements Serializable {
         this.imageResourceId = imageResourceId;
         this.assetValue = 0.0;
         this.change24h = 0.0;
+        this.change1h = 0.0;
+        this.change7d = 0.0;
         this.assetSymbol = assetSymbol;
         calculateAssetTotalValue();
     }

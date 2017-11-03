@@ -3,6 +3,7 @@ package xyz.taika.cryptohodler;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 //Start AssetListActivity where's all the assets in a list
                 Intent checkStatusIntent = new Intent(MainActivity.this, AssetListActivity.class);
 
+                //Check if EUR/USD setting is enabled
                 if (eurFiat) {
                     checkStatusIntent.putExtra("eurFiat", true);
                 } else {
@@ -75,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 showAboutDialog();
             }
         });
-
 
     }
 
@@ -191,43 +194,93 @@ public class MainActivity extends AppCompatActivity {
     //Show dialog that gives possibility to edit settings of the app
     public void showSettingsDialog() {
 
-
         // Creating alert Dialog with one Button
-        final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(MainActivity.this);
+        final AlertDialog.Builder settingsDialog = new AlertDialog.Builder(MainActivity.this);
 
         // Setting Dialog Title
-        editAssetDialog.setTitle("Settings");
+        settingsDialog.setTitle("Settings");
 
         //Show Dialog message
-        editAssetDialog.setMessage("Edit settings");
+        settingsDialog.setMessage("Edit settings");
 
         // Add LinearLayout to show in custom AlertDialog
-        LinearLayout layout = new LinearLayout(MainActivity.this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 0, 50, 0);
-
-        // Create CheckBox View for EUR option
-        final CheckBox eurFiatCheckBox = new CheckBox(MainActivity.this);
-        eurFiatCheckBox.setText("Use EUR instead of USD");
-        eurFiatCheckBox.setChecked(eurFiat);
-        layout.addView(eurFiatCheckBox);
+        LinearLayout dialogLayout = new LinearLayout(MainActivity.this);
+        dialogLayout.setOrientation(LinearLayout.VERTICAL);
+        dialogLayout.setPadding(50, 0, 50, 0);
 
 
-        // Set LinearLayout to AlertDialog
-        editAssetDialog.setView(layout);
+        final LinearLayout fiatValueLayout = new LinearLayout(MainActivity.this);
+        fiatValueLayout.setOrientation(LinearLayout.VERTICAL);
+        fiatValueLayout.setPadding(0, 0, 0 , 20);
+
+        final TextView currencyInfo = new TextView(MainActivity.this);
+        currencyInfo.setText("Preferred fiat currency: ");
+        currencyInfo.setPadding(15, 15, 0, 0);
+
+        final RadioGroup currencyGroup = new RadioGroup(MainActivity.this);
+        currencyGroup.setOrientation(LinearLayout.HORIZONTAL);
+
+        final RadioButton currencyEUR = new RadioButton(MainActivity.this);
+        currencyEUR.setText("EUR");
+
+        final RadioButton currencyUSD = new RadioButton(MainActivity.this);
+        currencyUSD.setText("USD");
+
+        currencyGroup.addView(currencyEUR);
+        currencyGroup.addView(currencyUSD);
+        fiatValueLayout.addView(currencyInfo);
+        fiatValueLayout.addView(currencyGroup);
+
+
+
+        final LinearLayout changePercentageLayout = new LinearLayout(MainActivity.this);
+        changePercentageLayout.setOrientation(LinearLayout.VERTICAL);
+        changePercentageLayout.setPadding(0, 0, 0 , 20);
+
+        final TextView percentageInfo = new TextView(MainActivity.this);
+        percentageInfo.setText("Data change percentage: ");
+        percentageInfo.setPadding(15, 15, 0, 0);
+
+        final RadioGroup percentageGroup = new RadioGroup(MainActivity.this);
+        percentageGroup.setOrientation(LinearLayout.HORIZONTAL);
+
+        final RadioButton radio1h = new RadioButton(MainActivity.this);
+        radio1h.setText("1H");
+
+        final RadioButton radio24h = new RadioButton(MainActivity.this);
+        radio24h.setText("24H");
+
+        final RadioButton radio7d = new RadioButton(MainActivity.this);
+        radio7d.setText("7D");
+
+        percentageGroup.addView(radio1h);
+        percentageGroup.addView(radio24h);
+        percentageGroup.addView(radio7d);
+        changePercentageLayout.addView(percentageInfo);
+        changePercentageLayout.addView(percentageGroup);
+
+
+
+        //Add views to dialog layout
+        dialogLayout.addView(changePercentageLayout);
+        dialogLayout.addView(fiatValueLayout);
+
+
+        settingsDialog.setView(dialogLayout);
 
 
         // Setting Positive "Done" Button
-        editAssetDialog.setPositiveButton("DONE",
+        settingsDialog.setPositiveButton("DONE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog id DONE button is pressed
 
-                        if (eurFiatCheckBox.isChecked()) {
+                        if (currencyEUR.isChecked()) {
                             eurFiat = true;
-                        } else {
+                        } else if (currencyUSD.isChecked()) {
                             eurFiat = false;
                         }
+
 
                         // An Editor object to make preference changes.
                         // All objects are from android.context.Context
@@ -245,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         // Setting Negative "Cancel" Button
-        editAssetDialog.setNegativeButton("CANCEL",
+        settingsDialog.setNegativeButton("CANCEL",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
@@ -256,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Showing Alert Message
-        editAssetDialog.show();
+        settingsDialog.show();
 
     }
 
