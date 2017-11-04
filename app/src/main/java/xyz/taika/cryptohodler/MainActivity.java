@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         this.eurFiat = settings.getBoolean("eurFiatMode", false);
+        this.changePercent = settings.getString("changePercent", "DEFAULT");
 
 
         statusButton.setOnClickListener(new View.OnClickListener() {
@@ -294,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putBoolean("eurFiatMode", eurFiat);
+                        editor.putString("changePercent", changePercent);
 
                         // Commit the edits!
                         editor.commit();

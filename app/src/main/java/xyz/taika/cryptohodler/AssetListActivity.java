@@ -184,12 +184,18 @@ public class AssetListActivity extends AppCompatActivity {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(50, 0, 50, 0);
 
+        // Create EditText View for asset name and add it to LinearLayout
+        final EditText assetNameField = new EditText(AssetListActivity.this);
+        assetNameField.setHint("Change asset name");
+
         // Create EditText View for asset quantity and add it to LinearLayout
         final EditText assetQuantityField = new EditText(AssetListActivity.this);
         assetQuantityField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        assetQuantityField.setHint("Change your " + clickedAsset.getAssetName() + " quantity");
-        layout.addView(assetQuantityField);
+        assetQuantityField.setHint("Change asset quantity");
 
+        //Add view to layout
+        layout.addView(assetNameField);
+        layout.addView(assetQuantityField);
 
         // Set LinearLayout to AlertDialog
         editAssetDialog.setView(layout);
@@ -200,16 +206,26 @@ public class AssetListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog id DONE button is pressed
-                        String assetQuantity = assetQuantityField.getText().toString();
-
-                        if (assetQuantity.isEmpty()) {
-                            assetQuantity = "0.0";
-                        }
-                        Double quantity = Double.valueOf(assetQuantity);
 
                         for (Asset asset : assetList.getAssetList()) {
                             if (clickedAsset.getAssetName().toLowerCase().equals(asset.getAssetName().toLowerCase())) {
-                                asset.setAssetQuantity(quantity);
+
+                                String assetQuantityString = assetQuantityField.getText().toString();
+                                String assetName = assetNameField.getText().toString();
+
+                                if (!assetQuantityString.isEmpty()) {
+                                    Double assetQuantityDouble = asset.getAssetQuantity();
+
+                                    //assetQuantity = "0.0";
+
+                                    assetQuantityDouble = Double.valueOf(assetQuantityString);
+
+                                    asset.setAssetQuantity(assetQuantityDouble);
+                                }
+
+                                if (!assetName.isEmpty()) {
+                                    asset.setAssetName(assetName);
+                                }
                             }
                         }
 
