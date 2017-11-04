@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button aboutButton;
     TextView infoTextView;
     private boolean eurFiat;
-
+    private String changePercent;
 
 
     @Override
@@ -50,18 +50,13 @@ public class MainActivity extends AppCompatActivity {
         this.eurFiat = settings.getBoolean("eurFiatMode", false);
 
 
-
-
-
-
-
-
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //Start AssetListActivity where's all the assets in a list
                 Intent checkStatusIntent = new Intent(MainActivity.this, AssetListActivity.class);
+                checkStatusIntent.putExtra("changePercent", changePercent);
 
                 //Check if EUR/USD setting is enabled
                 if (eurFiat) {
@@ -69,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     checkStatusIntent.putExtra("eurFiat", false);
                 }
+
+
                 startActivity(checkStatusIntent);
             }
         });
@@ -117,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 String mssg = "Hey, good job finding that little ****(bug). Describe your findings here and send it to Taika Inc. Thanks!: \n";
 
                 //remove the last line(Press Order-button to confirm your order.) of Order summary, as it not needed in email confirmation
-                if(mssg.lastIndexOf("\n")>0) {
+                if (mssg.lastIndexOf("\n") > 0) {
                     mssg = mssg.substring(0, mssg.lastIndexOf("\n"));
                 }
 
@@ -180,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog id DONE button is pressed
                         dialog.cancel();
-
                     }
                 });
 
@@ -190,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
         // Showing Alert Message
         editAssetDialog.show();
     }
+
 
     //Show dialog that gives possibility to edit settings of the app
     public void showSettingsDialog() {
@@ -211,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
         final LinearLayout fiatValueLayout = new LinearLayout(MainActivity.this);
         fiatValueLayout.setOrientation(LinearLayout.VERTICAL);
-        fiatValueLayout.setPadding(0, 0, 0 , 20);
+        fiatValueLayout.setPadding(0, 0, 0, 20);
 
         final TextView currencyInfo = new TextView(MainActivity.this);
         currencyInfo.setText("Preferred fiat currency: ");
@@ -219,23 +216,24 @@ public class MainActivity extends AppCompatActivity {
 
         final RadioGroup currencyGroup = new RadioGroup(MainActivity.this);
         currencyGroup.setOrientation(LinearLayout.HORIZONTAL);
+        currencyGroup.setPadding(10, 0, 0, 0);
 
         final RadioButton currencyEUR = new RadioButton(MainActivity.this);
-        currencyEUR.setText("EUR");
+        currencyEUR.setText("Euro");
+        currencyEUR.setPadding(0, 0, 10, 0);
 
         final RadioButton currencyUSD = new RadioButton(MainActivity.this);
         currencyUSD.setText("USD");
 
-        currencyGroup.addView(currencyEUR);
         currencyGroup.addView(currencyUSD);
+        currencyGroup.addView(currencyEUR);
         fiatValueLayout.addView(currencyInfo);
         fiatValueLayout.addView(currencyGroup);
 
 
-
         final LinearLayout changePercentageLayout = new LinearLayout(MainActivity.this);
         changePercentageLayout.setOrientation(LinearLayout.VERTICAL);
-        changePercentageLayout.setPadding(0, 0, 0 , 20);
+        changePercentageLayout.setPadding(0, 0, 0, 20);
 
         final TextView percentageInfo = new TextView(MainActivity.this);
         percentageInfo.setText("Data change percentage: ");
@@ -243,12 +241,16 @@ public class MainActivity extends AppCompatActivity {
 
         final RadioGroup percentageGroup = new RadioGroup(MainActivity.this);
         percentageGroup.setOrientation(LinearLayout.HORIZONTAL);
+        percentageGroup.setPadding(10, 0, 0, 0);
 
         final RadioButton radio1h = new RadioButton(MainActivity.this);
         radio1h.setText("1H");
+        radio1h.setPadding(0, 0, 23, 0);
 
         final RadioButton radio24h = new RadioButton(MainActivity.this);
         radio24h.setText("24H");
+        radio24h.setPadding(0, 0, 23, 0);
+
 
         final RadioButton radio7d = new RadioButton(MainActivity.this);
         radio7d.setText("7D");
@@ -260,14 +262,12 @@ public class MainActivity extends AppCompatActivity {
         changePercentageLayout.addView(percentageGroup);
 
 
-
         //Add views to dialog layout
-        dialogLayout.addView(changePercentageLayout);
         dialogLayout.addView(fiatValueLayout);
+        dialogLayout.addView(changePercentageLayout);
 
 
         settingsDialog.setView(dialogLayout);
-
 
         // Setting Positive "Done" Button
         settingsDialog.setPositiveButton("DONE",
@@ -281,6 +281,13 @@ public class MainActivity extends AppCompatActivity {
                             eurFiat = false;
                         }
 
+                        if (radio1h.isChecked()) {
+                            changePercent = "1H";
+                        } else if (radio24h.isChecked()) {
+                            changePercent = "24H";
+                        } else if (radio7d.isChecked()) {
+                            changePercent = "7D";
+                        }
 
                         // An Editor object to make preference changes.
                         // All objects are from android.context.Context
@@ -305,7 +312,6 @@ public class MainActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-
 
 
         // Showing Alert Message

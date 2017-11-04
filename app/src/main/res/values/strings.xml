@@ -9,6 +9,7 @@
     <string name="about">About</string>
     <string name="logo_image">Logo image</string>
     <string name="price">Price | $</string>
+    <string name="price_eur">Price | €</string>
     <string name="total_value">Total value</string>
     <string name="dollarsign">$</string>
     <string name="quantity">Quantity |&#160;</string>
@@ -33,5 +34,5 @@
 
 
     </string>
-    <string name="price_eur">Price | €</string>
+
 </resources>
