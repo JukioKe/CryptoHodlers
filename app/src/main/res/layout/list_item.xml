@@ -19,7 +19,7 @@
 
         <LinearLayout
             android:id="@+id/text_container"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:orientation="vertical"
@@ -58,7 +58,7 @@
                     android:gravity="center_vertical"
                     android:textAppearance="?android:textAppearanceListItem"
                     android:textColor="@android:color/tertiary_text_dark"
-                    tools:text="3200" />
+                    tools:text="6170,7606" />
 
 
                 <TextView
@@ -102,7 +102,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="110dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"

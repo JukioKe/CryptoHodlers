@@ -40,6 +40,7 @@ public class AssetListActivity extends AppCompatActivity {
     private AssetAdapter assetAdapter;
     private boolean needDelay;
     private boolean eurFiat;
+    private String changePercent;
 
     @Override
     public void onResume() {
@@ -55,6 +56,7 @@ public class AssetListActivity extends AppCompatActivity {
 
         //Get Intent data from MainActivity
         eurFiat = getIntent().getExtras().getBoolean("eurFiat");
+        changePercent = getIntent().getExtras().getString("changePercent");
 
         //Read file from internal storage
         this.assetList = new AssetList();
@@ -156,6 +158,10 @@ public class AssetListActivity extends AppCompatActivity {
         );
 
 
+    }
+
+    public String getChangePercentage() {
+        return this.changePercent;
     }
 
 
@@ -361,6 +367,7 @@ public class AssetListActivity extends AppCompatActivity {
 
         JSONArray jsonArray = null;
         ProgressDialog progressDialog = null;
+        String changePercent = getChangePercentage();
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -391,9 +398,6 @@ public class AssetListActivity extends AppCompatActivity {
 
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line).append("\n");
-
-                    Log.d("Response: ", "> " + line);   //Log whole response line by line
-
                 }
 
                 //try to create JsonArray, so its easy to get specific JsonObject and values from it.
@@ -437,29 +441,39 @@ public class AssetListActivity extends AppCompatActivity {
                     JSONObject jsonObjectI = jsonArray.getJSONObject(i);
                     String jsonObjectName = jsonObjectI.getString("name");
                     String jsonObjectSymbol = jsonObjectI.getString("symbol");
-                    String eurOrUsd = "";
+                    String fiatValueString = "";
                     if (eurFiat) {
-                        eurOrUsd += "price_eur";
+                        fiatValueString += "price_eur";
                     } else {
-                        eurOrUsd += "price_usd";
+                        fiatValueString += "price_usd";
                     }
 
                     for (Asset asset : assetList.getAssetList()) {
 
                         if (jsonObjectName.equals(asset.getAssetName()) || jsonObjectSymbol.equals(asset.getAssetSymbol())) {
-                            Double change24h;
-                            String change24hString = jsonObjectI.getString("percent_change_24h");
-                            Double assetPrice = 0.0;
-                            assetPrice = Double.parseDouble(jsonObjectI.getString(eurOrUsd));
+                            Double changePercent;
+                            String changePercentString;
 
-                            if (change24hString.equals("null")) {
-                                change24h = 0.0;
+                            if (this.changePercent.equals("1H")) {
+                                changePercentString = jsonObjectI.getString("percent_change_1h");
+                            } else if (this.changePercent.equals("7D")) {
+                                changePercentString = jsonObjectI.getString("percent_change_7d");
                             } else {
-                                change24h = Double.parseDouble(change24hString);
+                                changePercentString = jsonObjectI.getString("percent_change_24h");
+                            }
+
+
+                            Double assetPrice = 0.0;
+                            assetPrice = Double.parseDouble(jsonObjectI.getString(fiatValueString));
+
+                            if (changePercentString.equals("null")) {
+                                changePercent = 0.0;
+                            } else {
+                                changePercent = Double.parseDouble(changePercentString);
                             }
 
                             asset.setAssetValue(assetPrice);
-                            asset.setChange24h(change24h);
+                            asset.setChange24h(changePercent);
                             asset.calculateAssetTotalValue();
                         }
                     }
