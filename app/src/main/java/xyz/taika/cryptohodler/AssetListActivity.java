@@ -41,6 +41,7 @@ public class AssetListActivity extends AppCompatActivity {
     private boolean needDelay;
     private boolean eurFiat;
     private String changePercent;
+    UpdateDataTask updateDataTask;
 
     @Override
     public void onResume() {
@@ -84,32 +85,7 @@ public class AssetListActivity extends AppCompatActivity {
         assetList.addNewAssetToList("Factom", 20.67);*/
 
 
-        //Add floating action button with add new asset -functionality
-        FloatingActionButton newAssetFAB = (FloatingActionButton) findViewById(R.id.new_asset_fab);
-        newAssetFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Show Add new asset dialog
-                showNewAssetDialog();
 
-            }
-        });
-
-        /*Add floating action button with refresh asset list -functionality
-        final FloatingActionButton refreshFAB = (FloatingActionButton) findViewById(R.id.refresh_fab);
-
-        //Set onClick listener to the refresh button
-        refreshFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                getApiData();
-
-                //Delete old saved file and save new one with changed data
-                //deleteFile("assetListData");
-                //saveAssetListToInternalStorage(AssetListActivity.this);
-            }
-        }); */
 
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
@@ -123,8 +99,20 @@ public class AssetListActivity extends AppCompatActivity {
         }
 
 
+        //Add floating action button with add new asset -functionality
+        FloatingActionButton newAssetFAB = (FloatingActionButton) findViewById(R.id.new_asset_fab);
+        newAssetFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Show Add new asset dialog
+                showNewAssetDialog();
+
+            }
+        });
+
+
         // Set a click listener to show custom Dialog that enables a change to change specific list view item when the list item is clicked on
-        //assert listView != null;
+        assert listView != null;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -138,9 +126,9 @@ public class AssetListActivity extends AppCompatActivity {
             }
         });
 
-        /* TEST Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
-        performs a swipe-to-refresh gesture.
-*/
+
+        /*Sets up a SwipeRefreshLayout.OnRefreshListener that is invoked when the user
+        performs a swipe-to-refresh gesture. */
         final SwipeRefreshLayout mySwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -348,7 +336,7 @@ public class AssetListActivity extends AppCompatActivity {
                         assetList.addNewAssetToList(assetName, assetSymbol, quantity);
 
 
-                        //Execute JsonTask to get fresh API data
+                        //Execute UpdateDataTask to get fresh API data
                         getApiData();
 
                         //Notify adapter that data has changed and refresh ListView
@@ -378,8 +366,8 @@ public class AssetListActivity extends AppCompatActivity {
     }
 
 
-    //Create JsonTask class that gets API-data via Inet
-    private class JsonTask extends AsyncTask<String, String, String> {
+    //Create UpdateDataTask class that gets API-data via Inet
+    private class UpdateDataTask extends AsyncTask<String, String, String> {
 
         JSONArray jsonArray = null;
         ProgressDialog progressDialog = null;
@@ -451,12 +439,18 @@ public class AssetListActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
 
+
+            //Cycle through jsonArray to update data of already created assets
             for (int i = 0; i < jsonArray.length(); i++) {
+
                 try {
                     //Get JSON object from JSON array at position[i]
-                    JSONObject jsonObjectI = jsonArray.getJSONObject(i);
-                    String jsonObjectName = jsonObjectI.getString("name");
-                    String jsonObjectSymbol = jsonObjectI.getString("symbol");
+                    JSONObject jsonArrayObject = jsonArray.getJSONObject(i);
+
+                    String jsonObjectName = jsonArrayObject.getString("name");
+                    String jsonObjectSymbol = jsonArrayObject.getString("symbol");
+
+                    //Create String to determine to use EUR or USD as a fiat value
                     String fiatValueString = "";
                     if (eurFiat) {
                         fiatValueString += "price_eur";
@@ -464,23 +458,26 @@ public class AssetListActivity extends AppCompatActivity {
                         fiatValueString += "price_usd";
                     }
 
+                    //Cycle through already created assets to update newest data to them
                     for (Asset asset : assetList.getAssetList()) {
 
                         if (jsonObjectName.equals(asset.getAssetName()) || jsonObjectSymbol.equals(asset.getAssetSymbol())) {
                             Double changePercent;
                             String changePercentString;
 
-                            if (this.changePercent.equals("1H")) {
-                                changePercentString = jsonObjectI.getString("percent_change_1h");
-                            } else if (this.changePercent.equals("7D")) {
-                                changePercentString = jsonObjectI.getString("percent_change_7d");
-                            } else {
-                                changePercentString = jsonObjectI.getString("percent_change_24h");
+                            //Save correct price percent change data to String
+                            switch (this.changePercent) {
+                                case "1H":
+                                    changePercentString = jsonArrayObject.getString("percent_change_1h");
+                                    break;
+                                case "7D":
+                                    changePercentString = jsonArrayObject.getString("percent_change_7d");
+                                    break;
+                                default:
+                                    changePercentString = jsonArrayObject.getString("percent_change_24h");
+                                    break;
                             }
 
-
-                            Double assetPrice = 0.0;
-                            assetPrice = Double.parseDouble(jsonObjectI.getString(fiatValueString));
 
                             if (changePercentString.equals("null")) {
                                 changePercent = 0.0;
@@ -488,6 +485,12 @@ public class AssetListActivity extends AppCompatActivity {
                                 changePercent = Double.parseDouble(changePercentString);
                             }
 
+
+                            //Save correct price data to Double
+                            Double assetPrice;
+                            assetPrice = Double.parseDouble(jsonArrayObject.getString(fiatValueString));
+
+                            //Save updated data to current asset
                             asset.setAssetValue(assetPrice);
                             asset.setChange24h(changePercent);
                             asset.calculateAssetTotalValue();
@@ -500,9 +503,10 @@ public class AssetListActivity extends AppCompatActivity {
 
             }
 
+            //Sort list
             assetList.sortList();
 
-            //Delete old assetlist -file and save new one with fresh data
+            //Delete old assetlist -file and save new one with fresh data to internal storage
             deleteFile("assetListData");
             saveAssetListToInternalStorage(AssetListActivity.this);
 
@@ -514,19 +518,20 @@ public class AssetListActivity extends AppCompatActivity {
     }
 
 
-    //This method starts JsonTask that tries to get fresh API data from internet
+    //This method starts UpdateDataTask that tries to get fresh API data from internet
     public void getApiData() {
-        if (!needDelay) {
-            //Execute JsonTask to get fresh API data
 
-            if (this.eurFiat == true) {
-                new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?convert=EUR");
+        //Check if user has updated data already within 10 seconds otherwise show toast
+        if (!needDelay) {
+            //Execute UpdateDataTask to get fresh API data
+            if (this.eurFiat) {
+                new UpdateDataTask().execute("https://api.coinmarketcap.com/v1/ticker/?convert=EUR&limit=0");
             } else {
-                new JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/");
+                new UpdateDataTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=0");
             }
 
+            //Set 10sec delay before user can update data again
             needDelay = true;
-
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -534,15 +539,28 @@ public class AssetListActivity extends AppCompatActivity {
                     needDelay = false;
                 }
             }, 10000);
-
         } else {
             // Show toast
             Toast.makeText(getApplicationContext(), "Fresh asset data can updated once in every 10 seconds", Toast.LENGTH_SHORT).show();
-
         }
 
     }
 
+    // Save assetList to internal storage
+    public void saveAssetListToInternalStorage(Context context) {
+        try {
+            String filename = "AssetListData";
+            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            ObjectOutputStream ous = new ObjectOutputStream(fos);
+            ous.writeObject(this.assetList);
+
+            ous.flush();
+            ous.close();
+            fos.close();
+        } catch (Exception e) {
+            Log.e("InternalStorage", e.getMessage());
+        }
+    }
 
     //Get assetlist data from internal Storage
     public AssetList readFromInternalStorage(Context context) {
@@ -560,24 +578,6 @@ public class AssetListActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return toReturn;
-    }
-
-
-    // Save assetList to internal storage
-    public void saveAssetListToInternalStorage(Context context) {
-        try {
-            String filename = "AssetListData";
-            FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            ObjectOutputStream ous = new ObjectOutputStream(fos);
-            ous.writeObject(this.assetList);
-
-
-            ous.flush();
-            ous.close();
-            fos.close();
-        } catch (Exception e) {
-            Log.e("InternalStorage", e.getMessage());
-        }
     }
 
 
