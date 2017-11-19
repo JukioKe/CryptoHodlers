@@ -17,15 +17,14 @@ import java.util.ArrayList;
  */
 
 public class AssetAdapter extends ArrayAdapter<Asset> {
-    //private int colorResourceId;
-    private static SharedPreferences settings;
     private boolean eurFiat;
 
 
-    public AssetAdapter(Context context, ArrayList<Asset> assetList) {
+    AssetAdapter(Context context, ArrayList<Asset> assetList) {
         super(context, 0, assetList);
         //this.colorResourceId = colorResourceId;
         this.eurFiat = false;
+
 
     }
 
@@ -34,7 +33,7 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        settings = getContext().getSharedPreferences("SettingsPrefsFile", 0);
+        SharedPreferences settings = getContext().getSharedPreferences("SettingsPrefsFile", 0);
         this.eurFiat = settings.getBoolean("eurFiatMode", false);
 
         // Check if the existing view is being reused, otherwise inflate the view
@@ -52,6 +51,17 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         // Get the Asset object located at this position in the list
         Asset currentAssetObject = getItem(position);
 
+        //Get length of the asset value number so we can determine right margin
+        String fiatValueString = currentAssetObject.getAssetValue().toString();
+        int marginLength = 3; //default 3
+
+        for (int a=1; a<fiatValueString.length(); a++) {
+            if (fiatValueString.charAt(a) == '.') {
+                marginLength = a;
+                break;
+            }
+        }
+
 
         // Find the TextView in the list_item.xml layout with the ID version_name
         TextView nameTextView = (TextView) listItemView.findViewById(R.id.asset_name);
@@ -65,7 +75,16 @@ public class AssetAdapter extends ArrayAdapter<Asset> {
         TextView valueTextView = (TextView) listItemView.findViewById(R.id.asset_value);
         // Get the asset value from the current object and set this as a text on the value TextView
         if (currentAssetObject != null) {
-            valueTextView.setText("" + String.format("%.3f", currentAssetObject.getAssetValue()));
+            if (marginLength == 1) {
+                valueTextView.setText("" + String.format("%.6f", currentAssetObject.getAssetValue()));
+            } else if(marginLength == 2) {
+                valueTextView.setText("" + String.format("%.5f", currentAssetObject.getAssetValue()));
+            } else if (marginLength == 3) {
+                valueTextView.setText("" + String.format("%.4f", currentAssetObject.getAssetValue()));
+            } else {
+                valueTextView.setText("" + String.format("%.3f", currentAssetObject.getAssetValue()));
+            }
+
         }
 
         // Find the TextView in the list_item.xml layout with the ID version_number

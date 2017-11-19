@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return true;
             case R.id.action_exit:
-                // Show toast
+                // Show toast and close app
                 Toast.makeText(getApplicationContext(), "Crypto Hodlers closed", Toast.LENGTH_SHORT).show();
                 finishAndRemoveTask();
             default:
