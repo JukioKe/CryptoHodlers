@@ -3,9 +3,7 @@ package xyz.taika.cryptohodler;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,29 +16,26 @@ import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by Jukka on 07/11/2017.
- */
 
 //Create JsonTask class that gets API-data via Internet
-public class UpdateDataTask extends AsyncTask<String, String, String> {
+class UpdateDataTask extends AsyncTask<String, String, String> {
 
     private Context context;
     private JSONArray jsonArray = null;
     private ProgressDialog progressDialog = null;
     private AssetList assetList = new AssetList();
-    private String changePercent;
+    private String changePercentRate;
+    private AssetAdapter assetAdapter;
     private Boolean eurFiat;
-    //OLD WORKING String changePercent = getChangePercentage();
+    //OLD WORKING String changePercentRate = getChangePercentage();
 
 
-    public UpdateDataTask(Context context, AssetList assetList, String changePercent) {
+    UpdateDataTask(Context context, AssetList assetList, AssetAdapter assetAdapter, String changePercentRate, Boolean eurFiat) {
         this.context = context;
         this.assetList = assetList;
-        this.changePercent = changePercent;
-
-        //First testing with default value
-        this.eurFiat = false;
+        this.changePercentRate = changePercentRate;
+        this.assetAdapter = assetAdapter;
+        this.eurFiat = eurFiat;
     }
 
     protected void onPreExecute() {
@@ -79,7 +74,7 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
             //try to create JsonArray, so its easy to get specific JsonObject and values from it.
             try {
                 jsonArray = new JSONArray(buffer.toString());
-                Log.i("AssetListActivity!", "JSON array created, length: " + jsonArray.length());
+                Log.i("UpdateDataTask.java", "JSON array created, length: " + jsonArray.length());
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -131,22 +126,25 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
                 }
 
                 //Cycle through already created assets to update newest data to them
-                for (Asset asset : assetList.getAssetList()) {
-
+                for (Asset asset : assetList.getAssetList())
                     if (jsonObjectName.equals(asset.getAssetName()) || jsonObjectSymbol.equals(asset.getAssetSymbol())) {
                         Double changePercent;
                         String changePercentString;
 
                         //Save correct price percent change data to String
-                        if (this.changePercent.equals("1H")) {
-                            changePercentString = jsonArrayObject.getString("percent_change_1h");
-                        } else if (this.changePercent.equals("7D")) {
-                            changePercentString = jsonArrayObject.getString("percent_change_7d");
-                        } else {
-                            changePercentString = jsonArrayObject.getString("percent_change_24h");
+                        switch (this.changePercentRate) {
+                            case "1H":
+                                changePercentString = jsonArrayObject.getString("percent_change_1h");
+                                break;
+                            case "7D":
+                                changePercentString = jsonArrayObject.getString("percent_change_7d");
+                                break;
+                            default:
+                                changePercentString = jsonArrayObject.getString("percent_change_24h");
+                                break;
                         }
 
-
+                        //Check if change percent data is not null and assign right value to it
                         if (changePercentString.equals("null")) {
                             changePercent = 0.0;
                         } else {
@@ -155,7 +153,7 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
 
 
                         //Save correct price data to Double
-                        Double assetPrice = 0.0;
+                        Double assetPrice;
                         assetPrice = Double.parseDouble(jsonArrayObject.getString(fiatValueString));
 
                         //Save updated data to current asset
@@ -163,7 +161,6 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
                         asset.setChange24h(changePercent);
                         asset.calculateAssetTotalValue();
                     }
-                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -174,18 +171,18 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
         //Sort list
         assetList.sortList();
 
+
         //Delete old assetlist -file and save new one with fresh data to internal storage
         context.deleteFile("assetListData");
         saveAssetListToInternalStorage(context);
 
-        //TEST to notify that adapter right after returning from this class
         //Notify adapter that data has changed and refresh ListView
-        //OLD WORKING assetAdapter.notifyDataSetChanged();
+        assetAdapter.notifyDataSetChanged();
 
     }
 
     // Save assetList to internal storage
-    public void saveAssetListToInternalStorage(Context context) {
+    private void saveAssetListToInternalStorage(Context context) {
         try {
             String filename = "AssetListData";
             FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE);
@@ -201,34 +198,3 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
     }
 
 }
-
-/*
-    //This method starts UpdateDataTask that tries to get fresh API data from internet
-    public void getApiData() {
-
-        //Check if user has updated data already within 10 seconds otherwise show toast
-        if (!needDelay) {
-            //Execute UpdateDataTask to get fresh API data
-            if (this.eurFiat) {
-                new AssetListActivity.JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?convert=EUR&limit=0");
-            } else {
-                new AssetListActivity.JsonTask().execute("https://api.coinmarketcap.com/v1/ticker/?limit=0");
-            }
-
-            //Set 10sec delay before user can update data again
-            needDelay = true;
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    needDelay = false;
-                }
-            }, 10000);
-        } else {
-            // Show toast
-            Toast.makeText(getApplicationContext(), "Fresh asset data can updated once in every 10 seconds", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-*/
-
