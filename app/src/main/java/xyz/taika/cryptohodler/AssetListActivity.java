@@ -108,7 +108,6 @@ public class AssetListActivity extends AppCompatActivity {
 
                 //Show dialog
                 showEditAssetDialog(assetJustClicked);
-
             }
         });
 

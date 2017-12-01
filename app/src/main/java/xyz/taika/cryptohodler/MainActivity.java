@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
     Button statusButton;
     Button aboutButton;
     TextView infoTextView;
-    private boolean eurFiat;
-    private String changePercentRate;
+    private boolean eurFiat; //This stores value of user chosen fiat value. Default = USD
+    private String changePercentRate; //This stores value of user chosen change percent rate. Default = 24h
 
 
     @Override
@@ -36,21 +36,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Set corresponding XML layouts to views
         statusButton = (Button) findViewById(R.id.AssetListButton);
         aboutButton = (Button) findViewById(R.id.aboutButton);
         infoTextView = (TextView) findViewById(R.id.infoTextView);
 
-
-        // Restore preferences
+        //Restore preferences
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         this.eurFiat = settings.getBoolean("eurFiatMode", false);
         this.changePercentRate = settings.getString("changePercentRate", "DEFAULT");
-
-
+        
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Start AssetListActivity where's all the assets in a list
                 Intent checkStatusIntent = new Intent(MainActivity.this, AssetListActivity.class);
                 checkStatusIntent.putExtra("changePercentRate", changePercentRate);
@@ -62,11 +60,12 @@ public class MainActivity extends AppCompatActivity {
                     checkStatusIntent.putExtra("eurFiat", false);
                 }
 
-
+                //Start activity
                 startActivity(checkStatusIntent);
             }
         });
 
+        //Set onClickListener to About button
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View vv) {
@@ -96,23 +95,22 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_settings:
-
+                //Show settings dialog
                 showSettingsDialog();
-
-
                 super.onOptionsItemSelected(item);
                 return true;
 
             case R.id.action_report_bug:
-                // Show toast
+
+                //Set subject, recipient address and default message to bug report
                 String subject = "Crypto Hodlers bug";
                 String[] addresses = new String[1];
                 addresses[0] = "jukka@taika.xyz";
-                String mssg = "Hey, good job finding that little ****(bug). Describe your findings here and send it to Taika Inc. Thanks!: \n";
+                String bugMessage = getString(R.string.bug_message);
 
                 //remove the last line(Press Order-button to confirm your order.) of Order summary, as it not needed in email confirmation
-                if (mssg.lastIndexOf("\n") > 0) {
-                    mssg = mssg.substring(0, mssg.lastIndexOf("\n"));
+                if (bugMessage.lastIndexOf("\n") > 0) {
+                    bugMessage = bugMessage.substring(0, bugMessage.lastIndexOf("\n"));
                 }
 
                 //start email intent to send Order confirmation via email
@@ -121,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.setData(Uri.parse("mailto:"));
                 intent.putExtra(Intent.EXTRA_EMAIL, addresses);
                 intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                intent.putExtra(Intent.EXTRA_TEXT, mssg);
+                intent.putExtra(Intent.EXTRA_TEXT, bugMessage);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
@@ -140,13 +138,13 @@ public class MainActivity extends AppCompatActivity {
     //Show dialog that gives possibility to edit asset from the list
     public void showAboutDialog() {
 
-        // Creating alert Dialog with one Button
+        //Create alert Dialog with one Button
         final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(MainActivity.this);
 
-        // Setting Dialog Title
+        //Set Dialog Title
         editAssetDialog.setTitle("Crypto Hodlers");
 
-        //Show Dialog message
+        //Set Dialog message
         editAssetDialog.setMessage("ABOUT");
 
         // Add LinearLayout to show in custom AlertDialog
@@ -158,10 +156,8 @@ public class MainActivity extends AppCompatActivity {
         aboutTextView.setText(R.string.about_textview);
         layout.addView(aboutTextView);
 
-
-        // Set LinearLayout to AlertDialog
+        //Set LinearLayout to AlertDialog
         editAssetDialog.setView(layout);
-
 
         // Setting Positive "Done" Button
         editAssetDialog.setPositiveButton("OK",
@@ -172,10 +168,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        // TEST Possibility to set Icon to Dialog
+        //Set Icon to Dialog
         editAssetDialog.setIcon(R.drawable.crypto_hodlers_icon);
 
-        // Showing Alert Message
+        //Show Alert Message
         editAssetDialog.show();
     }
 
@@ -183,20 +179,19 @@ public class MainActivity extends AppCompatActivity {
     //Show dialog that gives possibility to edit settings of the app
     public void showSettingsDialog() {
 
-        // Creating alert Dialog with one Button
+        //Create alert Dialog with one Button
         final AlertDialog.Builder settingsDialog = new AlertDialog.Builder(MainActivity.this);
 
-        // Setting Dialog Title
+        //Set Dialog Title
         settingsDialog.setTitle("Settings");
 
-        //Show Dialog message
+        //Set Dialog message
         settingsDialog.setMessage("Edit settings");
 
-        // Add LinearLayout to show in custom AlertDialog
+        //TEST Add LinearLayout to show in custom AlertDialog. !(Replace later with XML instead)!
         LinearLayout dialogLayout = new LinearLayout(MainActivity.this);
         dialogLayout.setOrientation(LinearLayout.VERTICAL);
         dialogLayout.setPadding(50, 0, 50, 0);
-
 
         final LinearLayout fiatValueLayout = new LinearLayout(MainActivity.this);
         fiatValueLayout.setOrientation(LinearLayout.VERTICAL);
@@ -258,14 +253,14 @@ public class MainActivity extends AppCompatActivity {
         dialogLayout.addView(fiatValueLayout);
         dialogLayout.addView(changePercentageLayout);
 
-
+        //Set dialog layout to settings dialog view
         settingsDialog.setView(dialogLayout);
 
         // Setting Positive "Done" Button
         settingsDialog.setPositiveButton("DONE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog id DONE button is pressed
+                        //Execute after dialogs DONE button is pressed
 
                         if (currencyEUR.isChecked()) {
                             eurFiat = true;
@@ -281,8 +276,7 @@ public class MainActivity extends AppCompatActivity {
                             changePercentRate = "7D";
                         }
 
-                        // An Editor object to make preference changes.
-                        // All objects are from android.context.Context
+                        // An Editor object to make preference changes. All objects are from android.context.Context
                         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                         SharedPreferences.Editor settingsEditor = settings.edit();
                         settingsEditor.putBoolean("eurFiatMode", eurFiat);
@@ -307,13 +301,9 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-        // Showing Alert Message
+        //Showing dialog
         settingsDialog.show();
 
-    }
-
-    public boolean getEurFiat() {
-        return eurFiat;
     }
 
 }
