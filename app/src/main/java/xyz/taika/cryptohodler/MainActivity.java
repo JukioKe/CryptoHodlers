@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         this.eurFiat = settings.getBoolean("eurFiatMode", false);
         this.changePercentRate = settings.getString("changePercentRate", "DEFAULT");
-        
+
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
