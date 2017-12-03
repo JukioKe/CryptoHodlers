@@ -4,7 +4,7 @@
     <string name="action_report_bug">Report bug ^</string>
     <string name="action_exit">Exit</string>
     <string name="assetlist_button">Check assets</string>
-    <string name="info_text_view">Guide: Check the status of your assets, find more about this app or
+    <string name="info_text_view"><b>Guide:</b> Check the status of your assets, find more about this app or
         use upper right corner to see other options.</string>
     <string name="title_activity_asset_list">Asset list</string>
     <string name="about">About</string>
@@ -16,8 +16,6 @@
     <string name="quantity">Quantity |&#160;</string>
     <string name="app_logo">App logo</string>
     <string name="about_textview">This app is developed under GNU GENERAL PUBLIC LICENSE Version 3.\n\n
-
-        *Notice: This app is still under development. This README -file gets updated once in a while as development gets further.\n\n
 
         An Android app that makes it easy to gather data from various assets to one place.
         With powerful use of web API, user can get fresh data of assets of they like from the Internet. Fresh data makes it easy to follow and
