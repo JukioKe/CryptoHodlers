@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -142,29 +144,20 @@ public class AssetListActivity extends AppCompatActivity {
         // Setting Dialog Title
         editAssetDialog.setTitle("EDIT ASSET");
 
-        //Show Dialog message
+        editAssetDialog.setIcon(clickedAsset.getImageResourceId());
+
+        // Set Dialog message
         editAssetDialog.setMessage("Edit your " + clickedAsset.getAssetName() + " asset");
 
-        // Add LinearLayout to show in custom AlertDialog
-        LinearLayout layout = new LinearLayout(AssetListActivity.this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 0, 50, 0);
+        // Inflate layout
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.edit_asset_dialog, null);
+        editAssetDialog.setView(dialogView);
 
-        // Create EditText View for asset name and add it to LinearLayout
-        final EditText assetNameField = new EditText(AssetListActivity.this);
-        assetNameField.setHint("Change asset name");
 
-        // Create EditText View for asset quantity and add it to LinearLayout
-        final EditText assetQuantityField = new EditText(AssetListActivity.this);
-        assetQuantityField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        assetQuantityField.setHint("Change asset quantity");
-
-        //Add view to layout
-        layout.addView(assetNameField);
-        layout.addView(assetQuantityField);
-
-        // Set LinearLayout to AlertDialog
-        editAssetDialog.setView(layout);
+        final EditText assetNameField = (EditText) dialogView.findViewById(R.id.asset_name_field);
+        final EditText assetQuantityField = (EditText) dialogView.findViewById(R.id.asset_quantity_field);
+        final Button changeAssetLogoButton = (Button) dialogView.findViewById(R.id.change_logo_button);
 
 
         // Setting Positive "Done" Button
@@ -216,7 +209,7 @@ public class AssetListActivity extends AppCompatActivity {
                     }
                 });
 
-        // TEST trying to add delete button to edit asset dialog
+        // Add delete button to edit asset dialog
         editAssetDialog.setNeutralButton("DELETE ASSET",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -239,9 +232,12 @@ public class AssetListActivity extends AppCompatActivity {
                     }
                 });
 
-        // Showing Alert Message
-        editAssetDialog.show();
+        // Show dialog to user
+        //editAssetDialog.show();
 
+        AlertDialog dialoki = editAssetDialog.create();
+
+        dialoki.show();
     }
 
 
@@ -272,7 +268,7 @@ public class AssetListActivity extends AppCompatActivity {
 
         // Create EditText View and add it to LinearLayout
         final EditText assetSymbolField = new EditText(AssetListActivity.this);
-        assetSymbolField.setHint("Asset symbol(ie. BTC)");
+        assetSymbolField.setHint("Asset symbol/ticker(ie. BTC)");
         assetSymbolField.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         layout.addView(assetSymbolField);
 
