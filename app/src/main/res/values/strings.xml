@@ -33,6 +33,11 @@
 
 
     </string>
-    <string name="bug_message">Hey, good job finding that little ****(bug). Describe your findings here and send it to Taika Inc. Thanks!:</string>
+    <string name="bug_message">Hey, \n\n
+        good job finding that little *u**(bug). Describe your findings here with short message and send it to developer. Thanks in advance!\n\n
+        Bug/improvement proposal: \n </string>
+    <string name="change_asset_quantity">Change asset quantity</string>
+    <string name="change_asset_name">Change asset name</string>
+    <string name="change_logo">Change logo</string>
 
 </resources>

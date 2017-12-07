@@ -108,11 +108,6 @@ public class MainActivity extends AppCompatActivity {
                 addresses[0] = "jukka@taika.xyz";
                 String bugMessage = getString(R.string.bug_message);
 
-                //remove the last line(Press Order-button to confirm your order.) of Order summary, as it not needed in email confirmation
-                if (bugMessage.lastIndexOf("\n") > 0) {
-                    bugMessage = bugMessage.substring(0, bugMessage.lastIndexOf("\n"));
-                }
-
                 //start email intent to send Order confirmation via email
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setType("*/*");
