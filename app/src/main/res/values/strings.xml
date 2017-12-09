@@ -15,6 +15,9 @@
     <string name="dollarsign">$</string>
     <string name="quantity">Quantity |&#160;</string>
     <string name="app_logo">App logo</string>
+    <string name="change_asset_quantity">Change asset quantity</string>
+    <string name="change_asset_name">Change asset name</string>
+    <string name="change_logo">Change logo</string>
     <string name="about_textview">This app is developed under GNU GENERAL PUBLIC LICENSE Version 3.\n\n
 
         An Android app that makes it easy to gather data from various assets to one place.
@@ -36,8 +39,8 @@
     <string name="bug_message">Hey, \n\n
         good job finding that little *u**(bug). Describe your findings here with short message and send it to developer. Thanks in advance!\n\n
         Bug/improvement proposal: \n </string>
-    <string name="change_asset_quantity">Change asset quantity</string>
-    <string name="change_asset_name">Change asset name</string>
-    <string name="change_logo">Change logo</string>
+    <string name="asset_name">Asset name</string>
+    <string name="asset_quantity">Asset quantity</string>
+    <string name="asset_symbol_ticker_ie_btc">Asset symbol/ticker(ie. BTC)</string>
 
 </resources>

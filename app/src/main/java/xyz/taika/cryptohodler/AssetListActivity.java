@@ -2,6 +2,9 @@ package xyz.taika.cryptohodler;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -33,6 +36,7 @@ public class AssetListActivity extends AppCompatActivity {
     private boolean eurFiat;
     private String changePercentRate;
     UpdateDataTask updateDataTask;
+
 
     @Override
     public void onResume() {
@@ -131,37 +135,47 @@ public class AssetListActivity extends AppCompatActivity {
                 }
         );
     }
-
-
+    
     //Show dialog that gives possibility to edit asset from the list
     public void showEditAssetDialog(Asset assetJustClicked) {
 
         final Asset clickedAsset = assetJustClicked;
 
         // Creating alert Dialog with one Button
-        final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(AssetListActivity.this);
+        final AlertDialog.Builder editAssetDialogBuilder = new AlertDialog.Builder(AssetListActivity.this);
 
-        // Setting Dialog Title
-        editAssetDialog.setTitle("EDIT ASSET");
-
-        editAssetDialog.setIcon(clickedAsset.getImageResourceId());
-
-        // Set Dialog message
-        editAssetDialog.setMessage("Edit your " + clickedAsset.getAssetName() + " asset");
+        // Set Dialog
+        editAssetDialogBuilder.setTitle("EDIT ASSET");
+        editAssetDialogBuilder.setIcon(clickedAsset.getImageResourceId());
+        editAssetDialogBuilder.setMessage("Edit your " + clickedAsset.getAssetName() + " asset");
 
         // Inflate layout
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.edit_asset_dialog, null);
-        editAssetDialog.setView(dialogView);
+        editAssetDialogBuilder.setView(dialogView);
 
-
+        // Set views
         final EditText assetNameField = (EditText) dialogView.findViewById(R.id.asset_name_field);
         final EditText assetQuantityField = (EditText) dialogView.findViewById(R.id.asset_quantity_field);
         final Button changeAssetLogoButton = (Button) dialogView.findViewById(R.id.change_logo_button);
 
 
+        /* TEST no need to cast to button view here since we can add a listener to any view
+        findViewById(R.id.change_logo_button).setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+
+                // in onCreate or any event where your want the user to select a file
+                Intent intent = new Intent();
+                intent.setType(IMAGE_TYPE);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+
+            }
+        }); */
+
         // Setting Positive "Done" Button
-        editAssetDialog.setPositiveButton("DONE",
+        editAssetDialogBuilder.setPositiveButton("DONE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog's DONE button is pressed
@@ -170,19 +184,18 @@ public class AssetListActivity extends AppCompatActivity {
                                 String assetQuantityString = assetQuantityField.getText().toString();
                                 String assetName = assetNameField.getText().toString();
 
-                                //If user has put data in Asset quantity field, update it to user given data
+                                //If user has put data in Asset quantity field, do update
                                 if (!assetQuantityString.isEmpty()) {
                                     Double assetQuantityDouble = Double.valueOf(assetQuantityString);
                                     asset.setAssetQuantity(assetQuantityDouble);
                                 }
 
-                                //If user has put data in Asset name field, update it to user given data
+                                //If user has put data in Asset name field, do update
                                 if (!assetName.isEmpty()) {
                                     asset.setAssetName(assetName);
                                 }
                             }
                         }
-
                         assetList.updateTotalValues();
 
                         //Sort list
@@ -201,7 +214,7 @@ public class AssetListActivity extends AppCompatActivity {
                 });
 
         // Setting Negative "Cancel" Button
-        editAssetDialog.setNegativeButton("CANCEL",
+        editAssetDialogBuilder.setNegativeButton("CANCEL",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
@@ -210,12 +223,11 @@ public class AssetListActivity extends AppCompatActivity {
                 });
 
         // Add delete button to edit asset dialog
-        editAssetDialog.setNeutralButton("DELETE ASSET",
+        editAssetDialogBuilder.setNeutralButton("DELETE ASSET",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
                         assetList.deleteAssetFromList(clickedAsset.getAssetName());
-
 
                         //Notify adapter that data has changed and refresh ListView
                         assetAdapter.notifyDataSetChanged();
@@ -233,11 +245,8 @@ public class AssetListActivity extends AppCompatActivity {
                 });
 
         // Show dialog to user
-        //editAssetDialog.show();
-
-        AlertDialog dialoki = editAssetDialog.create();
-
-        dialoki.show();
+        AlertDialog editAssetDialog = editAssetDialogBuilder.create();
+        editAssetDialog.show();
     }
 
 
@@ -245,15 +254,24 @@ public class AssetListActivity extends AppCompatActivity {
     public void showNewAssetDialog() {
 
         // Creating alert Dialog with one Button
-        AlertDialog.Builder newAssetDialog = new AlertDialog.Builder(AssetListActivity.this);
+        AlertDialog.Builder newAssetDialogBuilder = new AlertDialog.Builder(AssetListActivity.this);
 
-        //AlertDialog newAssetDialog = new AlertDialog.Builder(MainActivity.this).create();
+        // Set Dialog
+        newAssetDialogBuilder.setTitle("ADD NEW ASSET");
+        newAssetDialogBuilder.setMessage("Give asset name, symbol and quantity");
 
-        // Setting Dialog Title
-        newAssetDialog.setTitle("ADD NEW ASSET");
+        /* TESTing XML layout
+        // Inflate layout
+        LayoutInflater newAssetDialogInflater = this.getLayoutInflater();
+        View dialogView2 = newAssetDialogInflater.inflate(R.layout.new_asset_dialog, null);
+        newAssetDialogBuilder.setView(dialogView2);
 
-        // Setting Dialog Message
-        newAssetDialog.setMessage("Give asset name, symbol and quantity");
+        // Set views
+        final EditText newAssetNameField = (EditText) dialogView2.findViewById(R.id.asset_name_field);
+        final EditText newAssetQuantityField = (EditText) dialogView2.findViewById(R.id.asset_quantity_field);
+        final EditText newAssetSymbolField = (EditText) dialogView2.findViewById(R.id.new_asset_symbol_field);
+        */
+
 
 
         // Add LinearLayout to show in custom AlertDialog
@@ -279,11 +297,11 @@ public class AssetListActivity extends AppCompatActivity {
         layout.addView(assetQuantityField);
 
         // Set LinearLayout to AlertDialog
-        newAssetDialog.setView(layout);
+        newAssetDialogBuilder.setView(layout);
 
 
         // Setting Positive "Done" Button
-        newAssetDialog.setPositiveButton("DONE",
+        newAssetDialogBuilder.setPositiveButton("DONE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog's DONE button is pressed
@@ -312,7 +330,7 @@ public class AssetListActivity extends AppCompatActivity {
                 });
 
         // Setting Negative "Cancel" Button
-        newAssetDialog.setNegativeButton("CANCEL",
+        newAssetDialogBuilder.setNegativeButton("CANCEL",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
@@ -321,6 +339,7 @@ public class AssetListActivity extends AppCompatActivity {
                 });
 
         // Showing Alert Message
+        AlertDialog newAssetDialog = newAssetDialogBuilder.create();
         newAssetDialog.show();
     }
 

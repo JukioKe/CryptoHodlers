@@ -11,23 +11,23 @@
     android:paddingEnd="20dp">
 
     <EditText
-        android:id="@+id/asset_name_field"
+        android:id="@+id/new_asset_name_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/change_asset_name"/>
+        android:hint="@string/asset_name"/>
 
     <EditText
-        android:id="@+id/asset_quantity_field"
+        android:id="@+id/new_asset_symbol_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/change_asset_quantity"
-        android:inputType="numberDecimal"/>
+        android:hint="@string/asset_symbol_ticker_ie_btc"
+        android:textAllCaps="true"/>
 
-    <Button
-        android:id="@+id/change_logo_button"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/new_asset_quantity_field"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/change_logo"
-        android:padding="20dp"/>
+        android:hint="@string/asset_quantity"
+        android:inputType="numberDecimal"/>
 
 </LinearLayout>
