@@ -33,10 +33,12 @@ public class AssetList implements Serializable {
         }
     }
 
-    public void addNewAssetToList(String assetName, String assetSymbol, Double assetQuantity) {
+    public boolean addNewAssetToList(String assetName, String assetSymbol, Double assetQuantity) {
         if (!isAlreadyInList(assetName)) {
             assetList.add(new Asset(assetName, assetSymbol, assetQuantity));
+            return true;
         }
+        return false;
     }
 
     public void addNewAssetToList(String assetName, Double assetQuantity, int imageResourceID) {
@@ -55,18 +57,16 @@ public class AssetList implements Serializable {
     }
 
     //Updates total values to all assets in list
-    public void updateTotalValues() {
+    void updateTotalValues() {
         for (Asset asset : assetList) {
             System.out.println(asset.toString());
-            if (asset.getAssetValue() == null) {
-                continue;
-            } else {
+            if (asset.getAssetValue() != null) {
                 asset.calculateAssetTotalValue();
             }
         }
     }
 
-    public void deleteAssetFromList(String assetName) {
+    void deleteAssetFromList(String assetName) {
         for (int i=0; i<assetList.size(); i++) {
             if (assetList.get(i).getAssetName().toLowerCase().equals(assetName.toLowerCase())) {
                 assetList.remove(i);
@@ -74,8 +74,7 @@ public class AssetList implements Serializable {
         }
     }
 
-    public void sortList() {
-
+    void sortList() {
         Collections.sort(assetList, new Comparator<Asset>() {
             @Override public int compare(Asset p1, Asset p2) {
 
