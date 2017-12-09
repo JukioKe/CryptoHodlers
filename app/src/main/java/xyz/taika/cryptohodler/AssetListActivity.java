@@ -135,8 +135,7 @@ public class AssetListActivity extends AppCompatActivity {
                 }
         );
     }
-
-
+    
     //Show dialog that gives possibility to edit asset from the list
     public void showEditAssetDialog(Asset assetJustClicked) {
 
@@ -249,6 +248,7 @@ public class AssetListActivity extends AppCompatActivity {
         AlertDialog editAssetDialog = editAssetDialogBuilder.create();
         editAssetDialog.show();
     }
+
 
     //Show dialog that gives possibility to add new asset to the list
     public void showNewAssetDialog() {
