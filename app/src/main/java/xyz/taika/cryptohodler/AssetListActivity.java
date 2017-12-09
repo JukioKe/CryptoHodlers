@@ -37,6 +37,10 @@ public class AssetListActivity extends AppCompatActivity {
     private String changePercentRate;
     UpdateDataTask updateDataTask;
 
+    // this way we know we're looking at the response from our own action
+    private static final int SELECT_PICTURE = 101;
+    public static final String IMAGE_TYPE = "image/*";
+
 
     @Override
     public void onResume() {
@@ -135,7 +139,7 @@ public class AssetListActivity extends AppCompatActivity {
                 }
         );
     }
-    
+
     //Show dialog that gives possibility to edit asset from the list
     public void showEditAssetDialog(Asset assetJustClicked) {
 
@@ -143,8 +147,6 @@ public class AssetListActivity extends AppCompatActivity {
 
         // Creating alert Dialog with one Button
         final AlertDialog.Builder editAssetDialogBuilder = new AlertDialog.Builder(AssetListActivity.this);
-
-        // Set Dialog
         editAssetDialogBuilder.setTitle("EDIT ASSET");
         editAssetDialogBuilder.setIcon(clickedAsset.getImageResourceId());
         editAssetDialogBuilder.setMessage("Edit your " + clickedAsset.getAssetName() + " asset");
@@ -249,65 +251,36 @@ public class AssetListActivity extends AppCompatActivity {
         editAssetDialog.show();
     }
 
-
     //Show dialog that gives possibility to add new asset to the list
     public void showNewAssetDialog() {
 
         // Creating alert Dialog with one Button
         AlertDialog.Builder newAssetDialogBuilder = new AlertDialog.Builder(AssetListActivity.this);
-
-        // Set Dialog
         newAssetDialogBuilder.setTitle("ADD NEW ASSET");
         newAssetDialogBuilder.setMessage("Give asset name, symbol and quantity");
 
-        /* TESTing XML layout
         // Inflate layout
         LayoutInflater newAssetDialogInflater = this.getLayoutInflater();
         View dialogView2 = newAssetDialogInflater.inflate(R.layout.new_asset_dialog, null);
         newAssetDialogBuilder.setView(dialogView2);
 
         // Set views
-        final EditText newAssetNameField = (EditText) dialogView2.findViewById(R.id.asset_name_field);
-        final EditText newAssetQuantityField = (EditText) dialogView2.findViewById(R.id.asset_quantity_field);
+        final EditText newAssetNameField = (EditText) dialogView2.findViewById(R.id.new_asset_name_field);
         final EditText newAssetSymbolField = (EditText) dialogView2.findViewById(R.id.new_asset_symbol_field);
-        */
-
-
-
-        // Add LinearLayout to show in custom AlertDialog
-        LinearLayout layout = new LinearLayout(AssetListActivity.this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(50, 0, 50, 50);
-
-        // Create EditText View and add it to LinearLayout
-        final EditText assetNameField = new EditText(AssetListActivity.this);
-        assetNameField.setHint("Asset name");
-        layout.addView(assetNameField);
-
-        // Create EditText View and add it to LinearLayout
-        final EditText assetSymbolField = new EditText(AssetListActivity.this);
-        assetSymbolField.setHint("Asset symbol/ticker(ie. BTC)");
-        assetSymbolField.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
-        layout.addView(assetSymbolField);
-
-        // Create another EditText View and add it to LinearLayout
-        final EditText assetQuantityField = new EditText(AssetListActivity.this);
-        assetQuantityField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        assetQuantityField.setHint("Your asset quantity");
-        layout.addView(assetQuantityField);
-
-        // Set LinearLayout to AlertDialog
-        newAssetDialogBuilder.setView(layout);
-
+        final EditText newAssetQuantityField = (EditText) dialogView2.findViewById(R.id.new_asset_quantity_field);
 
         // Setting Positive "Done" Button
         newAssetDialogBuilder.setPositiveButton("DONE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog's DONE button is pressed
+                        /* Write your code here to execute after dialog's DONE button is pressed
                         String assetName = assetNameField.getText().toString();
                         String assetSymbol = assetSymbolField.getText().toString();
                         String assetQuantity = assetQuantityField.getText().toString();
+                        */
+                        String assetName = newAssetNameField.getText().toString();
+                        String assetSymbol = newAssetSymbolField.getText().toString();
+                        String assetQuantity = newAssetQuantityField.getText().toString();
 
                         //If user haven't givem any quantity value, use default data
                         if (assetQuantity.isEmpty()) {
@@ -316,7 +289,11 @@ public class AssetListActivity extends AppCompatActivity {
                         Double quantity = Double.valueOf(assetQuantity);
 
                         //Add this new Asset to the Assetlist
-                        assetList.addNewAssetToList(assetName, assetSymbol, quantity);
+                        if (assetList.addNewAssetToList(assetName, assetSymbol, quantity)) {
+                            Toast.makeText(getApplicationContext(), "Asset created", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Asset already in the list", Toast.LENGTH_SHORT).show();
+                        }
 
                         //Execute UpdateDataTask to get fresh API data
                         getApiData();
@@ -324,8 +301,6 @@ public class AssetListActivity extends AppCompatActivity {
                         //Notify adapter that data has changed and refresh ListView
                         assetAdapter.notifyDataSetChanged();
 
-                        // Show toast
-                        Toast.makeText(getApplicationContext(), "Asset created", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -342,7 +317,6 @@ public class AssetListActivity extends AppCompatActivity {
         AlertDialog newAssetDialog = newAssetDialogBuilder.create();
         newAssetDialog.show();
     }
-
 
     //This method starts UpdateDataTask that tries to get fresh API data from internet
     public void getApiData() {
@@ -378,7 +352,6 @@ public class AssetListActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Fresh asset data can updated once in every 10 seconds", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     // Save assetList to internal storage
     public void saveAssetListToInternalStorage(Context context) {

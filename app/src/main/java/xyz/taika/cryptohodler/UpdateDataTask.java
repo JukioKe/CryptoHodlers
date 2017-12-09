@@ -27,8 +27,6 @@ class UpdateDataTask extends AsyncTask<String, String, String> {
     private String changePercentRate;
     private AssetAdapter assetAdapter;
     private Boolean eurFiat;
-    //OLD WORKING String changePercentRate = getChangePercentage();
-
 
     UpdateDataTask(Context context, AssetList assetList, AssetAdapter assetAdapter, String changePercentRate, Boolean eurFiat) {
         this.context = context;
@@ -43,8 +41,6 @@ class UpdateDataTask extends AsyncTask<String, String, String> {
 
         //Set dialog that show Please wait sign to user while getting fresh data via API call
         progressDialog = new ProgressDialog(context);
-        //OLD WORKING progressDialog = new ProgressDialog(AssetListActivity.this);
-
         progressDialog.setMessage("Getting fresh data...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -64,8 +60,6 @@ class UpdateDataTask extends AsyncTask<String, String, String> {
             reader = new BufferedReader(new InputStreamReader(stream));
             StringBuilder buffer = new StringBuilder();
             String line;
-
-
 
             while ((line = reader.readLine()) != null) {
                 buffer.append(line).append("\n");
@@ -150,7 +144,6 @@ class UpdateDataTask extends AsyncTask<String, String, String> {
                         } else {
                             changePercent = Double.parseDouble(changePercentString);
                         }
-
 
                         //Save correct price data to Double
                         Double assetPrice;
