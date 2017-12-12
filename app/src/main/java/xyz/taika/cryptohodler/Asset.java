@@ -41,20 +41,7 @@ public class Asset implements Serializable {
         calculateAssetTotalValue();
     }
 
-    public Asset(String assetName, String assetSymbol) {
-        this.assetName = assetName;
-        this.assetSymbol = assetSymbol;
-        this.assetQuantity = 0.0;
-        this.assetValue = 0.0;
-        this.change24h = 0.0;
-        this.change1h = 0.0;
-        this.change7d = 0.0;
-        this.imageResourceId = R.mipmap.crypto_hodlers_icon;
-        calculateAssetTotalValue();
-
-    }
-
-    public Asset(String assetName, Double assetQuantity) {
+    Asset(String assetName, Double assetQuantity) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
         this.assetValue = 0.0;
@@ -63,10 +50,9 @@ public class Asset implements Serializable {
         this.change7d = 0.0;
         this.imageResourceId = R.mipmap.crypto_hodlers_icon;
         calculateAssetTotalValue();
-
     }
 
-    public Asset(String assetName, String assetSymbol, Double assetQuantity) {
+    Asset(String assetName, String assetSymbol, Double assetQuantity) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
         this.assetSymbol = assetSymbol;
@@ -78,7 +64,7 @@ public class Asset implements Serializable {
         calculateAssetTotalValue();
     }
 
-    public Asset(String assetName, Double assetQuantity, int imageResourceId) {
+    Asset(String assetName, Double assetQuantity, int imageResourceId) {
         this.assetName = assetName;
         this.assetQuantity = assetQuantity;
         this.assetValue = 0.0;

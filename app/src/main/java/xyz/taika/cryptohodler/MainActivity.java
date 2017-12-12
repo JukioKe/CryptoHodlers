@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
     Button statusButton;
     Button aboutButton;
     TextView infoTextView;
-    private boolean eurFiat; //This stores value of user chosen fiat value. Default = USD
-    private String changePercentRate; //This stores value of user chosen change percent rate. Default = 24h
+    private boolean eurFiat; // This stores value of user chosen fiat value. Default = USD
+    private String changePercentRate; // This stores value of user chosen change percent rate. Default = 24h
 
 
     @Override
@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Set corresponding XML layouts to views
+        // Set corresponding XML layouts to views
         statusButton = (Button) findViewById(R.id.AssetListButton);
         aboutButton = (Button) findViewById(R.id.aboutButton);
         infoTextView = (TextView) findViewById(R.id.infoTextView);
 
-        //Restore preferences
+        // Restore preferences
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         this.eurFiat = settings.getBoolean("eurFiatMode", false);
         this.changePercentRate = settings.getString("changePercentRate", "DEFAULT");
@@ -49,23 +49,23 @@ public class MainActivity extends AppCompatActivity {
         statusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Start AssetListActivity where's all the assets in a list
+                // Start AssetListActivity where's all the assets in a list
                 Intent checkStatusIntent = new Intent(MainActivity.this, AssetListActivity.class);
                 checkStatusIntent.putExtra("changePercentRate", changePercentRate);
 
-                //Check if EUR/USD setting is enabled
+                // Check if EUR/USD setting is enabled
                 if (eurFiat) {
                     checkStatusIntent.putExtra("eurFiat", true);
                 } else {
                     checkStatusIntent.putExtra("eurFiat", false);
                 }
 
-                //Start activity
+                // Start activity
                 startActivity(checkStatusIntent);
             }
         });
 
-        //Set onClickListener to About button
+        // Set onClickListener to About button
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View vv) {
@@ -88,27 +88,26 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        /*int id = item.getItemId();
+        // TEST int id = item.getItemId();
 
-        //no inspection SimplifiableIfStatement
-        return id == R.id.action_settings || super.onOptionsItemSelected(item); */
+        // No inspection SimplifiableIfStatement return id == R.id.action_settings || super.onOptionsItemSelected(item);
 
         switch (item.getItemId()) {
             case R.id.action_settings:
-                //Show settings dialog
+                // Show settings dialog
                 showSettingsDialog();
                 super.onOptionsItemSelected(item);
                 return true;
 
             case R.id.action_report_bug:
 
-                //Set subject, recipient address and default message to bug report
+                // Set subject, recipient address and default message to bug report
                 String subject = "Crypto Hodlers bug";
                 String[] addresses = new String[1];
                 addresses[0] = "jukka@taika.xyz";
                 String bugMessage = getString(R.string.bug_message);
 
-                //start email intent to send Order confirmation via email
+                // start email intent to send Order confirmation via email
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setType("*/*");
                 intent.setData(Uri.parse("mailto:"));
@@ -130,16 +129,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Show dialog that gives possibility to edit asset from the list
+    // Show dialog that gives possibility to edit asset from the list
     public void showAboutDialog() {
 
-        //Create alert Dialog with one Button
+        // Create alert Dialog with one Button
         final AlertDialog.Builder editAssetDialog = new AlertDialog.Builder(MainActivity.this);
 
-        //Set Dialog Title
+        // Set Dialog Title
         editAssetDialog.setTitle("Crypto Hodlers");
 
-        //Set Dialog message
+        // Set Dialog message
         editAssetDialog.setMessage("ABOUT");
 
         // Add LinearLayout to show in custom AlertDialog
@@ -151,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         aboutTextView.setText(R.string.about_textview);
         layout.addView(aboutTextView);
 
-        //Set LinearLayout to AlertDialog
+        // Set LinearLayout to AlertDialog
         editAssetDialog.setView(layout);
 
         // Setting Positive "Done" Button
@@ -163,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        //Set Icon to Dialog
+        // Set Icon to Dialog
         editAssetDialog.setIcon(R.drawable.crypto_hodlers_icon);
 
         //Show Alert Message

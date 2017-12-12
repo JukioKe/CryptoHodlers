@@ -20,6 +20,8 @@
     <string name="change_logo">Change logo</string>
     <string name="about_textview">This app is developed under GNU GENERAL PUBLIC LICENSE Version 3.\n\n
 
+        This app is being developed for all blockchain enthusiasts in the wonderful crypto world. \n\n
+
         An Android app that makes it easy to gather data from various assets to one place.
         With powerful use of web API, user can get fresh data of assets of they like from the Internet. Fresh data makes it easy to follow and
         analyze various crypto- and blockchain-asset\'s values and holdings. With this app user
