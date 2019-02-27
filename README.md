@@ -2,7 +2,7 @@
 GNU GENERAL PUBLIC LICENSE Version 3. Notice: This app is still under developmet. This README -file get updated once in a while as development get further.
 
 ABOUT: 
-An Android app that makes it easy to gather data from various assets to one place. Powerful use of web API user can get fresh assetdata from the Internet and follow and analyze crypto- and blockchain-asset values and holdings of they like. With this app user can get complete up to date information of his/her holdings. 
+An Android app that makes it easy to gather data from various assets to one place. Powerful use of web API user can get fresh assetdata from the Internet and follow and analyze crypto- and blockchain-asset values and holdings of they like.
 
 ![chlogo](https://user-images.githubusercontent.com/28114032/33739840-4642c842-dba7-11e7-928c-829831f3752d.jpg)
 
