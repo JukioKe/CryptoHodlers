@@ -65,23 +65,23 @@ public class AssetListActivity extends AppCompatActivity {
         needDelay = false;
 
         //TEST Create  all default Asset objects
-        assetList.addNewAssetToList("Bitcoin", 0.0, R.mipmap.bitcoin);
-        /*assetList.addNewAssetToList("Ethereum", 2.070);
-        assetList.addNewAssetToList("Komodo", 15006.50);
-        assetList.addNewAssetToList("Byteball", 20.7860);
-        assetList.addNewAssetToList("DeepONION", 4005.40);
-        assetList.addNewAssetToList("NEO", 1000.001);
-        assetList.addNewAssetToList("GAS", 162.54);
-        assetList.addNewAssetToList("Bitcore", 5.6);
-        assetList.addNewAssetToList("Bitcoin Cash", 5.847);
-        assetList.addNewAssetToList("HEAT", 8045.30);
-        assetList.addNewAssetToList("NEM", 23000.70);
-        assetList.addNewAssetToList("Zcash", 5.90);
-        assetList.addNewAssetToList("Stellar", 5400.12);
-        assetList.addNewAssetToList("KekCoin", 10000.0);
-        assetList.addNewAssetToList("Lisk", 580.0);
-        assetList.addNewAssetToList("Monero");
-        assetList.addNewAssetToList("Factom", 20.67);*/
+        assetList.addNewAssetToList("Bitcoin", 1.0, R.mipmap.bitcoin);
+        assetList.addNewAssetToList("Ethereum", 0.0, R.mipmap.ethereum);
+        assetList.addNewAssetToList("Komodo", 0.0, R.mipmap.komodo);
+        assetList.addNewAssetToList("Byteball", 0.0, R.mipmap.byteball);
+        assetList.addNewAssetToList("NEO", 0.0, R.mipmap.neo);
+        assetList.addNewAssetToList("GAS", 0.0, R.mipmap.gas);
+        assetList.addNewAssetToList("Bgold", 0.0, R.mipmap.bgold);
+        assetList.addNewAssetToList("Bdiamond", 0.0, R.mipmap.bdiamond);
+        assetList.addNewAssetToList("Litecoin", 0.0, R.mipmap.litecoin);
+        assetList.addNewAssetToList("Bitcore", 0.0, R.mipmap.bitcore);
+        assetList.addNewAssetToList("Bcash", 0.0, R.mipmap.bcash);
+        assetList.addNewAssetToList("HEAT", 0.0, R.mipmap.heat);
+        assetList.addNewAssetToList("NEM", 0.0, R.mipmap.nem);
+        assetList.addNewAssetToList("Zcash", 0.0, R.mipmap.zcash);
+        assetList.addNewAssetToList("Stellar", 0.0, R.mipmap.stellar);
+        assetList.addNewAssetToList("Monero", 0.0, R.mipmap.monero);
+        assetList.addNewAssetToList("Factom", 0.0, R.mipmap.factom);
 
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context

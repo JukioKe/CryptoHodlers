@@ -39,7 +39,7 @@
 
     </string>
     <string name="bug_message">Hey, \n\n
-        good job finding that little *u**(bug). Describe your findings here with short message and send it to developer. Thanks in advance!\n\n
+        Describe your findings here with short message and send it to developer. Thanks in advance!\n\n
         Bug/improvement proposal: \n </string>
     <string name="asset_name">Asset name</string>
     <string name="asset_quantity">Asset quantity</string>
