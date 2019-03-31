@@ -4,7 +4,8 @@ GNU GENERAL PUBLIC LICENSE Version 3. Notice: This app is still under developmet
 ABOUT: 
 An Android app that makes it easy to gather live data from various assets to one place. With CMC web API users can get fresh assetdata and follow various crypto-asset values and holdings.
 
-![cr_screenshots](https://user-images.githubusercontent.com/28114032/55292537-d60fdc00-53f4-11e9-9143-23fab4fc77c7.png)
+![cr_screenshots](https://user-images.githubusercontent.com/28114032/55292552-fb9ce580-53f4-11e9-89b5-53f5817de0e3.png)
+
 
 MAIN FEATURES:
 - API to get fresh data from the Internet
