@@ -38,8 +38,8 @@ public class AssetListActivity extends AppCompatActivity {
     UpdateDataTask updateDataTask;
 
     // this way we know we're looking at the response from our own action
-    private static final int SELECT_PICTURE = 101;
-    public static final String IMAGE_TYPE = "image/*";
+    //private static final int SELECT_PICTURE = 101;
+    //public static final String IMAGE_TYPE = "image/*";
 
 
     @Override
@@ -65,23 +65,23 @@ public class AssetListActivity extends AppCompatActivity {
         needDelay = false;
 
         //TEST Create  all default Asset objects
-        assetList.addNewAssetToList("Bitcoin", 1.0, R.mipmap.bitcoin);
-        assetList.addNewAssetToList("Ethereum", 0.0, R.mipmap.ethereum);
-        assetList.addNewAssetToList("Komodo", 0.0, R.mipmap.komodo);
-        assetList.addNewAssetToList("Byteball", 0.0, R.mipmap.byteball);
-        assetList.addNewAssetToList("NEO", 0.0, R.mipmap.neo);
-        assetList.addNewAssetToList("GAS", 0.0, R.mipmap.gas);
-        assetList.addNewAssetToList("Bgold", 0.0, R.mipmap.bgold);
-        assetList.addNewAssetToList("Bdiamond", 0.0, R.mipmap.bdiamond);
-        assetList.addNewAssetToList("Litecoin", 0.0, R.mipmap.litecoin);
-        assetList.addNewAssetToList("Bitcore", 0.0, R.mipmap.bitcore);
-        assetList.addNewAssetToList("Bcash", 0.0, R.mipmap.bcash);
-        assetList.addNewAssetToList("HEAT", 0.0, R.mipmap.heat);
-        assetList.addNewAssetToList("NEM", 0.0, R.mipmap.nem);
-        assetList.addNewAssetToList("Zcash", 0.0, R.mipmap.zcash);
-        assetList.addNewAssetToList("Stellar", 0.0, R.mipmap.stellar);
-        assetList.addNewAssetToList("Monero", 0.0, R.mipmap.monero);
-        assetList.addNewAssetToList("Factom", 0.0, R.mipmap.factom);
+        assetList.addNewAssetToList("Bitcoin", "BTC", 1.0, R.mipmap.bitcoin);
+        assetList.addNewAssetToList("Ethereum", "ETH", 1.0, R.mipmap.ethereum);
+        assetList.addNewAssetToList("Komodo", "KMD", 1.0, R.mipmap.komodo);
+        assetList.addNewAssetToList("Byteball", "GBYTE", 1.0, R.mipmap.byteball);
+        assetList.addNewAssetToList("NEO", "NEO", 1.0, R.mipmap.neo);
+        assetList.addNewAssetToList("GAS", "GAS", 1.0, R.mipmap.gas);
+        assetList.addNewAssetToList("Bgold", "BTG", 1.0, R.mipmap.bgold);
+        assetList.addNewAssetToList("Bdiamond", "BCD", 1.0, R.mipmap.bdiamond);
+        assetList.addNewAssetToList("Litecoin", "LTC", 1.0, R.mipmap.litecoin);
+        assetList.addNewAssetToList("Bitcore", "BTX", 1.0, R.mipmap.bitcore);
+        assetList.addNewAssetToList("Bcash", "BCH", 1.0, R.mipmap.bcash);
+        assetList.addNewAssetToList("HEAT", "HEAT", 1.0, R.mipmap.heat);
+        assetList.addNewAssetToList("NEM", "XEM", 1.0, R.mipmap.nem);
+        assetList.addNewAssetToList("Zcash", "ZEC", 1.0, R.mipmap.zcash);
+        assetList.addNewAssetToList("Stellar", "XLM", 1.0, R.mipmap.stellar);
+        assetList.addNewAssetToList("Monero", "XMR", 1.0, R.mipmap.monero);
+        assetList.addNewAssetToList("Factom","FCT", 1.0, R.mipmap.factom);
 
 
         //Create a AssetAdapter and give this (AssetListActivity) as a context
@@ -161,20 +161,6 @@ public class AssetListActivity extends AppCompatActivity {
         final EditText assetQuantityField = (EditText) dialogView.findViewById(R.id.asset_quantity_field);
         final Button changeAssetLogoButton = (Button) dialogView.findViewById(R.id.change_logo_button);
 
-
-        /* TEST no need to cast to button view here since we can add a listener to any view
-        findViewById(R.id.change_logo_button).setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View arg0) {
-
-                // in onCreate or any event where your want the user to select a file
-                Intent intent = new Intent();
-                intent.setType(IMAGE_TYPE);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-
-            }
-        }); */
 
         // Setting Positive "Done" Button
         editAssetDialogBuilder.setPositiveButton("DONE",
@@ -273,11 +259,8 @@ public class AssetListActivity extends AppCompatActivity {
         newAssetDialogBuilder.setPositiveButton("DONE",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        /* Write your code here to execute after dialog's DONE button is pressed
-                        String assetName = assetNameField.getText().toString();
-                        String assetSymbol = assetSymbolField.getText().toString();
-                        String assetQuantity = assetQuantityField.getText().toString();
-                        */
+                        // Write your code here to execute after dialog's DONE button is pressed
+
                         String assetName = newAssetNameField.getText().toString();
                         String assetSymbol = newAssetSymbolField.getText().toString();
                         String assetQuantity = newAssetQuantityField.getText().toString();
