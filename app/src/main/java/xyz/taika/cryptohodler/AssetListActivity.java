@@ -68,17 +68,13 @@ public class AssetListActivity extends AppCompatActivity {
         assetList.addNewAssetToList("Bitcoin", "BTC", 1.0, R.mipmap.bitcoin);
         assetList.addNewAssetToList("Ethereum", "ETH", 1.0, R.mipmap.ethereum);
         assetList.addNewAssetToList("Komodo", "KMD", 1.0, R.mipmap.komodo);
-        assetList.addNewAssetToList("Byteball", "GBYTE", 1.0, R.mipmap.byteball);
+        assetList.addNewAssetToList("Obyte", "GBYTE", 1.0, R.mipmap.byteball);
         assetList.addNewAssetToList("NEO", "NEO", 1.0, R.mipmap.neo);
         assetList.addNewAssetToList("GAS", "GAS", 1.0, R.mipmap.gas);
-        assetList.addNewAssetToList("Bgold", "BTG", 1.0, R.mipmap.bgold);
         assetList.addNewAssetToList("Bdiamond", "BCD", 1.0, R.mipmap.bdiamond);
         assetList.addNewAssetToList("Litecoin", "LTC", 1.0, R.mipmap.litecoin);
         assetList.addNewAssetToList("Bitcore", "BTX", 1.0, R.mipmap.bitcore);
-        assetList.addNewAssetToList("Bcash", "BCH", 1.0, R.mipmap.bcash);
         assetList.addNewAssetToList("HEAT", "HEAT", 1.0, R.mipmap.heat);
-        assetList.addNewAssetToList("NEM", "XEM", 1.0, R.mipmap.nem);
-        assetList.addNewAssetToList("Zcash", "ZEC", 1.0, R.mipmap.zcash);
         assetList.addNewAssetToList("Stellar", "XLM", 1.0, R.mipmap.stellar);
         assetList.addNewAssetToList("Monero", "XMR", 1.0, R.mipmap.monero);
         assetList.addNewAssetToList("Factom","FCT", 1.0, R.mipmap.factom);
