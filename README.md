@@ -1,5 +1,5 @@
 # Crypto Hodlers android app
-GNU GENERAL PUBLIC LICENSE Version 3. Notice: This app is still under developmet. This README -file get updated once in a while as development get further.
+GNU GENERAL PUBLIC LICENSE Version 3. Notice: This app is still under development. This README -file get updated once in a while as development get further.
 
 ABOUT: 
 An Android app that makes it easy to gather live data from various assets to one place. With CMC web API users can get fresh assetdata and follow various crypto-asset values and holdings.
@@ -8,8 +8,7 @@ An Android app that makes it easy to gather live data from various assets to one
 
 
 MAIN FEATURES:
-- API to get fresh data from the Internet
 - Add and remove assets
-- Change asset's name and quantities
-- Store app data in secure Internal storage, where only this app have access
-- ListView-ArrayAdapter solution that helps with memory opmizations
+- Asset options, such as: Change asset's name and quantities
+- Store app data in secure Internal storage, where only user's app have access
+- ListView-ArrayAdapter that makes app more memory effivient
