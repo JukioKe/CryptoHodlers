@@ -11,8 +11,8 @@ An Android app that makes it easy to gather live data from various assets to one
 MAIN FEATURES:
 - CMC API, thousands of assets
 - Compare to EUR or USD
-- Several 
+- Several time frames to choose
 - Add and remove assets
 - Asset options, such as: Change asset's name and quantities
 - Store app data in secure Internal storage, where only user's app have access
-- ListView-ArrayAdapter that makes app more memory effivient
+- Implements ListView-ArrayAdapter that makes app faster more memory effifient
