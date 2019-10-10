@@ -1,6 +1,4 @@
 # Crypto Hodlers android app
-GNU GENERAL PUBLIC LICENSE Version 3. Notice: This app is still under development. This README -file get updated once in a while as development get further.
-
 ABOUT:
 
 An Android app that makes it easy to gather live data from various assets to one place. With CMC web API users can get fresh data and follow many asset values and holdings at the same time with ease.
@@ -16,3 +14,5 @@ MAIN FEATURES:
 - Asset options, such as: Change asset's name and quantities
 - Store app data in secure Internal storage, where only user's app have access
 - Implements ListView-ArrayAdapter that makes app faster more memory effifient
+
+GNU GENERAL PUBLIC LICENSE Version 3.
