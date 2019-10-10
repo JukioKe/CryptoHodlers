@@ -14,5 +14,6 @@ MAIN FEATURES:
 - Asset options, such as: Change asset's name and quantities
 - Store app data in secure Internal storage, where only user's app have access
 - Implements ListView-ArrayAdapter that makes app faster more memory effifient
+- Report a bug -feature that allows user to report possible bug to dev easily
 
 GNU GENERAL PUBLIC LICENSE Version 3.
